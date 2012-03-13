@@ -8,5 +8,9 @@ public class TestKlasse {
 		////Dzenan
 		System.out.println("1+1=2");
 		////
-		 }
+		System.out.println("2Pac lives");
+	}
+	
+	
+	
 }
