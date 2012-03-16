@@ -17,9 +17,9 @@ public class DBTest {
 			con = DriverManager.getConnection(url, user, pw);
 			System.out.println("Tilkoblingen fungerte.");
 			Statement st = con.createStatement();
-			ResultSet rs = st.executeQuery("SELECT fnavn FROM Venner");
+			ResultSet rs = st.executeQuery("SELECT * FROM Venner");
 			while(rs.next()){
-				String s = rs.getString("fnavn");
+				String s = rs.getString(3);
 				System.out.println(s);
 			}
 			
