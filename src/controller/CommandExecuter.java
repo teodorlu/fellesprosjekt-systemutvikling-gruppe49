@@ -12,17 +12,18 @@ public class CommandExecuter {
 		
 		if(input.contains("-u")){
 			int uIndex = input.indexOf("-u");
-			username = input.get(uIndex+1);
+			
+			username = getProperty(array, uIndex+1);
 			
 			if(input.contains("-p")){
 				int pIndex = input.indexOf("-p");
-				password = input.get(pIndex+1);
+				password = getProperty(array, pIndex+1);
 				if(input.contains("-fn")){
 					int fnIndex = input.indexOf("-fn");
-					firstName = input.get(fnIndex+1);
+					firstName = getProperty(array, fnIndex+1);
 					if(input.contains("-ln")){
 						int lnIndex = input.indexOf("-ln");
-						lastName = input.get(lnIndex+1);
+						lastName = getProperty(array, lnIndex+1);
 						System.out.println(username +" "+ password+" "+ firstName+" "+" "+lastName);
 						// Lag et personobjekt her og fjern linja over
 					}
@@ -43,12 +44,22 @@ public class CommandExecuter {
 		if(input.contains("-u") && input.contains("-p")){
 			uIndex = input.indexOf("-u");
 			pIndex  =input.indexOf("-p");
-			username = input.get(uIndex+1);
-			password = input.get(pIndex+1);
+			username = getProperty(array, uIndex+1);
+			password = getProperty(array, pIndex+1);
 			System.out.println("User: "+username + " Password: "+password);
 			
 			//Add LoginToDo, har bare henta brukernavn i username og pw i password
 		}
+	}
+	
+	private static String getProperty(String[] array, int index){
+		
+		String word = array[index];
+		if(word.charAt(0)=='-'){
+			throw new IllegalArgumentException();
+		}
+		return word;
+			
 	}
 	
 	public static void main(String args[]){
