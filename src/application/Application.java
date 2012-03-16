@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.List;
+import java.util.Set;
 
 import model.*;
 import view.*;
@@ -19,7 +20,7 @@ public class Application {
 	
 	private ConsoleView consoleView;
 	
-	public Application(){
+	private Application(){
 		// Assign settings here.
 		InputStream input = System.in;
 		PrintStream output = (PrintStream) System.out;
@@ -27,7 +28,18 @@ public class Application {
 		consoleController = new ConsoleController(input);
 		consoleView = new ConsoleView(output);
 		
-		
+		run();
+	}
+	
+	private void run(){
+		consoleView.welcome();
+		while(true){
+			boolean executed = consoleController.parseNext();
+			if (!executed){
+				Set<String> commands = consoleController.getCommands();
+				consoleView.showCommands(commands);
+			}
+		}
 	}
 	
 	public static void main(String[] args) {
