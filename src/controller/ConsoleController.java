@@ -32,15 +32,82 @@ public class ConsoleController {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} 
+		}
 	}
 	
 	private void registerCommands() {
 		Object register = new Object(){
-			void execute(String[] parameters){
-				
+			void execute(String[] arguments){
+				CommandExecuter.register(arguments);
 			}};
 		commands.put("register", (Command) register);
+		
+		Object login = new Object(){
+			void execute(String[] arguments){
+				
+			}};
+		commands.put("login", (Command) login);
+		
+		Object appointment = new Object(){
+			void execute(String[] arguments){
+				
+			}};
+		commands.put("appointment", (Command) appointment);
+		
+		Object delete = new Object(){
+			void execute(String[] arguments){
+				
+			}};
+		commands.put("delete", (Command) appointment);
+		
+		Object edit = new Object(){
+			void execute(String[] arguments){
+				
+			}};
+		commands.put("edit", (Command) appointment);
+		
+		Object summon = new Object(){
+			void execute(String[] arguments){
+				
+			}};
+		commands.put("summon", (Command) appointment);
+		
+		Object unsummon = new Object(){
+			void execute(String[] arguments){
+				
+			}};
+		commands.put("unsummon", (Command) appointment);
+		
+		Object reply = new Object(){
+			void execute(String[] arguments){
+				
+			}};
+		commands.put("reply", (Command) appointment);
+		
+		Object room = new Object(){
+			void execute(String[] arguments){
+				
+			}};
+		commands.put("room", (Command) appointment);
+		
+		Object reserve = new Object(){
+			void execute(String[] arguments){
+				
+			}};
+		commands.put("reserve", (Command) appointment);
+		
+		Object calendar = new Object(){
+			void execute(String[] arguments){
+				
+			}};
+		commands.put("calendar", (Command) appointment);
+		
+		Object notifications = new Object(){
+			void execute(String[] arguments){
+				
+			}};
+		commands.put("notifications", (Command) appointment);
+		
 	}
 
 }
