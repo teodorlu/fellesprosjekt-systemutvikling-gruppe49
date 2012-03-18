@@ -1,15 +1,12 @@
 package model;
 
-import java.util.Arrays;
-import java.util.List;
-
 public class Person {
 	
 	private String username, password;
 	private String firstName, lastName;
 	
-	boolean isOnline;
-	UserCalendar personalCalendar;
+	private boolean isOnline;
+	private UserCalendar personalCalendar;
 	
 	public Person(	String username,
 					String password,
@@ -31,5 +28,9 @@ public class Person {
 	public String toString() {
 		String desc = username + ": " + lastName + ", " + firstName;
 		return desc;
+	}
+	
+	public boolean equals(Person other) {
+		return this.username.equals(other.username);
 	}
 }

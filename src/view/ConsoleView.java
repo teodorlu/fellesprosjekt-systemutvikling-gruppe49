@@ -1,17 +1,20 @@
 package view;
 
 import java.io.PrintStream;
-import java.util.Set;
 
-public class ConsoleView {
+import application.Application;
+import application.ApplicationComponent;
+
+public class ConsoleView extends ApplicationComponent{
 
 	private PrintStream output;
 	
-	public ConsoleView(PrintStream output) {
+	public ConsoleView(Application app, PrintStream output) {
+		super(app);
 		this.output = output;
 	}
 	
-	public void print(String message){
+	public void present(String message){
 		output.print(message);
 	}
 	
@@ -32,4 +35,6 @@ public class ConsoleView {
 		
 		output.println("+---------------------------+");
 	}
+	
+	
 }
