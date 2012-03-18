@@ -2,6 +2,9 @@ package view;
 
 import java.io.PrintStream;
 
+import model.Person;
+import model.User;
+
 import application.Application;
 import application.ApplicationComponent;
 
@@ -35,6 +38,15 @@ public class ConsoleView extends ApplicationComponent{
 		
 		output.println("+---------------------------+");
 	}
+
+	public void showSucessfulLoginMessage(Person owner) {
+		output.println("Sucessfully logged in as " + owner.getUsername());
+	}
+
+	public void showFailedLoginMessage(User user) {
+		output.println("Login as " + user.getUsername() + " failed");
+	}
+	
 	
 	
 }

@@ -7,29 +7,42 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-public class CommandExecuter {
+import model.Person;
+import model.User;
+
+import application.Application;
+import application.ApplicationComponent;
+
+public class CommandExecuter extends ApplicationComponent {
 	
-	public static void register(String[] array){
+	public CommandExecuter(Application app) {
+		super(app);
+	}
+
+	public void register(String[] array){
 		
 		List<String> input = Arrays.asList(array);
 		String username, password, firstName, lastName;
 		
 		if(input.contains("-u")){
 			int uIndex = input.indexOf("-u");
-			
 			username = getProperty(array, uIndex+1);
 			
 			if(input.contains("-p")){
 				int pIndex = input.indexOf("-p");
 				password = getProperty(array, pIndex+1);
+
 				if(input.contains("-fn")){
 					int fnIndex = input.indexOf("-fn");
 					firstName = getProperty(array, fnIndex+1);
+				
 					if(input.contains("-ln")){
 						int lnIndex = input.indexOf("-ln");
 						lastName = getProperty(array, lnIndex+1);
-						System.out.println(username +" "+ password+" "+ firstName+" "+" "+lastName);
-						// Lag et personobjekt her og fjern linja over
+						Person u = new Person(username, password, firstName, lastName);
+						this.getApplication().setCurrentUser(u);
+						
+						// System.out.println(username +" "+ password+" "+ firstName+" "+" "+lastName);
 					}
 					else System.out.println("Feil input: Etternavn");
 				}
@@ -40,7 +53,7 @@ public class CommandExecuter {
 		else System.out.println("Feil input: Username");
 	}
 	
-	public static void login(String[] array){
+	public void login(String[] array){
 		List<String> input = Arrays.asList(array);
 		int uIndex, pIndex;
 		String username, password;
@@ -50,13 +63,13 @@ public class CommandExecuter {
 			pIndex  =input.indexOf("-p");
 			username = getProperty(array, uIndex+1);
 			password = getProperty(array, pIndex+1);
-			System.out.println("User: "+username + " Password: "+password);
 			
-			//Add LoginToDo, har bare henta brukernavn i username og pw i password
+			User user = new User(username, password);
+			this.getApplication().tryLogIn(user);
 		}
 	}
 	
-	public static void appointment(String[] array) throws ParseException{
+	public void appointment(String[] array) throws ParseException{
 		List<String> input = Arrays.asList(array);
 		String title, desc = "", place = "", sStart, sEnd;
 		Date date;
@@ -96,7 +109,7 @@ public class CommandExecuter {
 	}
 	
 	
-	private static String getProperty(String[] array, int index){
+	private String getProperty(String[] array, int index){
 		
 		String word = array[index];
 		if(word.charAt(0)=='-'){
@@ -105,7 +118,7 @@ public class CommandExecuter {
 		return word;		
 	}
 	
-	private static Date stringToDate(String[] array, int index) throws ParseException{
+	private Date stringToDate(String[] array, int index) throws ParseException{
 		String _date = array[index];
 		DateFormat df = new SimpleDateFormat("YYYY-MM-DD");
 		Date date = df.parse(_date);
@@ -114,7 +127,7 @@ public class CommandExecuter {
 	
 
 	
-	private static void checkStartAndEndTime(){
+	private void checkStartAndEndTime(){
 		//Check if starttime is less than Endtime. 
 	}
 	
@@ -123,9 +136,11 @@ public class CommandExecuter {
 		String[] logintest = {"login", "-u", "Brukernavnet", "-p", "passordet"};
 		String[] appointmentTest = {"-title", "HumbugAvtale", "-date", "2012-12-04", "-s", "14:30:00", "-e", "15:30:00", 
 										"-desc", "Heisann tullemøte", "-place", "Fjellet"};
-		register(registertest);
-		login(logintest);
-		appointment(appointmentTest);
+		
+		CommandExecuter ce = new CommandExecuter(null);
+		ce.register(registertest);
+		ce.login(logintest);
+		ce.appointment(appointmentTest);
 	}
 
 }
