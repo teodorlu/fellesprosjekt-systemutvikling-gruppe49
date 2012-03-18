@@ -1,9 +1,9 @@
 package application;
 
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.PrintStream;
-import java.util.List;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 import model.*;
@@ -13,20 +13,54 @@ import controller.*;
 public class Application {
 	
 	private Person currentUser;
-	private List<Person> otherCalendarOwners;
+	private Set<Person> otherCalendarOwners;
 	
 	private ConsoleController consoleController;
 	private DatabaseController databaseController;
 	
 	private ConsoleView consoleView;
 	
+	
+	
+	public Person getCurrentUser() {
+		return currentUser;
+	}
+
+	public void setCurrentUser(Person currentUser) {
+		this.currentUser = currentUser;
+	}
+
+	public Set<Person> getOtherCalendarOwners() {
+		return new HashSet<Person>(otherCalendarOwners);
+	}
+	
+	public void addOtherCalendarOwners(Collection<Person> others){
+		otherCalendarOwners.addAll(others);
+	}
+	
+	public void removeOtherCalendarOwners(Collection<Person> others){
+		otherCalendarOwners.removeAll(others);
+	}
+
+	public ConsoleController getConsoleController() {
+		return consoleController;
+	}
+
+	public DatabaseController getDatabaseController() {
+		return databaseController;
+	}
+
+	public ConsoleView getConsoleView() {
+		return consoleView;
+	}
+
 	private Application(){
 		// Assign settings here.
 		InputStream input = System.in;
 		PrintStream output = (PrintStream) System.out;
 		
-		consoleController = new ConsoleController(input);
-		consoleView = new ConsoleView(output);
+		consoleController = new ConsoleController(this, input);
+		consoleView = new ConsoleView(this, output);
 		
 		run();
 	}

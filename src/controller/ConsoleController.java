@@ -4,19 +4,21 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-public class ConsoleController {
+import application.Application;
+import application.ApplicationComponent;
+
+public class ConsoleController extends ApplicationComponent {
 	
 	private final InputStream input;
 	private final BufferedReader reader;
 	private final Map<String, Command> commands;
 	
-	public ConsoleController(InputStream input){
+	public ConsoleController(Application app, InputStream input){
+		super(app);
+		
 		this.input = input;
 		InputStreamReader isr = new InputStreamReader(input);
 		reader = new BufferedReader(isr);
@@ -52,12 +54,17 @@ public class ConsoleController {
 			}
 		});
 		
+		commands.put("users", new Command() {
+			void execute(String[] arguments){
+//				CommandExecuter.
+			}
+		});
+		
 		commands.put("login", new Command() {
 			void execute(String[] arguments) {
 				
 			}
 		});
-		
 	}
 
 	public java.util.Set<String> getCommands() {
@@ -68,4 +75,8 @@ public class ConsoleController {
 
 abstract class Command {
 	abstract void execute(String[] parameters);
+}
+
+abstract class DisplayCommand extends Command {
+	
 }
