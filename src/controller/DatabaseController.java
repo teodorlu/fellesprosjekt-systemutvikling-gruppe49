@@ -4,6 +4,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import model.Person;
+import model.User;
+
 public class DatabaseController {
 	
 	private void connect() throws InstantiationException, IllegalAccessException{
@@ -20,8 +23,7 @@ public class DatabaseController {
 	} catch (SQLException ex) {
 		System.out.println("Tilkobling feilet: " + ex.getMessage());
 	} catch (ClassNotFoundException ex) {
-		System.out
-				.println("Feilet under driverlasting: " + ex.getMessage());
+		System.out.println("Feilet under driverlasting: " + ex.getMessage());
 		System.out.println(ex);
 	} finally {
 		try {
@@ -31,6 +33,21 @@ public class DatabaseController {
 			System.out.println("Epic fail: " + ex.getMessage());
 		}
 	}
+	}
+	
+	public void Save(Person user) {
+		// TODO complete
+	}
+	
+	public boolean authenticated(User user){
+		// TODO check username and password in database
+		return true;
+	}
+
+	public Person retrieve(User user) {
+		// TODO generate Person object from database corresponding to user.username
+		// This includes the Person's appointments: person.personalCalendar.appointments
+		return null;
 	}
 }
 

@@ -7,6 +7,8 @@ import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 
+import model.Person;
+
 import application.Application;
 import application.ApplicationComponent;
 
@@ -15,6 +17,7 @@ public class ConsoleController extends ApplicationComponent {
 	private final InputStream input;
 	private final BufferedReader reader;
 	private final Map<String, Command> commands;
+	private final CommandExecuter executer;
 	
 	public ConsoleController(Application app, InputStream input){
 		super(app);
@@ -23,11 +26,12 @@ public class ConsoleController extends ApplicationComponent {
 		InputStreamReader isr = new InputStreamReader(input);
 		reader = new BufferedReader(isr);
 		commands = new HashMap<String, Command>();
+		executer = new CommandExecuter(this.getApplication()); 
 		registerCommands();
 	}
 	
 	public boolean parseNext(){
-		boolean executed = true;
+		boolean executedCommand = true;
 		
 		try {
 			String[] command = reader.readLine().split(" ");
@@ -36,7 +40,7 @@ public class ConsoleController extends ApplicationComponent {
 			if (commands.containsKey(keyword))
 				commands.get(keyword).execute(command);
 			else
-				executed = false;
+				executedCommand = false;
 			
 			
 		} catch (IOException e) {
@@ -44,19 +48,19 @@ public class ConsoleController extends ApplicationComponent {
 			e.printStackTrace();
 		}
 		
-		return executed;
+		return executedCommand;
 	}
 	
 	private void registerCommands() {
 		commands.put("register", new Command() {
 			void execute(String[] arguments) {
-				CommandExecuter.register(arguments);
+				executer.register(arguments);
 			}
 		});
 		
 		commands.put("users", new Command() {
 			void execute(String[] arguments){
-//				CommandExecuter.
+				// TODO: executer.users()
 			}
 		});
 		
@@ -75,8 +79,4 @@ public class ConsoleController extends ApplicationComponent {
 
 abstract class Command {
 	abstract void execute(String[] parameters);
-}
-
-abstract class DisplayCommand extends Command {
-	
 }

@@ -1,8 +1,7 @@
 package model;
 
-public class Person {
+public class Person extends User {
 	
-	private String username, password;
 	private String firstName, lastName;
 	
 	private boolean isOnline;
@@ -11,26 +10,33 @@ public class Person {
 	public Person(	String username,
 					String password,
 					String firstName,
-					String lastName){
+					String lastName) {
 		
-		String[] args = {username, password, firstName, lastName};
+		super(username, password);
+		
+		String[] args = {firstName, lastName};
 		for (String s : args)
 			if (s.isEmpty())
 				throw new IllegalArgumentException();
-		
-		this.username = username.toLowerCase();
-		this.password = password;
 		
 		this.firstName = Character.toUpperCase(firstName.charAt(0)) + firstName.substring(1);
 		this.lastName = Character.toUpperCase(lastName.charAt(0)) + lastName.substring(1);
 	}
 	
-	public String toString() {
-		String desc = username + ": " + lastName + ", " + firstName;
-		return desc;
+	public Person(	String username,
+			String password,
+			String firstName,
+			String lastName,
+			boolean isOnline,
+			UserCalendar calendar) {
+		this(username, password, firstName, lastName);
+		
+		this.isOnline = isOnline;
+		this.personalCalendar = calendar;
 	}
 	
-	public boolean equals(Person other) {
-		return this.username.equals(other.username);
+	public String toString() {
+		String desc = super.toString() + ", name: " + lastName + ", " + firstName;
+		return desc;
 	}
 }
