@@ -30,8 +30,7 @@ public class DBTest {
 		} catch (SQLException ex) {
 			System.out.println("Tilkobling feilet: " + ex.getMessage());
 		} catch (ClassNotFoundException ex) {
-			System.out
-					.println("Feilet under driverlasting: " + ex.getMessage());
+			System.out.println("Feilet under driverlasting: " + ex.getMessage());
 			System.out.println(ex);
 		} finally {
 			try {
