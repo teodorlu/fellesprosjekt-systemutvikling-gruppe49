@@ -11,9 +11,13 @@ import model.User;
 
 public class DatabaseController {
 	
-	private static Connection con;
+	private Connection con;
 	
-	private static void connect() throws InstantiationException, IllegalAccessException {
+	public DatabaseController(){
+		
+	}
+	
+	private void connect() throws InstantiationException, IllegalAccessException {
 		con = null;
 		try {
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
@@ -34,7 +38,7 @@ public class DatabaseController {
 		}
 	}
 	
-	private static void disconnect() {
+	private void disconnect() {
 		try {
 			if (con != null)
 				con.close();
@@ -43,18 +47,17 @@ public class DatabaseController {
 		}
 	}
 	
-	public static void Save(Person user) {
+	public void Save(Person user) {
 		String username = "'"+user.getUsername()+"'";
 		String pw = "'"+user.getPassword()+"'";
 		String fname = "'"+user.getFirstName()+"'";
 		String lname = "'"+user.getLastName()+"'";
-		
+		String sql = "INSERT INTO ANSATT VALUES ( "
+					+ username + ", " + pw + ", " + fname + ", "+ lname + ", NULL, 0)";
 		try {
 			connect();
 			Statement st = con.createStatement();
-			int res = -1;
-			res = st.executeUpdate("INSERT INTO ANSATT VALUES ( "
-					+ username + ", " + pw + ", " + fname + ", "+ lname + ", NULL, 0)" );;
+			int res = st.executeUpdate(sql);
 		} catch (InstantiationException e) {
 			e.printStackTrace();
 		} catch (IllegalAccessException e) {
@@ -65,7 +68,7 @@ public class DatabaseController {
 		disconnect();
 	}
 	
-	public static boolean authenticated(User user){
+	public boolean authenticated(User user){
 		String username = user.getUsername();
 		String pw = user.getPassword();
 		String sql = "SELECT BrukerNavn, Passord FROM ANSATT WHERE BrukerNavn='"+username+"'";
@@ -120,9 +123,28 @@ public class DatabaseController {
 		return null;
 	}
 	
+	public void updateLoginStatus(User user, boolean online){
+		String username = user.getUsername();
+		String sql = "UPDATE ANSATT SET IsLoggedOn="+online+" WHERE BrukerNavn='"+username+"'";
+		try {
+			connect();
+			Statement st = con.createStatement();
+			st.executeUpdate(sql);
+			
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		disconnect();
+	}
+	
 	public static void main(String[] args) {
 		Person person = new Person("MAGRODAHL", "mamma", "Magnus", "Rodahl");
-		if (authenticated(person)){
+		DatabaseController dbc = new DatabaseController();
+		if (dbc.authenticated(person)){
 			System.out.println("logget inn");
 		}
 				
