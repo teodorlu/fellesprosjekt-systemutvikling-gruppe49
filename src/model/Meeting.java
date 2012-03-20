@@ -9,7 +9,7 @@ public class Meeting extends Appointment {
 	//Autogenerert fordi jeg var lat og ikke liker røde x'er, 
 	private Date startTime;
 	private Time appLength;
-	private String title; // Står det at vi skal ha med title? Er ikke det en del av description?
+	private String title;
 	private String description;
 	private String place; // denne er vel null på meeting? 
 	private ArrayList<Person> participants;
@@ -67,7 +67,7 @@ public class Meeting extends Appointment {
 		return this.startTime;
 	}
 	
-	public Time getTime(){
+	public Time getAppLength(){
 		return this.appLength;
 	}
 	
