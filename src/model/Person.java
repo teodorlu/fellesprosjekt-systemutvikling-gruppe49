@@ -46,6 +46,16 @@ public class Person extends User {
 		return firstName;
 	}
 	
+	
+	
+	public String getEmail() {
+		return email;
+	}
+
+	public UserCalendar getPersonalCalendar() {
+		return personalCalendar;
+	}
+
 	public String getLastName(){
 		return lastName;
 	}
