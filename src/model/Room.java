@@ -22,9 +22,9 @@ public class Room {
 		
 	}
 	
-	/* Metodene vil vel måtte forandres en del på når vi finner ut hvordan 
-	 * vi skal gjøre det med input/output! Om de i det hele tatt skal være
-	 * med eller om det heller skal gjøres i SQL.
+//	* Metodene vil vel måtte forandres en del på når vi finner ut hvordan 
+//	 * vi skal gjøre det med input/output! Om de i det hele tatt skal være
+//	 * med eller om det heller skal gjøres i SQL.
 	 
 	
 	public boolean isRoomFree(){
@@ -49,6 +49,6 @@ public class Room {
 		this.capacity = capacity;
 	}
 	
-	*/
+
 	
 }
