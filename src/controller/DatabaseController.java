@@ -3,15 +3,16 @@ package controller;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import model.Person;
 import model.User;
 
 public class DatabaseController {
 	
-	private Connection con;
+	private static Connection con;
 	
-	private void connect() throws InstantiationException, IllegalAccessException {
+	private static void connect() throws InstantiationException, IllegalAccessException {
 		con = null;
 		try {
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
@@ -19,6 +20,9 @@ public class DatabaseController {
 			String user = "magnurod_fellesp";
 			String pw = "stabak";
 			con = DriverManager.getConnection(url, user, pw);
+			
+			if (con != null)
+				System.out.println("nice");
 
 		} catch (SQLException ex) {
 			System.out.println("Tilkobling feilet: " + ex.getMessage());
@@ -29,7 +33,7 @@ public class DatabaseController {
 		}
 	}
 	
-	private void disconnect() {
+	private static void disconnect() {
 		try {
 			if (con != null)
 				con.close();
@@ -38,8 +42,28 @@ public class DatabaseController {
 		}
 	}
 	
-	public void Save(Person user) {
-		// TODO complete
+	public static void Save(Person user) {
+		String username = "'"+user.getUsername()+"'";
+		String pw = "'"+user.getPassword()+"'";
+		String fname = "'"+user.getFirstName()+"'";
+		String lname = "'"+user.getLastName()+"'";
+		
+		try {
+			connect();
+			Statement st = con.createStatement();
+			int res = -1;
+			res = st.executeUpdate("INSERT INTO ANSATT VALUES ( "
+					+ username + ", " + pw + ", " + fname + ", "+ lname + ", NULL, 0)" );
+			if (res != -1)
+				System.out.println("wee");
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		disconnect();
 	}
 	
 	public boolean authenticated(User user){
@@ -52,6 +76,12 @@ public class DatabaseController {
 		// This includes the Person's appointments: person.personalCalendar.appointments
 		return null;
 	}
+	
+//	public static void main(String[] args) {
+//		Person person = new Person("testEn", "pappa", "mag", "test");
+//		Save(person);
+//				
+//	}
 }
 
 
