@@ -99,6 +99,24 @@ public class DatabaseController {
 	public Person retrieve(User user) {
 		// TODO generate Person object from database corresponding to user.username
 		// This includes the Person's appointments: person.personalCalendar.appointments
+		String username = user.getUsername();
+		String sql = "SELECT * FROM AVTALE WHERE AvtaleEier='"+username+"'";
+		try {
+			connect();
+			Statement st = con.createStatement();
+			ResultSet rs = st.executeQuery(sql);
+			
+			while(rs.next()){
+				//TODO hente ut fra rs og legge inn i et avtaleobjekt
+			}
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		disconnect();
 		return null;
 	}
 	
