@@ -36,6 +36,12 @@ public class Time {
 		//Kan trengs å formateres, noe jeg er elendig til, Dz
 	}
 	
+	public static boolean checkStartEndTimes(Time startTime, Time endTime){
+		if(startTime.Hours < endTime.Hours) return true;
+		else if(startTime.Minutes < endTime.Minutes) return true;
+		else return false;
+	}
+	
 	public static void main(String[] args) {
 		 Time a = new Time(3,86);
 		 a.newTime(5, 67);
