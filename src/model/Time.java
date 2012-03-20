@@ -30,6 +30,13 @@ public class Time {
 		add(Hours,Minutes);
 	}
 	
+	public int returnHours(){
+		return this.Hours;
+	}
+	
+	public int returnMinutes(){
+		return this.Minutes;
+	}
 	
 	public String toString(){
 		return (this.Hours+":"+this.Minutes);
@@ -40,6 +47,13 @@ public class Time {
 		if(startTime.Hours < endTime.Hours) return true;
 		else if(startTime.Minutes < endTime.Minutes) return true;
 		else return false;
+	}
+	
+	public static Time returnEndTime(Time startTime, Time duration){
+		Time endTime = new Time(0,0);
+		endTime.add(startTime.returnHours(), startTime.returnMinutes());
+		endTime.add(duration.returnHours(), duration.returnMinutes());
+		return endTime;
 	}
 	
 	public static void main(String[] args) {
