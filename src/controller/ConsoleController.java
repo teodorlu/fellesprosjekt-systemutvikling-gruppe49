@@ -42,10 +42,7 @@ public class ConsoleController extends ApplicationComponent {
 				commands.get(keyword).execute(command);
 			else
 				executedCommand = false;
-			
-			
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -61,20 +58,13 @@ public class ConsoleController extends ApplicationComponent {
 		
 		commands.put("users", new Command() {
 			void execute(String[] arguments){
-				// TODO: executer.users()
+				// TODO write executer.users();
 			}
 		});
 		
 		commands.put("login", new Command() {
 			void execute(String[] arguments) {
-//				User user = executer.login(arguments);
-//				if (getApplication().getDatabaseController().authenticated(user)){
-//					Person current = getApplication().getDatabaseController().retrieve(user);
-//					getApplication().setCurrentUser(current);
-//					getApplication().getDatabaseController().
-//				}
-				
-				
+				executer.login(arguments);
 			}
 		});
 	}

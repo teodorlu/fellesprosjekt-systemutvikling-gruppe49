@@ -12,7 +12,7 @@ import controller.*;
 
 public class Application {
 	
-	private Person currentlyLoggedInUser;
+	private Person currentlyLoggedInUser = null;
 	private Set<Person> otherCalendarOwners;
 	
 	private ConsoleController consoleController;
@@ -22,7 +22,7 @@ public class Application {
 	
 	
 	
-	public Person currentlyLoggedInUser() {
+	public Person getCurrentlyLoggedInUser() {
 		return currentlyLoggedInUser;
 	}
 
@@ -80,9 +80,9 @@ public class Application {
 		boolean isValid = getDatabaseController().authenticated(user);
 		
 		if (isValid) {
-			Person currentlyLoggedInUser = getDatabaseController().retrieve(user);
-			this.setCurrentUser(currentlyLoggedInUser);
-			this.getConsoleView().showSucessfulLoginMessage(currentlyLoggedInUser);
+			Person currentlyLoggedInPerson = getDatabaseController().retrieve(user);
+			this.setCurrentUser(currentlyLoggedInPerson);
+			this.getConsoleView().showSucessfulLoginMessage(currentlyLoggedInPerson);
 		}
 		else {
 			this.getConsoleView().showFailedLoginMessage(user);
