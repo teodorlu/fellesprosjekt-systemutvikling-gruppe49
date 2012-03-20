@@ -18,11 +18,12 @@ public class Meeting extends Appointment {
 	
 	
 	
-	public Meeting(Date startTime, Time appLength, String title,
+	public Meeting(Date date, Time startTime, Time appLength, String title,
 			String description, String place, ArrayList<Person> participants, Room room) {
-		super(startTime, appLength, title, description, place);
+		super(date, startTime, appLength, title, description, place);
 		this.participants = participants;
 		changeRoom(room);
+		this.participants = participants;
 		// TODO Auto-generated constructor stub
 	}
 	
