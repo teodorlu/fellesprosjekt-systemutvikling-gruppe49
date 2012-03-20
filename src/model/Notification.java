@@ -15,10 +15,15 @@ public class Notification {
 	private enum type {Nytt, Oppdatert, Slettet};
 	private enum reply {Ja, Nei, Ubesvart};
 	private Appointment sender;
-	private Person reciever;	
-	private String Text;
+	private ArrayList<Person> receivers;	
+	private String text;
 	
-	public Notification(){
+	public Notification(String text, Appointment sender, ArrayList<Person> receivers) {
+		this.text = text;
+		this.type = type;
+		this.reply = reply;
+		this.sender = sender;
+		this.receivers = receivers;
 
 	}
 	
