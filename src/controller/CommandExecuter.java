@@ -120,6 +120,7 @@ public class CommandExecuter extends ApplicationComponent {
 			
 			System.out.println("Tittel: "+title+" Date: "+ date.toString()+" Start: "+ startTime.toString()+" End: "+ appLength.toString()+" Desc: "+ desc+" Place: "+ place);
 			Appointment a = new Appointment(date, startTime, appLength, title, desc, place);
+			this.getApplication().get
 			//------------------------------------
 		}
 		else System.out.println("Har ikke med alle parameterne til appointment");
@@ -128,8 +129,12 @@ public class CommandExecuter extends ApplicationComponent {
 	
 	private String getProperty(String[] array, int index){
 		
+		
+		if(index >= array.length){
+			
+			throw new IllegalArgumentException();
+		}
 		String word = array[index];
-		if(index >= array.length) throw new IllegalArgumentException();
 		if(word.charAt(0)=='-'){
 			throw new IllegalArgumentException();
 		}
