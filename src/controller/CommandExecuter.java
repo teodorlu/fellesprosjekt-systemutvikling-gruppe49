@@ -43,9 +43,8 @@ public class CommandExecuter extends ApplicationComponent {
 						int lnIndex = input.indexOf("-ln");
 						lastName = getProperty(array, lnIndex+1);
 						Person u = new Person(username, password, firstName, lastName);
-						this.getApplication().setCurrentUser(u);
 						
-						// System.out.println(username +" "+ password+" "+ firstName+" "+" "+lastName);
+						
 					}
 					else System.out.println("Feil input: Etternavn"); //Feilmelding istedenfor
 				}
