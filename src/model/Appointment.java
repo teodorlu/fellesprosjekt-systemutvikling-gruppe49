@@ -1,6 +1,6 @@
 package model;
 
-import java.sql.Time;
+import model.Time;
 import java.util.Date;
 
 /* TO-DO 
@@ -10,19 +10,21 @@ import java.util.Date;
  */
 public class Appointment implements Comparable<Appointment> {
 
-	private Date startTime;
-	private Time appLength;
+	private Date date;
+	private Time appLength, startTime, endTime;
 
 	private String description, place, title;
 
-	public Appointment(Date startTime, Time appLength, String title,
+	public Appointment(Date date, Time startTime, Time appLength, String title,
 			String description, String place) {
 
+		this.date = date;
 		this.startTime = startTime;
 		this.appLength = appLength;
 		this.description = description;
 		this.place = place;
 		this.title = title;
+		this.endTime = Time.returnEndTime(this.startTime, this.appLength);
 
 	}
 
@@ -38,7 +40,7 @@ public class Appointment implements Comparable<Appointment> {
 
 	@Override
 	public int compareTo(Appointment other) {
-		return this.startTime.compareTo(other.startTime);
+		return this.date.compareTo(other.date);
 	}
 
 }
