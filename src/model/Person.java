@@ -39,4 +39,12 @@ public class Person extends User {
 		String desc = super.toString() + ", name: " + lastName + ", " + firstName;
 		return desc;
 	}
+	
+	public String getFirstName(){
+		return firstName;
+	}
+	
+	public String getLastName(){
+		return lastName;
+	}
 }
