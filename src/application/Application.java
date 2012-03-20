@@ -61,6 +61,7 @@ public class Application {
 		
 		consoleController = new ConsoleController(this, input);
 		consoleView = new ConsoleView(this, output);
+		databaseController = new DatabaseController(this);
 		
 		run();
 	}
