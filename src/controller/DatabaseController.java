@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Collection;
 
 import model.Person;
 import model.User;
@@ -58,8 +59,9 @@ public class DatabaseController {
 		String pw = "'"+user.getPassword()+"'";
 		String fname = "'"+user.getFirstName()+"'";
 		String lname = "'"+user.getLastName()+"'";
+		String email = incapsulate(user.getEmail());
 		String sql = "INSERT INTO ANSATT VALUES ( "
-					+ username + ", " + pw + ", " + fname + ", "+ lname + ", NULL, 0)";
+					+ username + ", " + pw + ", " + fname + ", "+ lname + ", "+ email +", 0)";
 		try {
 			connect();
 			Statement st = con.createStatement();
@@ -152,6 +154,15 @@ public class DatabaseController {
 		return false;
 	}
 	
+	
+	private String incapsulate(String input){
+		return "'" + input + "'";
+	}
+	
+	private String sqlInsert(String tabellnavn, Collection<String> properties){
+		// TODO: write
+		return null;
+	}
 }
 
 

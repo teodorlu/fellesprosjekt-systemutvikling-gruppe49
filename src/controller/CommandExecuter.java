@@ -24,7 +24,7 @@ public class CommandExecuter extends ApplicationComponent {
 	public void register(String[] array){
 		
 		List<String> input = Arrays.asList(array);
-		String username, password, firstName, lastName;
+		String username, password, firstName, lastName, _email;
 		
 		if(input.contains("-u")){
 			int uIndex = input.indexOf("-u");
@@ -42,7 +42,12 @@ public class CommandExecuter extends ApplicationComponent {
 					if(input.contains("-ln")){
 						int lnIndex = input.indexOf("-ln");
 						lastName = getProperty(array, lnIndex+1);
-						Person u = new Person(username, password, firstName, lastName);
+						if(input.contains("-email")){
+							int emailIndex = input.indexOf("-email");
+							_email = getProperty(array, emailIndex +1);
+							Person u = new Person(username, password, firstName, lastName, _email);
+						}
+						else System.out.println("Feil input: Email");
 						
 						
 					}
@@ -119,6 +124,7 @@ public class CommandExecuter extends ApplicationComponent {
 			
 			System.out.println("Tittel: "+title+" Date: "+ date.toString()+" Start: "+ startTime.toString()+" End: "+ appLength.toString()+" Desc: "+ desc+" Place: "+ place);
 			Appointment a = new Appointment(date, startTime, appLength, title, desc, place);
+			this.getApplication().getCurrentlyLoggedInUser().getPersonalCalendar().addAppointment(a);
 			//------------------------------------
 		}
 		else System.out.println("Har ikke med alle parameterne til appointment");
@@ -127,8 +133,12 @@ public class CommandExecuter extends ApplicationComponent {
 	
 	private String getProperty(String[] array, int index){
 		
+		
+		if(index >= array.length){
+			
+			throw new IllegalArgumentException();
+		}
 		String word = array[index];
-		if(index >= array.length) throw new IllegalArgumentException();
 		if(word.charAt(0)=='-'){
 			throw new IllegalArgumentException();
 		}
