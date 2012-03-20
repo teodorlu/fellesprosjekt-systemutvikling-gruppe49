@@ -2,7 +2,7 @@ package model;
 
 public class Person extends User {
 	
-	private String firstName, lastName;
+	private String firstName, lastName, email;
 	
 	private boolean isOnline;
 	private UserCalendar personalCalendar;
@@ -10,7 +10,8 @@ public class Person extends User {
 	public Person(	String username,
 					String password,
 					String firstName,
-					String lastName) {
+					String lastName,
+					String email) {
 		
 		super(username, password);
 		
@@ -27,9 +28,10 @@ public class Person extends User {
 			String password,
 			String firstName,
 			String lastName,
+			String email,
 			boolean isOnline,
 			UserCalendar calendar) {
-		this(username, password, firstName, lastName);
+		this(username, password, firstName, lastName, email);
 		
 		this.isOnline = isOnline;
 		this.personalCalendar = calendar;
