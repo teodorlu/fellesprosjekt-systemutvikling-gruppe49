@@ -26,6 +26,7 @@ public class CommandExecuter extends ApplicationComponent {
 		
 		if(input.contains("-u")){
 			int uIndex = input.indexOf("-u");
+			
 			username = getProperty(array, uIndex+1);
 			
 			if(input.contains("-p")){
@@ -44,7 +45,7 @@ public class CommandExecuter extends ApplicationComponent {
 						
 						// System.out.println(username +" "+ password+" "+ firstName+" "+" "+lastName);
 					}
-					else System.out.println("Feil input: Etternavn");
+					else System.out.println("Feil input: Etternavn"); //Feilmelding istedenfor
 				}
 				else System.out.println("Feil input: Fornavn");
 			}
@@ -63,6 +64,7 @@ public class CommandExecuter extends ApplicationComponent {
 			pIndex  =input.indexOf("-p");
 			username = getProperty(array, uIndex+1);
 			password = getProperty(array, pIndex+1);
+			System.out.println("User: "+username + " Password: "+password);
 			
 			User user = new User(username, password);
 			this.getApplication().tryLogIn(user);
@@ -73,8 +75,9 @@ public class CommandExecuter extends ApplicationComponent {
 		List<String> input = Arrays.asList(array);
 		String title, desc = "", place = "", sStart, sEnd;
 		Date date;
-		
-		int titleIndex, dateIndex, startIndex, endIndex, descIndex, placeIndex;
+		Time startTime = new Time(0,0);
+		Time endTime = new Time(0,0);
+		int titleIndex, dateIndex, startIndex, endIndex, descIndex, placeIndex, colonIndex, length;
 				
 		if(input.contains("-title") && input.contains("-date") && input.contains("-s")
 				&& input.contains("-e")){
@@ -90,6 +93,14 @@ public class CommandExecuter extends ApplicationComponent {
 			
 			endIndex = input.indexOf("-e");
 			sEnd = getProperty(array, endIndex+1); //Må lage egen metode for Tid/Dato?
+			
+			startTime = getTimeProperty(sStart);
+			endTime = getTimeProperty(sEnd);
+
+			if(!Time.checkStartEndTimes(startTime, endTime)){
+				System.out.println("Idiot, det slutter før det begynner!");
+			}
+			
 			//Muligens en funksjon som sjekker at endtime kommer etter starttime
 			if(input.contains("-desc")){
 				descIndex = input.indexOf("-desc");
@@ -102,7 +113,7 @@ public class CommandExecuter extends ApplicationComponent {
 			}
 			
 			//ToDo må lage en appointment gjennom konstruktøren! (Husk dato og tid lenger oppe)
-			System.out.println("Tittel: "+title+" Date: "+ date.toString()+" Start: "+ sStart+" End: "+ sEnd+" Desc: "+ desc+" Place: "+ place);
+			System.out.println("Tittel: "+title+" Date: "+ date.toString()+" Start: "+ startTime.toString()+" End: "+ endTime.toString()+" Desc: "+ desc+" Place: "+ place);
 			//------------------------------------
 		}
 		else System.out.println("Har ikke med alle parameterne til appointment");
@@ -112,13 +123,33 @@ public class CommandExecuter extends ApplicationComponent {
 	private String getProperty(String[] array, int index){
 		
 		String word = array[index];
+		if(index >= array.length) throw new IllegalArgumentException();
 		if(word.charAt(0)=='-'){
 			throw new IllegalArgumentException();
 		}
 		return word;		
 	}
 	
-	private Date stringToDate(String[] array, int index) throws ParseException{
+	private static Time getTimeProperty(String s){
+		int length;
+		Time time = null;
+		if(s.contains(":")){
+			length = s.length();
+			if(length == 5){
+				time = new Time((Integer.parseInt(s.substring(0, 2))), Integer.parseInt(s.substring(3, 5)));
+			}
+			
+			if(length == 4){
+				time = new Time((Integer.parseInt(s.substring(0, 1))), Integer.parseInt(s.substring(2, 4)));
+			}
+			
+		}
+		else throw new IllegalArgumentException();
+		
+		return time;
+	}
+	
+	private static Date stringToDate(String[] array, int index) throws ParseException{
 		String _date = array[index];
 		DateFormat df = new SimpleDateFormat("YYYY-MM-DD");
 		Date date = df.parse(_date);
@@ -127,14 +158,14 @@ public class CommandExecuter extends ApplicationComponent {
 	
 
 	
-	private void checkStartAndEndTime(){
+	private static void checkStartAndEndTime(){
 		//Check if starttime is less than Endtime. 
 	}
 	
 	public static void main(String args[]) throws ParseException{
 		String[] registertest = {"register", "-u", "dzenan", "-p", "mittpassord", "-fn", "firstName", "-ln", "lastName"};
 		String[] logintest = {"login", "-u", "Brukernavnet", "-p", "passordet"};
-		String[] appointmentTest = {"-title", "HumbugAvtale", "-date", "2012-12-04", "-s", "14:30:00", "-e", "15:30:00", 
+		String[] appointmentTest = {"-title", "HumbugAvtale", "-date", "2012-12-04", "-s", "14:30", "-e", "15:30", 
 										"-desc", "Heisann tullemøte", "-place", "Fjellet"};
 		
 		CommandExecuter ce = new CommandExecuter(null);
