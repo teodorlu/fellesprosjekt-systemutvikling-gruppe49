@@ -46,6 +46,10 @@ public class CommandExecuter extends ApplicationComponent {
 							int emailIndex = input.indexOf("-email");
 							_email = getProperty(array, emailIndex +1);
 							Person u = new Person(username, password, firstName, lastName, _email);
+														
+							System.out.println(_email);
+							
+							this.getApplication().getDatabaseController().Save(u);
 						}
 						else System.out.println("Feil input: Email");
 						

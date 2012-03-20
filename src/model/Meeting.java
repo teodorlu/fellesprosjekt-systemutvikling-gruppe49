@@ -1,14 +1,14 @@
 package model;
 
-import java.sql.Time;
+import model.Time;
 import java.util.ArrayList;
 import java.util.Date;
 
 public class Meeting extends Appointment {
 	
 	//Autogenerert fordi jeg var lat og ikke liker røde x'er, 
-	private Date startTime;
-	private Time appLength;
+	private Date date;
+	private Time appLength, startTime;
 	private String title;
 	private String description;
 	private String place; // denne er vel null på meeting? 
@@ -18,11 +18,12 @@ public class Meeting extends Appointment {
 	
 	
 	
-	public Meeting(Date startTime, Time appLength, String title,
+	public Meeting(Date date, Time startTime, Time appLength, String title,
 			String description, String place, ArrayList<Person> participants, Room room) {
-		super(startTime, appLength, title, description, place);
+		super(date, startTime, appLength, title, description, place);
 		this.participants = participants;
 		changeRoom(room);
+		this.participants = participants;
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -60,11 +61,11 @@ public class Meeting extends Appointment {
 	}
 	
 	public void changeDate(Date newDate){
-		this.startTime = newDate;
+		this.date = newDate;
 	}
 	
 	public Date getDate(){
-		return this.startTime;
+		return this.date;
 	}
 	
 	public Time getAppLength(){
