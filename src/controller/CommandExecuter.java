@@ -167,6 +167,20 @@ public class CommandExecuter extends ApplicationComponent {
 		//Check if starttime is less than Endtime. 
 	}
 	
+	public void delete(String[] array){
+		String ID = "";
+		List<String> input = Arrays.asList(array);
+		int deleteIndex = input.indexOf("delete");
+		ID = getProperty(array, deleteIndex+1);
+		if (DatabaseController.deleteID(ID))
+				System.out.println("The appointment has been deleted");
+			else{
+				System.out.println("This is not a valid appointment ID");
+				System.out.println("Mulige avtaler"); //hvordan finner jeg mulige avtaler?
+			}
+		
+	}
+	
 	public static void main(String args[]) throws ParseException{
 		String[] registertest = {"register", "-u", "dzenan", "-p", "mittpassord", "-fn", "firstName", "-ln", "lastName"};
 		String[] logintest = {"login", "-u", "Brukernavnet", "-p", "passordet"};

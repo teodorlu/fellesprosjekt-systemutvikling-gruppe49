@@ -152,6 +152,11 @@ public class DatabaseController {
 		return false;
 	}
 	
+	public static Boolean deleteID(String ID){
+		return true;
+		//må fikse at den sjekker ID opp mot database
+	}
+	
 }
 
 
