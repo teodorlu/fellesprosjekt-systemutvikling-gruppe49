@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import model.Person;
+import model.User;
 
 import application.Application;
 import application.ApplicationComponent;
@@ -66,6 +67,13 @@ public class ConsoleController extends ApplicationComponent {
 		
 		commands.put("login", new Command() {
 			void execute(String[] arguments) {
+//				User user = executer.login(arguments);
+//				if (getApplication().getDatabaseController().authenticated(user)){
+//					Person current = getApplication().getDatabaseController().retrieve(user);
+//					getApplication().setCurrentUser(current);
+//					getApplication().getDatabaseController().
+//				}
+				
 				
 			}
 		});
