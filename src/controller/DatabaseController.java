@@ -166,6 +166,11 @@ public class DatabaseController extends ApplicationComponent {
 		// TODO: write
 		return null;
 	}
+	
+	public static Boolean deleteID(String ID){
+		// TODO write
+		return true;
+	}
 }
 
 
