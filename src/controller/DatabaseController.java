@@ -17,7 +17,7 @@ public class DatabaseController {
 		
 	}
 	
-	private void connect() throws InstantiationException, IllegalAccessException {
+	private void connect() {
 		con = null;
 		try {
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
@@ -35,6 +35,12 @@ public class DatabaseController {
 			System.out
 					.println("Feilet under driverlasting: " + ex.getMessage());
 			System.out.println(ex);
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	
@@ -58,10 +64,6 @@ public class DatabaseController {
 			connect();
 			Statement st = con.createStatement();
 			int res = st.executeUpdate(sql);
-		} catch (InstantiationException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -87,10 +89,6 @@ public class DatabaseController {
 				return true;
 			}
 			
-		} catch (InstantiationException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -112,10 +110,6 @@ public class DatabaseController {
 			while(rs.next()){
 				//TODO hente ut fra rs og legge inn i et avtaleobjekt
 			}
-		} catch (InstantiationException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -123,32 +117,41 @@ public class DatabaseController {
 		return null;
 	}
 	
-	public void updateLoginStatus(User user, boolean online){
+	public void updateLoginStatus(User user, boolean isOnline){
 		String username = user.getUsername();
-		String sql = "UPDATE ANSATT SET IsLoggedOn="+online+" WHERE BrukerNavn='"+username+"'";
+		String sql = "UPDATE ANSATT SET IsLoggedOn="+isOnline+" WHERE BrukerNavn='"+username+"'";
 		try {
 			connect();
 			Statement st = con.createStatement();
 			st.executeUpdate(sql);
 			
-		} catch (InstantiationException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		disconnect();
 	}
 	
-	public static void main(String[] args) {
-		Person person = new Person("MAGRODAHL", "mamma", "Magnus", "Rodahl");
-		DatabaseController dbc = new DatabaseController();
-		if (dbc.authenticated(person)){
-			System.out.println("logget inn");
+	public boolean getOnlineStatus(String username){
+		boolean isOnline;
+		String sql = "SELECT IsLoggedOn FROM ANSATT WHERE BrukerNavn='"+username+"'";
+		try {
+			connect();
+			Statement st = con.createStatement();
+			ResultSet rs = st.executeQuery(sql);
+			while(rs.next()){
+				isOnline = rs.getBoolean(1);
+				disconnect();
+				return isOnline;
+			}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-				
+		disconnect();
+		return false;
 	}
+	
 }
 
 
