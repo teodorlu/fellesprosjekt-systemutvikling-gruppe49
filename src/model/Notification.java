@@ -12,13 +12,15 @@ import java.util.ArrayList;
 
 public class Notification {
 	
-	private enum type {Nytt, Oppdatert, Slettet};
-	private enum reply {Ja, Nei, Ubesvart};
+	private enum eType{Nytt, Oppdatert, Slettet};
+	private enum eReply {Ja, Nei, Ubesvart};
+	eType type;
+	eReply reply;
 	private Appointment sender;
 	private ArrayList<Person> receivers;	
 	private String text;
 	
-	public Notification(String text, Appointment sender, ArrayList<Person> receivers) {
+	public Notification(String text, eType type, eReply reply, Appointment sender, ArrayList<Person> receivers) {
 		this.text = text;
 		this.type = type;
 		this.reply = reply;
