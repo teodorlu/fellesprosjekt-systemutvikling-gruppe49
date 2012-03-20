@@ -7,15 +7,18 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Collection;
 
+import application.Application;
+import application.ApplicationComponent;
+
 import model.Person;
 import model.User;
 
-public class DatabaseController {
+public class DatabaseController extends ApplicationComponent {
 	
 	private Connection con;
 	
-	public DatabaseController(){
-		
+	public DatabaseController(Application app){
+		super(app);
 	}
 	
 	private void connect() {

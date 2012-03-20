@@ -22,6 +22,7 @@ public class Person extends User {
 		
 		this.firstName = Character.toUpperCase(firstName.charAt(0)) + firstName.substring(1);
 		this.lastName = Character.toUpperCase(lastName.charAt(0)) + lastName.substring(1);
+		this.email = email;
 	}
 	
 	public Person(	String username,
