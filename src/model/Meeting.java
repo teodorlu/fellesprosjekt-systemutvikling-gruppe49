@@ -1,13 +1,14 @@
 package model;
 
+import model.Time;
 import java.util.ArrayList;
 import java.util.Date;
 
 public class Meeting extends Appointment {
 	
 	//Autogenerert fordi jeg var lat og ikke liker røde x'er, 
-	private Date startTime;
-	private Time appLength;
+	private Date date;
+	private Time appLength, startTime;
 	private String title;
 	private String description;
 	private String place; // denne er vel null på meeting? 
@@ -60,11 +61,11 @@ public class Meeting extends Appointment {
 	}
 	
 	public void changeDate(Date newDate){
-		this.startTime = newDate;
+		this.date = newDate;
 	}
 	
 	public Date getDate(){
-		return this.startTime;
+		return this.date;
 	}
 	
 	public Time getAppLength(){

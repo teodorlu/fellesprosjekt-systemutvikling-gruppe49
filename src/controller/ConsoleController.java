@@ -50,6 +50,7 @@ public class ConsoleController extends ApplicationComponent {
 	}
 	
 	private void registerCommands() {
+		
 		commands.put("register", new Command() {
 			void execute(String[] arguments) {
 				executer.register(arguments);
