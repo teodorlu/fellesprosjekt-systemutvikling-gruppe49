@@ -10,6 +10,7 @@ import java.util.List;
 import model.Person;
 import model.User;
 import model.Time;
+import model.Appointment;
 
 import application.Application;
 import application.ApplicationComponent;
@@ -74,10 +75,10 @@ public class CommandExecuter extends ApplicationComponent {
 	
 	public void appointment(String[] array) throws ParseException{
 		List<String> input = Arrays.asList(array);
-		String title, desc = "", place = "", sStart, sEnd;
+		String title = "", desc = "", place = "", sStart, sEnd;
 		Date date;
 		Time startTime = new Time(0,0);
-		Time endTime = new Time(0,0);
+		Time appLength = new Time(0,0);
 		int titleIndex, dateIndex, startIndex, endIndex, descIndex, placeIndex, colonIndex, length;
 				
 		if(input.contains("-title") && input.contains("-date") && input.contains("-s")
@@ -87,22 +88,23 @@ public class CommandExecuter extends ApplicationComponent {
 			title = getProperty(array, titleIndex+1);
 			
 			dateIndex = input.indexOf("-date");
-			date = stringToDate(array, dateIndex+1); //Denne burde funke
+			date = stringToDate(array, dateIndex+1); 
 			
 			startIndex = input.indexOf("-s");
-			sStart = getProperty(array, startIndex+1); //Må lage egen metode for Tid/Dato?
+			sStart = getProperty(array, startIndex+1); 
 			
 			endIndex = input.indexOf("-e");
-			sEnd = getProperty(array, endIndex+1); //Må lage egen metode for Tid/Dato?
+			sEnd = getProperty(array, endIndex+1); 
 			
 			startTime = getTimeProperty(sStart);
-			endTime = getTimeProperty(sEnd);
+			appLength = getTimeProperty(sEnd);
 
-			if(!Time.checkStartEndTimes(startTime, endTime)){
+			//Muligens en funksjon som sjekker at endtime kommer etter starttime, gjør ikke noe annet enn å skrive ut ei linje foreløpig
+			if(!Time.checkStartEndTimes(startTime, appLength)){
 				System.out.println("Idiot, det slutter før det begynner!");
 			}
 			
-			//Muligens en funksjon som sjekker at endtime kommer etter starttime
+			
 			if(input.contains("-desc")){
 				descIndex = input.indexOf("-desc");
 				desc = getProperty(array, descIndex + 1);
@@ -114,7 +116,10 @@ public class CommandExecuter extends ApplicationComponent {
 			}
 			
 			//ToDo må lage en appointment gjennom konstruktøren! (Husk dato og tid lenger oppe)
-			System.out.println("Tittel: "+title+" Date: "+ date.toString()+" Start: "+ startTime.toString()+" End: "+ endTime.toString()+" Desc: "+ desc+" Place: "+ place);
+			
+			
+			System.out.println("Tittel: "+title+" Date: "+ date.toString()+" Start: "+ startTime.toString()+" End: "+ appLength.toString()+" Desc: "+ desc+" Place: "+ place);
+			Appointment a = new Appointment(date, startTime, appLength, title, desc, place);
 			//------------------------------------
 		}
 		else System.out.println("Har ikke med alle parameterne til appointment");
