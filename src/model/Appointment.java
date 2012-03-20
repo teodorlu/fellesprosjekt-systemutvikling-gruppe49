@@ -10,7 +10,7 @@ import java.util.Date;
  */
 public class Appointment implements Comparable<Appointment> {
 
-	private Date startTime, endTime;
+	private Date startTime;
 	private Time appLength;
 
 	private String description, place, title;
