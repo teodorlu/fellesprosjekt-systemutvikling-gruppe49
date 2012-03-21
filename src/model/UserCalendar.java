@@ -10,7 +10,7 @@ public class UserCalendar {
 	
 	public UserCalendar(Person owner){
 		this.owner = owner;	
-		appointments = new TreeSet<>();
+		appointments = new TreeSet<Appointment>();
 	}
 
 	
