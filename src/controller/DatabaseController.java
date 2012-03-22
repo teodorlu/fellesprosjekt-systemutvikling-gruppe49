@@ -227,7 +227,7 @@ public class DatabaseController extends ApplicationComponent {
 	
 	public boolean editAppointment(int ID, String kolonne, String updatedTo){
 		int rowsUpdated = -1;
-		String sql = "UPDATE AVTALE SET "+ kolonne + "=" + updatedTo + " WHERE AvtaleID="+ID;
+		String sql = "UPDATE AVTALE SET "+ kolonne + "=" + incapsulate(updatedTo) + " WHERE AvtaleID="+ID;
 		connect();
 		try {
 			Statement st = con.createStatement();
