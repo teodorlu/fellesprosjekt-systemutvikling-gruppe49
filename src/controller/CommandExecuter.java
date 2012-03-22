@@ -197,15 +197,24 @@ public class CommandExecuter extends ApplicationComponent {
 			uIndex = input.indexOf("user");
 			username = getProperty(array ,uIndex+1);
 			Person a;
-			a = DatabaseController.retriveUser(username);
+			a = this.getApplication().getDatabaseController().retriveUser(username);
 			System.out.println("Brukernavn: "+a.getUsername()+" Fornavn:"+a.getFirstName()+" Etternavn:"+a.getLastName()+" E-mail"+a.getEmail());
 			
 		}
 		
 		else{
 			//Skriv ut en liste med alle brukernavna
+			
+			for(int i = 0; i < lista; i++){
+				System.out.println();
+			}
 			System.out.println("Her skal det skrives ut en liste med brukerne");
 		}
+	}
+	
+	public void edit(String[] array){
+		List<String> input = Arrays.asList(array);
+		
 	}
 	
 	
