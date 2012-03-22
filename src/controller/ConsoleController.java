@@ -74,6 +74,12 @@ public class ConsoleController extends ApplicationComponent {
 				executer.user(arguments);
 			}
 		});
+		
+		commands.put("edit", new Command() {
+			void execute(String[] arguments) {
+				executer.edit(arguments);
+			}
+		});
 	}
 
 	public java.util.Set<String> getCommands() {
