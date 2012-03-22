@@ -113,7 +113,7 @@ public class DatabaseController extends ApplicationComponent {
 		String username = user.getUsername();
 		List<Appointment> listOfApp = new ArrayList<Appointment>();
 		String sql = "SELECT * FROM AVTALE WHERE AvtaleEier='"+username+"' " +
-				"AND ErAktiv=1 AND TYPE=Avtale";
+				"AND ErAktiv=1 AND TYPE='Avtale'";
 		try {
 			connect();
 			Statement st = con.createStatement();
