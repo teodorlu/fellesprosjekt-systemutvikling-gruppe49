@@ -14,10 +14,12 @@ public class Appointment implements Comparable<Appointment> {
 	private Time appLength, startTime, endTime;
 
 	private String description, place, title;
+	private int ID;
 
-	public Appointment(Date date, Time startTime, Time appLength, String title,
+	public Appointment(int ID, Date date, Time startTime, Time appLength, String title,
 			String description, String place) {
 
+		this.ID = ID;
 		this.date = date;
 		this.startTime = startTime;
 		this.appLength = appLength;
@@ -28,8 +30,9 @@ public class Appointment implements Comparable<Appointment> {
 
 	}
 	@SuppressWarnings("deprecation")
-	public Appointment(java.sql.Date date, java.sql.Time startTime,
+	public Appointment(int ID, java.sql.Date date, java.sql.Time startTime,
 			java.sql.Time appLength, String title, String description, String place) {
+		this.ID = ID;
 		this.date = date;
 		this.startTime = new Time(startTime.getHours(), startTime.getMinutes());
 		this.appLength = new Time(appLength.getHours(), appLength.getMinutes());
