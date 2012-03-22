@@ -55,11 +55,34 @@ public class Time {
 		endTime.add(duration.returnHours(), duration.returnMinutes());
 		return endTime;
 	}
-	
+	public boolean between(Time low, Time high){
+		boolean isBetween = false;
+		int lowM = low.returnMinutes();
+		int lowH = low.returnHours();
+		int highM = high.returnMinutes();
+		int highH = high.returnHours();
+		if (this.returnHours() == lowH){
+			if(this.returnMinutes() > lowM)
+				isBetween = true;
+		
+		}		
+		if (this.returnHours() == highH){
+			if(this.returnMinutes() < highM)
+				isBetween = true;
+		}
+		if(this.returnHours() < highH && this.returnHours() > lowH){
+			isBetween = true;
+		}
+		
+		
+		return isBetween;
+	}
 	public static void main(String[] args) {
-		 Time a = new Time(3,86);
-		 a.newTime(5, 67);
-		 System.out.println(a.toString());
+		 Time b = new Time(13,0);
+		 Time a = new Time(12,0);
+		 Time c = new Time(13,30);
+		 boolean d = b.between(a, c);
+		 System.out.println(d);
 		 
 	}
 	
