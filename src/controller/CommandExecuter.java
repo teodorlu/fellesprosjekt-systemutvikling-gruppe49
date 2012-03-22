@@ -6,7 +6,9 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import model.Person;
 import model.User;
@@ -46,7 +48,9 @@ public class CommandExecuter extends ApplicationComponent {
 	
 	private boolean isValidInput(String[] input, String format){
 		boolean isValid = true;
-		// TODO
+		List<String> mandatoryArguments = new LinkedList<String>();
+		Map<String, List<String>> children;
+		
 		return isValid;
 	}
 
@@ -199,11 +203,7 @@ public class CommandExecuter extends ApplicationComponent {
 		return date;
 	}
 	
-
-	
-
-
-	//Denne metoden har ikke sikring for at folk er logget på 
+	// TODO check if logged in
 	public void delete(String[] array){		
 		String IDstring = "-1";
 		int ID;
@@ -348,12 +348,4 @@ public class CommandExecuter extends ApplicationComponent {
 		ce.stringToDate(s, 0);
 	
 	}
-
-	public void user(String[] arguments) {
-		String format = doc.get("user");
-		if (isValidInput(arguments, format)){
-			// TODO
-		}
-	}
-
 }
