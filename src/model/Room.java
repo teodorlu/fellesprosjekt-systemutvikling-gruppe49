@@ -21,6 +21,13 @@ public class Room {
 		this.sender = sender;
 		
 	}
+	public Room(int roomId, int capacity, String location){
+		this.roomId = roomId;
+		this.capacity = capacity;
+		this.location = location;
+		
+		
+	}
 	
 //	* Metodene vil vel måtte forandres en del på når vi finner ut hvordan 
 //	 * vi skal gjøre det med input/output! Om de i det hele tatt skal være
