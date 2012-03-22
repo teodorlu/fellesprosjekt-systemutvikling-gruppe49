@@ -119,7 +119,7 @@ public class DatabaseController extends ApplicationComponent {
 			ResultSet rs = st.executeQuery(sql);
 			
 			while(rs.next()){
-				Appointment a = new Appointment(rs.getDate(3), rs.getTime(8), 
+				Appointment a = new Appointment( rs.getInt(1), rs.getDate(3), rs.getTime(8), 
 						rs.getTime(9), rs.getString(2), rs.getString(10), rs.getString(6));
 				listOfApp.add(a);
 			}
