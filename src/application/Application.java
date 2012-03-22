@@ -21,7 +21,6 @@ public class Application {
 	private ConsoleView consoleView;
 	
 	
-	
 	public Person getCurrentlyLoggedInUser() {
 		return currentlyLoggedInUser;
 	}
