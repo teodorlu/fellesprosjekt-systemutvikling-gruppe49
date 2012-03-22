@@ -90,7 +90,7 @@ public class CommandExecuter extends ApplicationComponent {
 		int titleIndex, dateIndex, startIndex, endIndex, descIndex, placeIndex, colonIndex, length;
 				
 		if(input.contains("-title") && input.contains("-date") && input.contains("-s")
-				&& input.contains("-e")){
+				&& input.contains("-d")){
 			
 			titleIndex = input.indexOf("-title");
 			title = getProperty(array, titleIndex+1);
@@ -123,7 +123,7 @@ public class CommandExecuter extends ApplicationComponent {
 			
 			System.out.println("Tittel: "+title+" Date: "+ date.toString()+" Start: "+ startTime.toString()+" Duration: "+ appLength.toString()+" Desc: "+ desc+" Place: "+ place);
 			Appointment a = new Appointment(date, startTime, appLength, title, desc, place);
-			this.getApplication().getCurrentlyLoggedInUser().getPersonalCalendar().addAppointment(a);
+			//this.getApplication().getCurrentlyLoggedInUser().getPersonalCalendar().addAppointment(a);
 			this.getApplication().getDatabaseController().newAppointment(a);
 			//------------------------------------
 		}
