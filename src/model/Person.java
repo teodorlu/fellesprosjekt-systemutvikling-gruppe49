@@ -48,7 +48,6 @@ public class Person extends User {
 	}
 	
 	
-	
 	public String getEmail() {
 		return email;
 	}
