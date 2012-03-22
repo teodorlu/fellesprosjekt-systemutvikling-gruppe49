@@ -108,11 +108,11 @@ public class DatabaseController extends ApplicationComponent {
 	}
 
 	public List<Appointment> retrieveAppointments(User user) {
-		// TODO generate Person object from database corresponding to user.username
-		// This includes the Person's appointments: person.personalCalendar.appointments
+
 		String username = user.getUsername();
 		List<Appointment> listOfApp = new ArrayList<Appointment>();
-		String sql = "SELECT * FROM AVTALE WHERE AvtaleEier='"+username+"' AND ErAktiv=1";
+		String sql = "SELECT * FROM AVTALE WHERE AvtaleEier='"+username+"' " +
+				"AND ErAktiv=1 AND TYPE=Avtale";
 		try {
 			connect();
 			Statement st = con.createStatement();
