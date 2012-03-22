@@ -124,6 +124,7 @@ public class CommandExecuter extends ApplicationComponent {
 			System.out.println("Tittel: "+title+" Date: "+ date.toString()+" Start: "+ startTime.toString()+" Duration: "+ appLength.toString()+" Desc: "+ desc+" Place: "+ place);
 			Appointment a = new Appointment(date, startTime, appLength, title, desc, place);
 			this.getApplication().getCurrentlyLoggedInUser().getPersonalCalendar().addAppointment(a);
+			this.getApplication().getDatabaseController().newAppointment(a);
 			//------------------------------------
 		}
 		else System.out.println("Har ikke med alle parameterne til appointment");
@@ -174,20 +175,29 @@ public class CommandExecuter extends ApplicationComponent {
 	
 
 
-	
-	public void delete(String[] array){
-		String IDstring = "";
+	//Denne metoden har ikke sikring for at folk er logget på 
+	public void delete(String[] array){		
+		String IDstring = "-1";
 		int ID;
 		List<String> input = Arrays.asList(array);
+		List<Appointment> appointments;
 		int deleteIndex = input.indexOf("delete");
-		IDstring = getProperty(array, deleteIndex+1);
+		if(input.size() > 1) IDstring = getProperty(array, deleteIndex+1);
 		ID = Integer.parseInt(IDstring);
+		
+		
+		
 		
 		if (this.getApplication().getDatabaseController().tryDeleteAppointment(ID))
 				System.out.println("The appointment has been deleted");
 			else{
 				System.out.println("This is not a valid appointment ID");
-				System.out.println("Mulige avtaler"); //hvordan finner jeg mulige avtaler?
+				System.out.println("Mulige avtaler"); //hvordan finner jeg mulige avtaler? 
+				appointments = this.getApplication().getDatabaseController().retrieveAppointments(this.getApplication().getCurrentlyLoggedInUser());
+				for(int i = 0; i < appointments.size();i++){
+					Appointment a = appointments.get(i);
+					System.out.println("ID: "+a.getID()+" Tittle: "+a.getTitle());
+				}
 			}
 	}
 	
@@ -218,7 +228,7 @@ public class CommandExecuter extends ApplicationComponent {
 			}
 		}
 	}
-	
+	//Denne metoden har ikke sikring for at du er logget på, stygg output som kræsjer programmet om du ikke er!
 	public void edit(String[] array){
 		
 		List<String> input = Arrays.asList(array);
