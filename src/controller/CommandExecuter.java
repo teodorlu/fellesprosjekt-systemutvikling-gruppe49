@@ -5,6 +5,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import model.Person;
@@ -17,8 +18,35 @@ import application.ApplicationComponent;
 
 public class CommandExecuter extends ApplicationComponent {
 	
+	private HashMap<String, String> doc;
+	
 	public CommandExecuter(Application app) {
 		super(app);
+		buildCommandDocumentation();
+	}
+	
+	private void buildCommandDocumentation(){
+		doc = new HashMap<String, String>();
+		
+		doc.put("register", "register -u <username> -p <password> -fn <firstName> -ln <lastName> -email <email>");
+		doc.put("user", "user <brukernavn>");
+		doc.put("login", "login <username> <password>");
+		doc.put("appointment", "appointment -title <title> -date <date> -s <start> -e <end> [-desc <description> -place <place>]");
+		doc.put("delete", "delete <id>");
+		doc.put("edit", "edit <id> [-title <title> -date <date> -s <start> -e <end> -desc <description> -place <place>]");
+		doc.put("summon", "summon <id> <username1> [<username2> <username3> ...]");
+		doc.put("unsummon", "unsummon <id> <username1> [<username2> <username3> ...]");
+		doc.put("reply", "reply <id> (Y/N)");
+		doc.put("room", "room");
+		doc.put("reserve", "reserve -a <appointmentID> (-r <roomID> / -c <capacity>)");
+		doc.put("calendar", "calendar [-w <week> [-y <year] -u <username1> <username2> <username3> ...]");
+		doc.put("notifications", "notifications");
+	}
+	
+	private boolean isValidInput(String[] input, String format){
+		boolean isValid = true;
+		// TODO
+		return isValid;
 	}
 
 	public void register(String[] array){
@@ -172,7 +200,7 @@ public class CommandExecuter extends ApplicationComponent {
 		String _date = array[index];
 		DateFormat df = new SimpleDateFormat("YYYY-MM-DD");
 		Date date = df.parse(_date);
-		return date;	
+		return date;
 	}
 	
 
@@ -204,6 +232,13 @@ public class CommandExecuter extends ApplicationComponent {
 		ce.register(registertest);
 		ce.login(logintest);
 		ce.appointment(appointmentTest);
+	}
+
+	public void user(String[] arguments) {
+		String format = doc.get("user");
+		if (isValidInput(arguments, format)){
+			// TODO
+		}
 	}
 
 }
