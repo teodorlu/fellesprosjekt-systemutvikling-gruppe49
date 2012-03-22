@@ -127,7 +127,6 @@ public class DatabaseController extends ApplicationComponent {
 			e.printStackTrace();
 		}
 		disconnect();
-		System.out.println(listOfApp);
 		return listOfApp;
 	}
 	
@@ -189,6 +188,24 @@ public class DatabaseController extends ApplicationComponent {
 		
 	}
 	
+	public List<String> retriveUsernames(){
+		String sql = "SELECT BrukerNavn FROM ANSATT";
+		List<String> listOfUsernames = new ArrayList<String>();
+		connect();
+		try {
+			Statement st = con.createStatement();
+			ResultSet rs = st.executeQuery(sql);
+			while(rs.next()){
+				listOfUsernames.add(rs.getString(1));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		disconnect();
+		return listOfUsernames;
+	}
+	
 	public int[] deleteUser(String username){
 		String sql = "DELETE FROM ANSATT WHERE BrukerNavn='"+username+"'";
 		String sql2 = "DELETE FROM PAMINNELSE WHERE Paminner='"+username+"'";
@@ -237,8 +254,7 @@ public class DatabaseController extends ApplicationComponent {
 	
 //	public static void main(String[] args) {
 //		DatabaseController dbc = new DatabaseController(null);
-//		User u = new User("MAGRODAHL", "123");
-//		dbc.retrieveAppointments(u);
+//		dbc.retriveUsernames();
 //
 //		
 //	
