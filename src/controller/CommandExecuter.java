@@ -166,7 +166,7 @@ public class CommandExecuter extends ApplicationComponent {
 	
 	private static Date stringToDate(String[] array, int index) throws ParseException{
 		String _date = array[index];
-		DateFormat df = new SimpleDateFormat("YYYY-MM-DD");
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 		Date date = df.parse(_date);
 		return date;	
 	}
@@ -314,16 +314,11 @@ public class CommandExecuter extends ApplicationComponent {
 	}
 	
 	
-//	public static void main(String args[]) throws ParseException{
-//		String[] registertest = {"register", "-u", "dzenan", "-p", "mittpassord", "-fn", "firstName", "-ln", "lastName"};
-//		String[] logintest = {"login", "-u", "Brukernavnet", "-p", "passordet"};
-//		String[] appointmentTest = {"-title", "HumbugAvtale", "-date", "2012-12-04", "-s", "14:30", "-e", "15:30", 
-//										"-desc", "Heisann tullemøte", "-place", "Fjellet"};
-//		
-//		CommandExecuter ce = new CommandExecuter(null);
-//		ce.register(registertest);
-//		ce.login(logintest);
-//		ce.appointment(appointmentTest);
-//	}
+	public static void main(String args[]) throws ParseException{
+		CommandExecuter ce = new CommandExecuter(null);
+		String[] s = {"2012-03-23"};
+		ce.stringToDate(s, 0);
+	
+	}
 
 }
