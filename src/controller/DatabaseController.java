@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -12,8 +13,10 @@ import java.util.List;
 import application.Application;
 import application.ApplicationComponent;
 
+import model.Appointment;
 import model.Person;
 import model.User;
+import model.Time;
 
 public class DatabaseController extends ApplicationComponent {
 	
@@ -104,24 +107,28 @@ public class DatabaseController extends ApplicationComponent {
 		return false;
 	}
 
-	public Person retrieve(User user) {
+	public List<Appointment> retrieveAppointments(User user) {
 		// TODO generate Person object from database corresponding to user.username
 		// This includes the Person's appointments: person.personalCalendar.appointments
 		String username = user.getUsername();
-		String sql = "SELECT * FROM AVTALE WHERE AvtaleEier='"+username+"'";
+		List<Appointment> listOfApp = new ArrayList<Appointment>();
+		String sql = "SELECT * FROM AVTALE WHERE AvtaleEier='"+username+"' AND ErAktiv=1";
 		try {
 			connect();
 			Statement st = con.createStatement();
 			ResultSet rs = st.executeQuery(sql);
 			
 			while(rs.next()){
-				//TODO hente ut fra rs og legge inn i et avtaleobjekt
+				Appointment a = new Appointment(rs.getDate(3), rs.getTime(8), 
+						rs.getTime(9), rs.getString(2), rs.getString(10), rs.getString(6));
+				listOfApp.add(a);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		disconnect();
-		return null;
+		System.out.println(listOfApp);
+		return listOfApp;
 	}
 	
 	public void updateLoginStatus(User user, boolean isOnline){
@@ -218,6 +225,7 @@ public class DatabaseController extends ApplicationComponent {
 	}
 	
 	
+	
 	private String incapsulate(String input){
 		return "'" + input + "'";
 	}
@@ -229,12 +237,10 @@ public class DatabaseController extends ApplicationComponent {
 	
 //	public static void main(String[] args) {
 //		DatabaseController dbc = new DatabaseController(null);
-//		Person p = new Person("mag","pap","m","r","@");
-//		dbc.Save(p);
-//		int[] i = dbc.deleteUser("mag"); 
-//		for (int x : i){
-//			System.out.println(x);
-//		}
+//		User u = new User("MAGRODAHL", "123");
+//		dbc.retrieveAppointments(u);
+//
+//		
 //	
 //	}
 }
