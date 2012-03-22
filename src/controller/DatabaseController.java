@@ -9,7 +9,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 
 import application.Application;
@@ -85,7 +84,7 @@ public class DatabaseController extends ApplicationComponent {
 	
 	public boolean newAppointment(Appointment appointment){
 		String title = incapsulate(appointment.getTitle());
-		Date date = appointment.getDate();
+		java.util.Date date = appointment.getDate();
 		java.sql.Date sqlDate = new java.sql.Date(date.getYear()-1900,date.getMonth()-1,date.getDate());
 		//String owner = incapsulate(this.getApplication().getCurrentlyLoggedInUser().getUsername());
 		String place = incapsulate(appointment.getPlace());
