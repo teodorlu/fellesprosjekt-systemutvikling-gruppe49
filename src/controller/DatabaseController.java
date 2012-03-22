@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import application.Application;
@@ -79,6 +80,36 @@ public class DatabaseController extends ApplicationComponent {
 			e.printStackTrace();
 		}
 		disconnect();
+	}
+	
+	public boolean newAppointment(Appointment appointment){
+		String title = incapsulate(appointment.getTitle());
+		Date date = appointment.getDate();
+		java.sql.Date sqlDate = new java.sql.Date(date.getYear()-1900,date.getMonth()-1,date.getDate());
+		//String owner = incapsulate(this.getApplication().getCurrentlyLoggedInUser().getUsername());
+		String place = incapsulate(appointment.getPlace());
+		Time startTime = appointment.getStartTime();
+		java.sql.Time sqlStartTime = new java.sql.Time(startTime.returnHours(),startTime.returnMinutes(),00);
+		Time duration = appointment.getAppLength();
+		java.sql.Time sqlDuration = new java.sql.Time(duration.returnHours(),duration.returnMinutes(),00);
+		String desc = incapsulate(appointment.getDescription());
+		String sql = "INSERT INTO AVTALE (Tittel, Dato, AvtaleEier, TYPE, " +
+				"Sted, Starttid, Varighet, Beskrivelse, ErAktiv )" +
+				"VALUES ( " + title + ", '"+sqlDate+"', 'MAGRODAHL', " +
+				"'Avtale', "+ place + ", '"+sqlStartTime+"', '"+sqlDuration+"', " + desc +", 1)";
+		connect();
+		int rowsAffected = -1;
+		try {
+			Statement st = con.createStatement();
+			rowsAffected = st.executeUpdate(sql);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		disconnect();
+		if (rowsAffected >= 1)
+			return true;
+		return false;
 	}
 	
 	public boolean authenticated(User user){
@@ -225,6 +256,7 @@ public class DatabaseController extends ApplicationComponent {
 		return rowseffected;
 	}
 	
+	
 	public boolean editAppointment(int ID, String kolonne, String updatedTo){
 		int rowsUpdated = -1;
 		String sql = "UPDATE AVTALE SET "+ kolonne + "=" + incapsulate(updatedTo) + " WHERE AvtaleID="+ID;
@@ -292,10 +324,18 @@ public class DatabaseController extends ApplicationComponent {
 		return null;
 	}
 	
-	public static void main(String[] args) {
-	DatabaseController dbc = new DatabaseController(null);
-
-	}
+//	public static void main(String[] args) {
+//	DatabaseController dbc = new DatabaseController(null);
+//	Date date = new Date(2012,03,23);
+//	Time start = new Time(15,15);
+//	Time dur = new Time(00,45);
+//	Appointment a = new Appointment(date, start, dur, "test6", "description som er fin", "hjemme");
+//	if(dbc.newAppointment(a))
+//		System.out.println("weeeee");
+//	
+//	
+//	
+//	}
 }
 
 
