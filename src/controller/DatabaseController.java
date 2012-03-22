@@ -15,6 +15,7 @@ import application.ApplicationComponent;
 
 import model.Appointment;
 import model.Person;
+import model.Room;
 import model.User;
 import model.Time;
 
@@ -241,6 +242,26 @@ public class DatabaseController extends ApplicationComponent {
 		return false;
 	}
 	
+	public List<Room> retrieveAllRooms(){
+		String sql = "SELECT * FROM ROM";
+		List<Room> allRooms = new ArrayList<Room>();
+		try {
+			connect();
+			Statement st = con.createStatement();
+			ResultSet rs = st.executeQuery(sql);
+			
+			while(rs.next()){
+				Room a = new Room(rs.getInt(1), rs.getInt(3), rs.getString(2));
+				allRooms.add(a);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		disconnect();
+		return allRooms;
+		
+		
+	}
 	
 	
 	private String incapsulate(String input){
@@ -252,13 +273,15 @@ public class DatabaseController extends ApplicationComponent {
 		return null;
 	}
 	
-//	public static void main(String[] args) {
-//		DatabaseController dbc = new DatabaseController(null);
+	public static void main(String[] args) {
+	DatabaseController dbc = new DatabaseController(null);
+	List<Room> a = dbc.retrieveAllRooms();
+	System.out.println(a.size());
 //		dbc.retriveUsernames();
 //
 //		
 //	
-//	}
+	}
 }
 
 
