@@ -27,6 +27,18 @@ public class Appointment implements Comparable<Appointment> {
 		this.endTime = Time.returnEndTime(this.startTime, this.appLength);
 
 	}
+	@SuppressWarnings("deprecation")
+	public Appointment(java.sql.Date date, java.sql.Time startTime,
+			java.sql.Time appLength, String title, String description, String place) {
+		this.date = date;
+		this.startTime = new Time(startTime.getHours(), startTime.getMinutes());
+		this.appLength = new Time(appLength.getHours(), appLength.getMinutes());
+		this.description = description;
+		this.place = place;
+		this.title = title;
+		this.endTime = Time.returnEndTime(this.startTime, this.appLength);
+		
+	}
 
 	/*
 	 * Metoder public void editStartTime(){
@@ -37,11 +49,8 @@ public class Appointment implements Comparable<Appointment> {
 	 * 
 	 * }
 	 */
+	
 
-	public Appointment(java.sql.Date date2, java.sql.Time time,
-			java.sql.Time time2, String string, String string2, String string3) {
-		// TODO Auto-generated constructor stub
-	}
 
 	@Override
 	public int compareTo(Appointment other) {
