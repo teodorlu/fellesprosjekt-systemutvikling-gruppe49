@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -68,6 +69,37 @@ public class ConsoleController extends ApplicationComponent {
 				executer.login(arguments);
 			}
 		});
+		
+		commands.put("user", new Command() {
+			void execute(String[] arguments) {
+				executer.user(arguments);
+			}
+		});
+		
+		commands.put("appointment", new Command() {    //Ikke sikker at denne funker
+			void execute(String[] arguments) {
+				try {
+					executer.appointment(arguments);
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
+		
+		commands.put("edit", new Command() {
+			void execute(String[] arguments) {
+				executer.edit(arguments);
+			}
+		});
+		
+		commands.put("delete", new Command() {
+			void execute(String[] arguments) {
+				executer.delete(arguments);
+			}
+		});
+		
+		
 	}
 
 	public java.util.Set<String> getCommands() {

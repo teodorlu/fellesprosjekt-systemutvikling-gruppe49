@@ -21,7 +21,6 @@ public class Application {
 	private ConsoleView consoleView;
 	
 	
-	
 	public Person getCurrentlyLoggedInUser() {
 		return currentlyLoggedInUser;
 	}
@@ -81,7 +80,7 @@ public class Application {
 		boolean isValid = getDatabaseController().authenticated(user);
 		
 		if (isValid) {
-			Person currentlyLoggedInPerson = getDatabaseController().retrieve(user);
+			Person currentlyLoggedInPerson = getDatabaseController().retriveUser(user.getUsername());    //Dzenan enda denne, se på denne om alt går mongoklikk!!!
 			this.setCurrentUser(currentlyLoggedInPerson);
 			this.getConsoleView().showSucessfulLoginMessage(currentlyLoggedInPerson);
 		}

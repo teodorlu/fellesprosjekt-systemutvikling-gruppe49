@@ -16,6 +16,7 @@ import model.Appointment;
 import application.Application;
 import application.ApplicationComponent;
 
+
 public class CommandExecuter extends ApplicationComponent {
 	
 	private HashMap<String, String> doc;
@@ -102,7 +103,6 @@ public class CommandExecuter extends ApplicationComponent {
 			pIndex  =input.indexOf("-p");
 			username = getProperty(array, uIndex+1);
 			password = getProperty(array, pIndex+1);
-			System.out.println("User: "+username + " Password: "+password);
 			
 			User user = new User(username, password);
 			this.getApplication().tryLogIn(user);
@@ -129,18 +129,13 @@ public class CommandExecuter extends ApplicationComponent {
 			startIndex = input.indexOf("-s");
 			sStart = getProperty(array, startIndex+1); 
 			
-			endIndex = input.indexOf("-e");
+			endIndex = input.indexOf("-d");
 			sEnd = getProperty(array, endIndex+1); 
 			
 			startTime = getTimeProperty(sStart);
 			appLength = getTimeProperty(sEnd);
 
-			//Muligens en funksjon som sjekker at endtime kommer etter starttime, gjør ikke noe annet enn å skrive ut ei linje foreløpig
-			if(!Time.checkStartEndTimes(startTime, appLength)){
-				System.out.println("Idiot, det slutter før det begynner!");
-			}
-			
-			
+					
 			if(input.contains("-desc")){
 				descIndex = input.indexOf("-desc");
 				desc = getProperty(array, descIndex + 1);
@@ -151,12 +146,13 @@ public class CommandExecuter extends ApplicationComponent {
 				place = getProperty(array, placeIndex + 1);
 			}
 			
-			//ToDo må lage en appointment gjennom konstruktøren! (Husk dato og tid lenger oppe)
+			//ToDo må lage en appointment som blir sendt til databasen! (Husk dato og tid lenger oppe)
 			
 			
-			System.out.println("Tittel: "+title+" Date: "+ date.toString()+" Start: "+ startTime.toString()+" End: "+ appLength.toString()+" Desc: "+ desc+" Place: "+ place);
+			System.out.println("Tittel: "+title+" Date: "+ date.toString()+" Start: "+ startTime.toString()+" Duration: "+ appLength.toString()+" Desc: "+ desc+" Place: "+ place);
 			Appointment a = new Appointment(date, startTime, appLength, title, desc, place);
 			this.getApplication().getCurrentlyLoggedInUser().getPersonalCalendar().addAppointment(a);
+			this.getApplication().getDatabaseController().newAppointment(a);
 			//------------------------------------
 		}
 		else System.out.println("Har ikke med alle parameterne til appointment");
@@ -198,40 +194,159 @@ public class CommandExecuter extends ApplicationComponent {
 	
 	private static Date stringToDate(String[] array, int index) throws ParseException{
 		String _date = array[index];
-		DateFormat df = new SimpleDateFormat("YYYY-MM-DD");
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 		Date date = df.parse(_date);
 		return date;
 	}
 	
 
 	
-	private static void checkStartAndEndTime(){
-		//Check if starttime is less than Endtime. 
-	}
-	
-	public void delete(String[] array){
-		String ID = "";
+
+
+	//Denne metoden har ikke sikring for at folk er logget på 
+	public void delete(String[] array){		
+		String IDstring = "-1";
+		int ID;
 		List<String> input = Arrays.asList(array);
+		List<Appointment> appointments;
 		int deleteIndex = input.indexOf("delete");
-		ID = getProperty(array, deleteIndex+1);
-		if (DatabaseController.deleteID(ID))
+		if(input.size() > 1) IDstring = getProperty(array, deleteIndex+1);
+		ID = Integer.parseInt(IDstring);
+		
+		
+		
+		
+		if (this.getApplication().getDatabaseController().tryDeleteAppointment(ID))
 				System.out.println("The appointment has been deleted");
 			else{
 				System.out.println("This is not a valid appointment ID");
-				System.out.println("Mulige avtaler"); //hvordan finner jeg mulige avtaler?
+				System.out.println("Mulige avtaler"); //hvordan finner jeg mulige avtaler? 
+				appointments = this.getApplication().getDatabaseController().retrieveAppointments(this.getApplication().getCurrentlyLoggedInUser());
+				for(int i = 0; i < appointments.size();i++){
+					Appointment a = appointments.get(i);
+					System.out.println("ID: "+a.getID()+" Tittle: "+a.getTitle());
+				}
 			}
 	}
 	
-	public static void main(String args[]) throws ParseException{
-		String[] registertest = {"register", "-u", "dzenan", "-p", "mittpassord", "-fn", "firstName", "-ln", "lastName"};
-		String[] logintest = {"login", "-u", "Brukernavnet", "-p", "passordet"};
-		String[] appointmentTest = {"-title", "HumbugAvtale", "-date", "2012-12-04", "-s", "14:30", "-e", "15:30", 
-										"-desc", "Heisann tullemøte", "-place", "Fjellet"};
+	public void user(String[] array){
+		List<String> input = Arrays.asList(array);
+		List<String> usernames;
+		String username;
+		int uIndex;
 		
+		if(input.contains("user") && input.size() == 2){
+			
+			uIndex = input.indexOf("user");
+			username = getProperty(array ,uIndex+1);
+			Person a;
+			a = this.getApplication().getDatabaseController().retriveUser(username);
+			System.out.println("Brukernavn: "+a.getUsername());
+			System.out.println("Fornavn: "+a.getFirstName());
+			System.out.println("Etternavn: "+a.getLastName());
+			System.out.println("E-mail: "+a.getEmail());
+		}
+		
+		else{
+			//Skriv ut en liste med alle brukernavna
+			usernames = this.getApplication().getDatabaseController().retriveUsernames();
+			for(int i = 0; i < usernames.size(); i++){
+				String name = usernames.get(i);
+				System.out.println(name);
+			}
+		}
+	}
+	//Denne metoden har ikke sikring for at du er logget på, stygg output som kræsjer programmet om du ikke er!
+	public void edit(String[] array){
+		
+		List<String> input = Arrays.asList(array);
+		List<Appointment> appointments;
+		Appointment localAppointment;
+		int ID,editIndex;
+		appointments = this.getApplication().getDatabaseController().retrieveAppointments(this.getApplication().getCurrentlyLoggedInUser());
+		
+		if(input.contains("edit") && input.size() == 1){
+					
+			for(int i = 0; i < appointments.size(); i++){
+				Appointment a = appointments.get(i);
+				System.out.println("ID: "+a.getID()+" Tittel: "+a.getTitle());   
+			}
+		}
+		
+		else if(input.contains("edit") && input.size() > 1){
+			editIndex = input.indexOf("edit");
+			ID = Integer.parseInt(getProperty(array, editIndex+1));
+			for(int i = 0; i < appointments.size(); i++){
+				localAppointment = appointments.get(i);
+				
+				if(localAppointment.getID()==ID){
+					
+					if(input.contains("-title")){
+						int titleIndex = input.indexOf("-title");
+						if(this.getApplication().getDatabaseController().editAppointment(ID, "Tittel", getProperty(array, titleIndex+1))) 
+							System.out.println("Tittel ble endret til "+getProperty(array,titleIndex+1));
+					}
+						
+										
+					try {
+					if(input.contains("-date")){
+						int dateIndex = input.indexOf("-date");
+						localAppointment.setDate(stringToDate(array, dateIndex+1));
+						if(this.getApplication().getDatabaseController().editAppointment(ID, "Dato", getProperty(array, dateIndex+1))) 
+							System.out.println("Dato ble endre til: "+stringToDate(array,dateIndex+1));
+					}
+					
+					if(input.contains("-s")){
+						int startIndex = input.indexOf("-s");
+						localAppointment.setStartTime(getTimeProperty(input.get(startIndex+1)));
+						if(this.getApplication().getDatabaseController().editAppointment(ID, "Starttid", getProperty(array, startIndex+1)))
+							System.out.println("StartTid ble endre til: "+getTimeProperty(input.get(startIndex+1)));
+					}
+					
+					if(input.contains("-d")){
+						int durationIndex = input.indexOf("-d");
+						localAppointment.setAppLength(getTimeProperty(input.get(durationIndex+1)));
+						if(this.getApplication().getDatabaseController().editAppointment(ID, "Varighet", getProperty(array, durationIndex+1)))
+							System.out.println("Varighet ble endre til: "+getTimeProperty(input.get(durationIndex+1)));
+					}
+					} catch (ParseException e) {
+						e.getMessage();
+						
+					} catch (IllegalArgumentException e) {
+						e.getMessage();
+					}
+					
+					if(input.contains("-desc")){
+						int descIndex = input.indexOf("-desc");
+						if(this.getApplication().getDatabaseController().editAppointment(ID, "Beskrivelse", getProperty(array, descIndex+1)))
+							System.out.println("Beskrivelse ble endret til: "+getProperty(array, descIndex+1));
+					}
+					
+					if(input.contains("-place")){
+						int placeIndex = input.indexOf("-place");
+						if(this.getApplication().getDatabaseController().editAppointment(ID, "Sted", getProperty(array, placeIndex+1)))
+							System.out.println("Sted ble endret til: "+getProperty(array,placeIndex+1));
+					}
+								
+					break;
+				}
+				
+				
+				
+			}
+			
+		}
+		
+		
+		
+	}
+	
+	
+	public static void main(String args[]) throws ParseException{
 		CommandExecuter ce = new CommandExecuter(null);
-		ce.register(registertest);
-		ce.login(logintest);
-		ce.appointment(appointmentTest);
+		String[] s = {"2012-03-23"};
+		ce.stringToDate(s, 0);
+	
 	}
 
 	public void user(String[] arguments) {
