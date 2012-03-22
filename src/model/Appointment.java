@@ -38,6 +38,11 @@ public class Appointment implements Comparable<Appointment> {
 	 * }
 	 */
 
+	public Appointment(java.sql.Date date2, java.sql.Time time,
+			java.sql.Time time2, String string, String string2, String string3) {
+		// TODO Auto-generated constructor stub
+	}
+
 	@Override
 	public int compareTo(Appointment other) {
 		return this.date.compareTo(other.date);
