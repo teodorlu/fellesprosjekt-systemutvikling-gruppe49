@@ -189,6 +189,7 @@ public class CommandExecuter extends ApplicationComponent {
 	
 	public void user(String[] array){
 		List<String> input = Arrays.asList(array);
+		List<String> usernames;
 		String username;
 		int uIndex;
 		
@@ -204,16 +205,24 @@ public class CommandExecuter extends ApplicationComponent {
 		
 		else{
 			//Skriv ut en liste med alle brukernavna
-			
-			for(int i = 0; i < lista; i++){
-				System.out.println();
+			usernames = this.getApplication().getDatabaseController().retriveUsernames();
+			for(int i = 0; i < usernames.size()-1; i++){
+				System.out.println(usernames.indexOf(i));
 			}
-			System.out.println("Her skal det skrives ut en liste med brukerne");
 		}
 	}
 	
 	public void edit(String[] array){
 		List<String> input = Arrays.asList(array);
+		List<Appointment> appointments;
+		
+		if(input.contains("edit") && input.size() == 1){
+			appointments = this.getApplication().getDatabaseController().retrieveAppointments(this.getApplication().getCurrentlyLoggedInUser());
+			
+			for(int i = 0; i < appointments.size()-1; i++){
+				System.out.println(appointments.indexOf(i));   //Gjør sånn at den bare printer ut AvtaleID og AvtaleTittel
+			}
+		}
 		
 	}
 	
