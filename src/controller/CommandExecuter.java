@@ -172,6 +172,8 @@ public class CommandExecuter extends ApplicationComponent {
 	}
 	
 
+	
+
 
 	
 	public void delete(String[] array){
@@ -221,15 +223,83 @@ public class CommandExecuter extends ApplicationComponent {
 	public void edit(String[] array){
 		List<String> input = Arrays.asList(array);
 		List<Appointment> appointments;
+		Appointment localAppointment;
+		int ID,editIndex;
+		appointments = this.getApplication().getDatabaseController().retrieveAppointments(this.getApplication().getCurrentlyLoggedInUser());
 		
 		if(input.contains("edit") && input.size() == 1){
-			appointments = this.getApplication().getDatabaseController().retrieveAppointments(this.getApplication().getCurrentlyLoggedInUser());
-			
+					
 			for(int i = 0; i < appointments.size(); i++){
 				Appointment a = appointments.get(i);
 				System.out.println("ID: "+a.getID()+" Tittel: "+a.getTitle());   
 			}
 		}
+		
+		else if(input.contains("edit") && input.size() > 1){
+			editIndex = input.indexOf("edit");
+			ID = Integer.parseInt(getProperty(array, editIndex+1));
+			for(int i = 0; i < appointments.size(); i++){
+				localAppointment = appointments.get(i);
+				
+				if(localAppointment.getID()==ID){
+					
+					if(input.contains("-title")){
+						int titleIndex = input.indexOf("-title");
+						if(this.getApplication().getDatabaseController().editAppointment(ID, "Tittel", getProperty(array, titleIndex+1))) 
+							System.out.println("Tittel ble endret til "+getProperty(array,titleIndex+1));
+					}
+						
+										
+					try {
+					if(input.contains("-date")){
+						int dateIndex = input.indexOf("-date");
+						localAppointment.setDate(stringToDate(array, dateIndex+1));
+						if(this.getApplication().getDatabaseController().editAppointment(ID, "Dato", getProperty(array, dateIndex+1))) 
+							System.out.println("Dato ble endre til: "+stringToDate(array,dateIndex+1));
+					}
+					
+					if(input.contains("-s")){
+						int startIndex = input.indexOf("-s");
+						localAppointment.setStartTime(getTimeProperty(input.get(startIndex+1)));
+						if(this.getApplication().getDatabaseController().editAppointment(ID, "Starttid", getProperty(array, startIndex+1)))
+							System.out.println("StartTid ble endre til: "+getTimeProperty(input.get(startIndex+1)));
+					}
+					
+					if(input.contains("-d")){
+						int durationIndex = input.indexOf("-d");
+						localAppointment.setAppLength(getTimeProperty(input.get(durationIndex+1)));
+						if(this.getApplication().getDatabaseController().editAppointment(ID, "Varighet", getProperty(array, durationIndex+1)))
+							System.out.println("Varighet ble endre til: "+getTimeProperty(input.get(durationIndex+1)));
+					}
+					} catch (ParseException e) {
+						e.getMessage();
+						
+					} catch (IllegalArgumentException e) {
+						e.getMessage();
+					}
+					
+					if(input.contains("-desc")){
+						int descIndex = input.indexOf("-desc");
+						if(this.getApplication().getDatabaseController().editAppointment(ID, "Beskrivelse", getProperty(array, descIndex+1)))
+							System.out.println("Beskrivelse ble endret til: "+getProperty(array, descIndex+1));
+					}
+					
+					if(input.contains("-place")){
+						int placeIndex = input.indexOf("-place");
+						if(this.getApplication().getDatabaseController().editAppointment(ID, "Sted", getProperty(array, placeIndex+1)))
+							System.out.println("Sted ble endret til: "+getProperty(array,placeIndex+1));
+					}
+								
+					break;
+				}
+				
+				
+				
+			}
+			
+		}
+		
+		
 		
 	}
 	
