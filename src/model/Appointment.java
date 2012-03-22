@@ -27,15 +27,28 @@ public class Appointment implements Comparable<Appointment> {
 		this.place = place;
 		this.title = title;
 		this.endTime = Time.returnEndTime(this.startTime, this.appLength);
-
+		
 	}
-	@SuppressWarnings("deprecation")
-	public Appointment(int ID, java.sql.Date date, java.sql.Time startTime,
-			java.sql.Time appLength, String title, String description, String place) {
-		this.ID = ID;
+	
+	public Appointment(Date date, Time startTime, Time appLength, String title,
+			String description, String place) {
+
 		this.date = date;
-		this.startTime = new Time(startTime.getHours(), startTime.getMinutes());
-		this.appLength = new Time(appLength.getHours(), appLength.getMinutes());
+		this.startTime = startTime;
+		this.appLength = appLength;
+		this.description = description;
+		this.place = place;
+		this.title = title;
+		this.endTime = Time.returnEndTime(this.startTime, this.appLength);
+	}
+	
+	@SuppressWarnings("deprecation")
+	public Appointment(int ID, java.sql.Date sqldate, java.sql.Time sqlStartTime,
+			java.sql.Time sqlAppLength, String title, String description, String place) {
+		this.ID = ID;
+		this.date = sqldate;
+		this.startTime = new Time(sqlStartTime.getHours(), sqlStartTime.getMinutes());
+		this.appLength = new Time(sqlAppLength.getHours(), sqlAppLength.getMinutes());
 		this.description = description;
 		this.place = place;
 		this.title = title;
