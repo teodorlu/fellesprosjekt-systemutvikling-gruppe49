@@ -225,6 +225,24 @@ public class DatabaseController extends ApplicationComponent {
 		return rowseffected;
 	}
 	
+	public boolean editAppointment(int ID, String kolonne, String updatedTo){
+		int rowsUpdated = -1;
+		String sql = "UPDATE AVTALE SET "+ kolonne + "=" + updatedTo + " WHERE AvtaleID="+ID;
+		connect();
+		try {
+			Statement st = con.createStatement();
+			rowsUpdated = st.executeUpdate(sql);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		disconnect();
+		if(rowsUpdated >= 1)
+			return true;
+		return false;
+		
+	}
+	
 	public boolean tryDeleteAppointment(int ID){
 		String sql = "UPDATE AVTALE SET ErAktiv=0 WHERE AvtaleID="+ID;
 		int res=-1;
@@ -264,6 +282,7 @@ public class DatabaseController extends ApplicationComponent {
 	}
 	
 	
+	
 	private String incapsulate(String input){
 		return "'" + input + "'";
 	}
@@ -275,12 +294,7 @@ public class DatabaseController extends ApplicationComponent {
 	
 	public static void main(String[] args) {
 	DatabaseController dbc = new DatabaseController(null);
-	List<Room> a = dbc.retrieveAllRooms();
-	System.out.println(a.size());
-//		dbc.retriveUsernames();
-//
-//		
-//	
+
 	}
 }
 
