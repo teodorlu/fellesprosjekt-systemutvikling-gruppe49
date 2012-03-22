@@ -85,7 +85,7 @@ public class DatabaseController extends ApplicationComponent {
 	public boolean newAppointment(Appointment appointment){
 		String title = incapsulate(appointment.getTitle());
 		Date date = appointment.getDate();
-		java.sql.Date sqlDate = new java.sql.Date(date.getYear()-1900,date.getMonth()-1,date.getDate());
+		java.sql.Date sqlDate = new java.sql.Date(date.getYear(),date.getMonth(),date.getDate());
 		//String owner = incapsulate(this.getApplication().getCurrentlyLoggedInUser().getUsername());
 		String place = incapsulate(appointment.getPlace());
 		Time startTime = appointment.getStartTime();
