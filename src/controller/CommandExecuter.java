@@ -15,6 +15,7 @@ import model.Appointment;
 import application.Application;
 import application.ApplicationComponent;
 
+
 public class CommandExecuter extends ApplicationComponent {
 	
 	public CommandExecuter(Application app) {
@@ -107,12 +108,7 @@ public class CommandExecuter extends ApplicationComponent {
 			startTime = getTimeProperty(sStart);
 			appLength = getTimeProperty(sEnd);
 
-			//Muligens en funksjon som sjekker at endtime kommer etter starttime, gjør ikke noe annet enn å skrive ut ei linje foreløpig
-			if(!Time.checkStartEndTimes(startTime, appLength)){
-				System.out.println("Idiot, det slutter før det begynner!");
-			}
-			
-			
+					
 			if(input.contains("-desc")){
 				descIndex = input.indexOf("-desc");
 				desc = getProperty(array, descIndex + 1);
@@ -176,10 +172,7 @@ public class CommandExecuter extends ApplicationComponent {
 	}
 	
 
-	
-	private static void checkStartAndEndTime(){
-		//Check if starttime is less than Endtime. 
-	}
+
 	
 	public void delete(String[] array){
 		String ID = "";
@@ -193,6 +186,28 @@ public class CommandExecuter extends ApplicationComponent {
 				System.out.println("Mulige avtaler"); //hvordan finner jeg mulige avtaler?
 			}
 	}
+	
+	public void user(String[] array){
+		List<String> input = Arrays.asList(array);
+		String username;
+		int uIndex;
+		
+		if(input.contains("user") && input.size() == 2){
+			
+			uIndex = input.indexOf("user");
+			username = getProperty(array ,uIndex+1);
+			Person a;
+			a = DatabaseController.retriveUser(username);
+			System.out.println("Brukernavn: "+a.getUsername()+" Fornavn:"+a.getFirstName()+" Etternavn:"+a.getLastName()+" E-mail"+a.getEmail());
+			
+		}
+		
+		else{
+			//Skriv ut en liste med alle brukernavna
+			System.out.println("Her skal det skrives ut en liste med brukerne");
+		}
+	}
+	
 	
 	public static void main(String args[]) throws ParseException{
 		String[] registertest = {"register", "-u", "dzenan", "-p", "mittpassord", "-fn", "firstName", "-ln", "lastName"};
