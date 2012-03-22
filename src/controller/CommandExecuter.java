@@ -75,7 +75,6 @@ public class CommandExecuter extends ApplicationComponent {
 			pIndex  =input.indexOf("-p");
 			username = getProperty(array, uIndex+1);
 			password = getProperty(array, pIndex+1);
-			System.out.println("User: "+username + " Password: "+password);
 			
 			User user = new User(username, password);
 			this.getApplication().tryLogIn(user);
@@ -221,6 +220,7 @@ public class CommandExecuter extends ApplicationComponent {
 	}
 	
 	public void edit(String[] array){
+		
 		List<String> input = Arrays.asList(array);
 		List<Appointment> appointments;
 		Appointment localAppointment;
@@ -304,16 +304,16 @@ public class CommandExecuter extends ApplicationComponent {
 	}
 	
 	
-	public static void main(String args[]) throws ParseException{
-		String[] registertest = {"register", "-u", "dzenan", "-p", "mittpassord", "-fn", "firstName", "-ln", "lastName"};
-		String[] logintest = {"login", "-u", "Brukernavnet", "-p", "passordet"};
-		String[] appointmentTest = {"-title", "HumbugAvtale", "-date", "2012-12-04", "-s", "14:30", "-e", "15:30", 
-										"-desc", "Heisann tullemøte", "-place", "Fjellet"};
-		
-		CommandExecuter ce = new CommandExecuter(null);
-		ce.register(registertest);
-		ce.login(logintest);
-		ce.appointment(appointmentTest);
-	}
+//	public static void main(String args[]) throws ParseException{
+//		String[] registertest = {"register", "-u", "dzenan", "-p", "mittpassord", "-fn", "firstName", "-ln", "lastName"};
+//		String[] logintest = {"login", "-u", "Brukernavnet", "-p", "passordet"};
+//		String[] appointmentTest = {"-title", "HumbugAvtale", "-date", "2012-12-04", "-s", "14:30", "-e", "15:30", 
+//										"-desc", "Heisann tullemøte", "-place", "Fjellet"};
+//		
+//		CommandExecuter ce = new CommandExecuter(null);
+//		ce.register(registertest);
+//		ce.login(logintest);
+//		ce.appointment(appointmentTest);
+//	}
 
 }
