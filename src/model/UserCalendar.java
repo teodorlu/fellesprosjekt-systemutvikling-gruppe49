@@ -16,6 +16,7 @@ public class UserCalendar {
 	
 	public void addAppointment(Appointment a){
 		appointments.add(a);
+		
 	}
 	
 	

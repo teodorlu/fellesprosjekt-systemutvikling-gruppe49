@@ -101,7 +101,7 @@ public class CommandExecuter extends ApplicationComponent {
 			startIndex = input.indexOf("-s");
 			sStart = getProperty(array, startIndex+1); 
 			
-			endIndex = input.indexOf("-e");
+			endIndex = input.indexOf("-d");
 			sEnd = getProperty(array, endIndex+1); 
 			
 			startTime = getTimeProperty(sStart);
@@ -118,10 +118,10 @@ public class CommandExecuter extends ApplicationComponent {
 				place = getProperty(array, placeIndex + 1);
 			}
 			
-			//ToDo må lage en appointment gjennom konstruktøren! (Husk dato og tid lenger oppe)
+			//ToDo må lage en appointment som blir sendt til databasen! (Husk dato og tid lenger oppe)
 			
 			
-			System.out.println("Tittel: "+title+" Date: "+ date.toString()+" Start: "+ startTime.toString()+" End: "+ appLength.toString()+" Desc: "+ desc+" Place: "+ place);
+			System.out.println("Tittel: "+title+" Date: "+ date.toString()+" Start: "+ startTime.toString()+" Duration: "+ appLength.toString()+" Desc: "+ desc+" Place: "+ place);
 			Appointment a = new Appointment(date, startTime, appLength, title, desc, place);
 			this.getApplication().getCurrentlyLoggedInUser().getPersonalCalendar().addAppointment(a);
 			//------------------------------------
