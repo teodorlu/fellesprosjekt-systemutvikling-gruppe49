@@ -15,6 +15,7 @@ import application.ApplicationComponent;
 
 import model.Appointment;
 import model.Person;
+import model.Room;
 import model.User;
 import model.Time;
 
@@ -224,6 +225,24 @@ public class DatabaseController extends ApplicationComponent {
 		return rowseffected;
 	}
 	
+	public boolean editAppointment(int ID, String kolonne, String updatedTo){
+		int rowsUpdated = -1;
+		String sql = "UPDATE AVTALE SET "+ kolonne + "=" + incapsulate(updatedTo) + " WHERE AvtaleID="+ID;
+		connect();
+		try {
+			Statement st = con.createStatement();
+			rowsUpdated = st.executeUpdate(sql);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		disconnect();
+		if(rowsUpdated >= 1)
+			return true;
+		return false;
+		
+	}
+	
 	public boolean tryDeleteAppointment(int ID){
 		String sql = "UPDATE AVTALE SET ErAktiv=0 WHERE AvtaleID="+ID;
 		int res=-1;
@@ -241,6 +260,27 @@ public class DatabaseController extends ApplicationComponent {
 		return false;
 	}
 	
+	public List<Room> retrieveAllRooms(){
+		String sql = "SELECT * FROM ROM";
+		List<Room> allRooms = new ArrayList<Room>();
+		try {
+			connect();
+			Statement st = con.createStatement();
+			ResultSet rs = st.executeQuery(sql);
+			
+			while(rs.next()){
+				Room a = new Room(rs.getInt(1), rs.getInt(3), rs.getString(2));
+				allRooms.add(a);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		disconnect();
+		return allRooms;
+		
+		
+	}
+	
 	
 	
 	private String incapsulate(String input){
@@ -252,13 +292,10 @@ public class DatabaseController extends ApplicationComponent {
 		return null;
 	}
 	
-//	public static void main(String[] args) {
-//		DatabaseController dbc = new DatabaseController(null);
-//		dbc.retriveUsernames();
-//
-//		
-//	
-//	}
+	public static void main(String[] args) {
+	DatabaseController dbc = new DatabaseController(null);
+
+	}
 }
 
 
