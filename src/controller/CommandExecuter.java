@@ -175,11 +175,14 @@ public class CommandExecuter extends ApplicationComponent {
 
 	
 	public void delete(String[] array){
-		String ID = "";
+		String IDstring = "";
+		int ID;
 		List<String> input = Arrays.asList(array);
 		int deleteIndex = input.indexOf("delete");
-		ID = getProperty(array, deleteIndex+1);
-		if (DatabaseController.deleteID(ID))
+		IDstring = getProperty(array, deleteIndex+1);
+		ID = Integer.parseInt(IDstring);
+		
+		if (this.getApplication().getDatabaseController().tryDeleteAppointment(ID))
 				System.out.println("The appointment has been deleted");
 			else{
 				System.out.println("This is not a valid appointment ID");
@@ -199,15 +202,18 @@ public class CommandExecuter extends ApplicationComponent {
 			username = getProperty(array ,uIndex+1);
 			Person a;
 			a = this.getApplication().getDatabaseController().retriveUser(username);
-			System.out.println("Brukernavn: "+a.getUsername()+" Fornavn:"+a.getFirstName()+" Etternavn:"+a.getLastName()+" E-mail"+a.getEmail());
-			
+			System.out.println("Brukernavn: "+a.getUsername());
+			System.out.println("Fornavn: "+a.getFirstName());
+			System.out.println("Etternavn: "+a.getLastName());
+			System.out.println("E-mail: "+a.getEmail());
 		}
 		
 		else{
 			//Skriv ut en liste med alle brukernavna
 			usernames = this.getApplication().getDatabaseController().retriveUsernames();
-			for(int i = 0; i < usernames.size()-1; i++){
-				System.out.println(usernames.indexOf(i));
+			for(int i = 0; i < usernames.size(); i++){
+				String name = usernames.get(i);
+				System.out.println(name);
 			}
 		}
 	}
@@ -219,8 +225,9 @@ public class CommandExecuter extends ApplicationComponent {
 		if(input.contains("edit") && input.size() == 1){
 			appointments = this.getApplication().getDatabaseController().retrieveAppointments(this.getApplication().getCurrentlyLoggedInUser());
 			
-			for(int i = 0; i < appointments.size()-1; i++){
-				System.out.println(appointments.indexOf(i));   //Gjør sånn at den bare printer ut AvtaleID og AvtaleTittel
+			for(int i = 0; i < appointments.size(); i++){
+				Appointment a = appointments.get(i);
+				System.out.println("ID: "+a.getID()+" Tittel: "+a.getTitle());   
 			}
 		}
 		

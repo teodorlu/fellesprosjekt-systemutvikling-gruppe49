@@ -68,6 +68,12 @@ public class ConsoleController extends ApplicationComponent {
 				executer.login(arguments);
 			}
 		});
+		
+		commands.put("user", new Command() {
+			void execute(String[] arguments) {
+				executer.user(arguments);
+			}
+		});
 	}
 
 	public java.util.Set<String> getCommands() {
