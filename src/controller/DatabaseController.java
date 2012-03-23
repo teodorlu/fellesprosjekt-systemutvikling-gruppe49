@@ -1,6 +1,7 @@
 package controller;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -8,7 +9,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 
 import application.Application;
@@ -84,7 +84,7 @@ public class DatabaseController extends ApplicationComponent {
 	
 	public boolean newAppointment(Appointment appointment){
 		String title = incapsulate(appointment.getTitle());
-		Date date = appointment.getDate();
+		java.util.Date date = appointment.getDate();
 		java.sql.Date sqlDate = new java.sql.Date(date.getYear(),date.getMonth(),date.getDate());
 		//String owner = incapsulate(this.getApplication().getCurrentlyLoggedInUser().getUsername());
 		String place = incapsulate(appointment.getPlace());
@@ -308,11 +308,47 @@ public class DatabaseController extends ApplicationComponent {
 			e.printStackTrace();
 		}
 		disconnect();
-		return allRooms;
-		
-		
+		return allRooms;	
 	}
 	
+	public boolean isRoomAvailable(String roomID, Date date, Time starttid, Time varighet){
+		boolean isAvailable = true;
+		String sql = "SELECT dato, starttid, varighet FROM AVTALE WHERE avtalerom='"+roomID+"'";
+		date.setYear(date.getYear()-1900);
+		date.setMonth(date.getMonth()-1);
+		Date DBdate = null;
+		Time DBstart = null;
+		Time DBslutt = null;
+		Time sluttid = null;
+		boolean eq = false;
+		try {
+			connect();
+			Statement st = con.createStatement();
+			ResultSet rs = st.executeQuery(sql);
+			
+			while(rs.next()){
+				DBdate = rs.getDate(1);
+				DBstart = new Time( rs.getTime(2).getHours(), rs.getTime(2).getMinutes());
+				DBslutt = new Time ( rs.getTime(2).getHours() + rs.getTime(3).getHours(), rs.getTime(2).getMinutes() + rs.getTime(3).getMinutes());
+				sluttid = new Time(starttid.returnHours()+varighet.returnHours(), starttid.returnMinutes()+varighet.returnMinutes());
+				eq = starttid.between(DBstart, DBslutt);
+				if(date.equals(DBdate)){
+					if( starttid.between(DBstart, DBslutt) || sluttid.between(DBstart, DBslutt)  ){
+						isAvailable = false;
+					}else if (DBstart.between(starttid, sluttid) || DBslutt.between(starttid, sluttid)){
+						isAvailable =false;
+					}
+				}
+				
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		disconnect();
+		
+		
+		return isAvailable ;
+	}
 	
 	
 	private String incapsulate(String input){
@@ -337,6 +373,4 @@ public class DatabaseController extends ApplicationComponent {
 //	
 //	}
 }
-
-
 
