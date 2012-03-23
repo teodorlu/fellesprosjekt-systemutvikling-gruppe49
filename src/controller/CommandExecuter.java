@@ -47,10 +47,15 @@ public class CommandExecuter extends ApplicationComponent {
 	}
 	
 	private boolean isValidInput(String[] input, String format){
-		boolean isValid = true;
+		// Parse format
 		List<String> mandatoryArguments = new LinkedList<String>();
-		Map<String, List<String>> children;
+		List<String> optionalArguments = new LinkedList<String>();
+		Map<String, List<String>> children = new HashMap<String, List<String>>();
+		Map<String, List<String>> mustContainOneOf = new HashMap<String, List<String>>();
+		// TODO parse format
 		
+		boolean isValid = true;
+		// TODO validate
 		return isValid;
 	}
 
