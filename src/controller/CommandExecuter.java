@@ -3,6 +3,7 @@ package controller;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 import model.Person;
+import model.Room;
 import model.User;
 import model.Time;
 import model.Appointment;
@@ -342,6 +344,13 @@ public class CommandExecuter extends ApplicationComponent {
 			
 		}
 		
+		
+		
+	}
+	
+	public void rooms(){		
+		//TODO add user check
+		List<Room> roomList = getApplication().getDatabaseController().retrieveAllRooms();
 		
 		
 	}
