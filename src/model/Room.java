@@ -11,11 +11,11 @@ public class Room {
 	private int capacity;
 	private String location, roomId;
 	
-	public Room(String roomId, int capacity, String location, boolean isAvailable){
+	public Room(String roomId, int capacity, String location){
 		this.roomId = roomId;
 		this.capacity = capacity;
 		this.location = location;
-		this.isAvailable = isAvailable;
+
 	}
 
 	public boolean isAvailable() {

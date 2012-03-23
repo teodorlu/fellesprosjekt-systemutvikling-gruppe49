@@ -23,16 +23,18 @@ public class Meeting extends Appointment {
 			String description, String place, ArrayList<String> participants, Room room) {
 		super(ID, date, startTime, appLength, title, description, place);
 		this.participants = participants;
-		changeRoom(room);
+		//changeRoom(room);
+		this.room = room;
 	}
 	public Meeting( int ID, Date date, Time startTime, Time appLength, String title,
 			String description, String place, ArrayList<String> participants, Room room) {
 		super(ID, date, startTime, appLength, title, description, place);
 		this.participants = participants;
-		changeRoom(room);
+		//changeRoom(room);
+		this.room = room;
 	}
 	
-	public void changeRoom(Room room){
+/*	public void changeRoom(Room room){
 		if (room.isRoomFree()){
 			room.reserveRoom();
 			this.room = room;
@@ -40,6 +42,7 @@ public class Meeting extends Appointment {
 		else
 			System.out.println("This room is already reserved");
 	}
+	*/
 	
 	public Room getRoom(){
 		return this.room;
