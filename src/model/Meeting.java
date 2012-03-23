@@ -24,7 +24,12 @@ public class Meeting extends Appointment {
 		super(ID, date, startTime, appLength, title, description, place);
 		this.participants = participants;
 		changeRoom(room);
-		// TODO Auto-generated constructor stub
+	}
+	public Meeting( int ID, Date date, Time startTime, Time appLength, String title,
+			String description, String place, ArrayList<String> participants, Room room) {
+		super(ID, date, startTime, appLength, title, description, place);
+		this.participants = participants;
+		changeRoom(room);
 	}
 	
 	public void changeRoom(Room room){

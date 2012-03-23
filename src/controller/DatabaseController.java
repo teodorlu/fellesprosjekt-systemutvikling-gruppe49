@@ -351,10 +351,10 @@ public class DatabaseController extends ApplicationComponent {
 		return isAvailable ;
 	}
 	
-	public List<Appointment> retrieveMeetings(User user) {
+	public List<Meeting> retrieveMeetings(User user) {
 
 		String username = user.getUsername();
-		List<Appointment> listOfApp = new ArrayList<Appointment>();
+		List<Meeting> listOfMeetings = new ArrayList<Meeting>();
 		String sql = "SELECT * FROM AVTALE WHERE AvtaleEier='"+username+"' " +
 				"AND ErAktiv=1 AND TYPE='Møte'";
 		try {
@@ -364,34 +364,60 @@ public class DatabaseController extends ApplicationComponent {
 			
 			while(rs.next()){
 				int ID = rs.getInt(1);
+				String roomName = rs.getString(6);
+				Date date = rs.getDate(3);
+				java.sql.Time sTime = rs.getTime(8);
+				java.sql.Time dur = rs.getTime(9);
+				String title = rs.getString(2);
+				String desc = rs.getString(10);
+				String place = rs.getString(7);
+				
+				
 				String sql2 = "SELECT Paminner FROM PAMINNELSE WHERE Sender="+ID+" AND SkalDelta=1";
 				Statement st2 = con.createStatement();
-				ResultSet rs2 = st.executeQuery(sql2);
+				ResultSet rs2 = st2.executeQuery(sql2);
 				ArrayList<String> listOfParticipants = new ArrayList<String>();
 				while (rs2.next()){
 					listOfParticipants.add(rs2.getString(1));
 				}
+				
 				Room room = null;
-				String roomName = rs.getString(6);
-				String sql3 = "SELECT * FROM ROOM WHERE RomID='"+roomName+"'";
+				String sql3 = "SELECT * FROM ROM WHERE RomID='"+roomName+"'";
 				Statement st3 = con.createStatement();
-				ResultSet rs3 = st.executeQuery(sql3);
-				while(rs.next()){
-					room = new Room(rs3.getString(1), rs3.getInt(3), rs.getString(2));
+				ResultSet rs3 = st3.executeQuery(sql3);
+				while(rs3.next()){
+					room = new Room(rs3.getString(1), rs3.getInt(3), rs3.getString(2));
 				}
 				
-				Meeting m = new Meeting(ID, rs.getDate(3), rs.getTime(8), 
-						rs.getTime(9), rs.getString(2), rs.getString(10),
-						rs.getString(7), listOfParticipants, room);
+				Meeting m = new Meeting(ID, date, sTime, dur, title, desc,
+						place, listOfParticipants, room);
+				listOfMeetings.add(m);
 				
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		disconnect();
-		return listOfApp;
+		return listOfMeetings;
 	}
 	
+	public boolean summonToMeeting(String username, int appointmentID){
+		String sql = "INSERT INTO PAMINNELSE VALUES ('"+username+"', " +
+				""+appointmentID+", 'NULL', 0, 'Nytt')";
+		int rowsAffected = -1;
+		connect();
+		try {
+			Statement st = con.createStatement();
+			rowsAffected = st.executeUpdate(sql);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		disconnect();
+		if (rowsAffected >=1)
+			return true;
+		return false;
+	}
 	
 	private String incapsulate(String input){
 		return "'" + input + "'";
@@ -400,12 +426,9 @@ public class DatabaseController extends ApplicationComponent {
 	
 //	public static void main(String[] args) {
 //	DatabaseController dbc = new DatabaseController(null);
-//	Date date = new Date(2012,03,23);
-//	Time start = new Time(15,15);
-//	Time dur = new Time(00,45);
-//	Appointment a = new Appointment(date, start, dur, "test6", "description som er fin", "hjemme");
-//	if(dbc.newAppointment(a))
-//		System.out.println("weeeee");
+//	User u = new User("dzedumpor", "mamma");
+//	System.out.println(dbc.retrieveMeetings(u));
+//
 //	
 //	
 //	
