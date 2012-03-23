@@ -58,6 +58,12 @@ public class ConsoleController extends ApplicationComponent {
 			}
 		});
 		
+		commands.put("summon", new Command() {
+			void execute(String[] arguments) {
+				executer.summon(arguments);
+			}
+		});
+		
 		commands.put("users", new Command() {
 			void execute(String[] arguments){
 				// TODO write executer.users();

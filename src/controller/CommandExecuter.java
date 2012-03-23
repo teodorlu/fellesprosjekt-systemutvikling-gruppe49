@@ -316,8 +316,30 @@ public class CommandExecuter extends ApplicationComponent {
 	
 	public void summon(String[] array){
 		List<String> input = Arrays.asList(array);
+		List<Appointment> allMeetings = this.getApplication().getDatabaseController().retrieveMeetings(this.getApplication().getCurrentlyLoggedInUser());
 		List<String> usernames = this.getApplication().getDatabaseController().retriveUsernames();
-		List<Meeting> allMeetings;
+
+		
+		
+		if(input.size()==1){
+			for(int i = 0; i < allMeetings.size();i++){
+				System.out.println(allMeetings.get(i).getTitle());
+			}
+		}
+		
+		if(allMeetings.size() < 1) System.out.println("Du har ingen møter");
+		
+		if(input.size() > 1){
+			int IDIndex = input.indexOf("summon")+1;
+			
+			
+		}
+	}
+	
+	/*public void summon(String[] array){
+		List<String> input = Arrays.asList(array);
+		List<String> usernames = this.getApplication().getDatabaseController().retriveUsernames();
+		List<Appointment> allMeetings;
 		int summonIndex, ID;
 		Meeting localMeeting;
 		boolean fantMote = false;
@@ -330,7 +352,7 @@ public class CommandExecuter extends ApplicationComponent {
 		for(int i = 0; i < allMeetings.size(); i++){
 			
 			
-			localMeeting = allMeetings.get(i);
+			localMeeting = (Meeting) allMeetings.get(i);
 			if(localMeeting.getID()==ID){
 				for(int j = summonIndex + 2; j < input.size(); j++){
 					if(!localMeeting.getParticipants().contains(getProperty(array,j))){
@@ -343,13 +365,14 @@ public class CommandExecuter extends ApplicationComponent {
 					}
 					else System.out.println("Denne brukeren er allerede lagt til eller finnes ikke");
 				}
-			break;
+//			break;
 			}
 		}
 		if(fantMote == false) System.out.println("Fant ikke ditt møte");
 		
 		
 	}
+	*/
 	
 	
 	public static void main(String args[]) throws ParseException{
