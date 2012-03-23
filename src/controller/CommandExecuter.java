@@ -166,7 +166,7 @@ public class CommandExecuter extends ApplicationComponent {
 			this.getApplication().getDatabaseController().newAppointment(a);
 			//------------------------------------
 		}
-		else System.out.println("Har ikke med alle parameterne til appointment");
+		else System.out.println("Du må ha med -title <title>, -date date, -s <starttid>, -d <varighet>, med dato på formen YYYY-MM-DD og tid på formen HH:MM.");
 	}
 	
 	
@@ -457,11 +457,8 @@ public class CommandExecuter extends ApplicationComponent {
 	
 	public static void main(String args[]) throws ParseException{
 		CommandExecuter ce = new CommandExecuter(null);
-//		String[] s = {"2012-03-23"};
-//		ce.stringToDate(s, 0);
-		Date date = new Date();
-		System.out.println(date);
-		Time newdate = new Time(date.getHours(),date.getMinutes());
-		System.out.println((newdate));
+		String[] s = {"2012-03-23"};
+		ce.stringToDate(s, 0);
+	
 	}
 }
