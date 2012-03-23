@@ -357,24 +357,33 @@ public class CommandExecuter extends ApplicationComponent {
 	        return dateFormat.format(date);
 	    }
 	
+	@SuppressWarnings("deprecation")
 	public void rooms(){		
 		//TODO add user check
-//		List<Room> roomList = getApplication().getDatabaseController().retrieveAllRooms();
-//		int roomListSize = roomList.size();
-		String date = getDateTime();
-		System.out.println("" + date);
-//		for (int i=0; i<roomListSize; i++){
-//		
-//		}
-		
+		List<Room> roomList = getApplication().getDatabaseController().retrieveAllRooms();
+		int roomListSize = roomList.size();
+		Date date = new Date();
+		StringBuilder returnStatement = new StringBuilder();
+		boolean availableRoomCheck = false;
+		for (int i=0; i<roomListSize; i++){
+			if(getApplication().getDatabaseController().isRoomAvailable(roomList.get(i).getRoomId(),
+			  (java.sql.Date) date, new Time(date.getHours(),date.getMinutes()), new Time(02,00))){
+				returnStatement.append(roomList.get(i).getRoomId() + " ");
+				availableRoomCheck = true;
+			}
+		}
+		if (availableRoomCheck)
+			System.out.println("Disse rommene er ledige: " +returnStatement);
+		else
+			System.out.println("Det er desverre ingen rom ledige");
+			
 	}
 	
 	
 	public static void main(String args[]) throws ParseException{
 		CommandExecuter ce = new CommandExecuter(null);
-//		String[] s = {"2012-03-23"};
-//		ce.stringToDate(s, 0);
-		ce.rooms();
+		String[] s = {"2012-03-23"};
+		ce.stringToDate(s, 0);
 	
 	}
 }
