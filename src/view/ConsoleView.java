@@ -17,8 +17,8 @@ public class ConsoleView extends ApplicationComponent{
 		this.output = output;
 	}
 	
-	public void present(String message){
-		output.print(message);
+	public void println(String message){
+		output.println(message);
 	}
 	
 	public void welcome(){

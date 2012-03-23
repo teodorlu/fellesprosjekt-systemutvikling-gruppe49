@@ -5,7 +5,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import model.Person;
 import model.User;
@@ -19,8 +22,42 @@ import application.ApplicationComponent;
 
 public class CommandExecuter extends ApplicationComponent {
 	
+	private HashMap<String, String> doc;
+	
 	public CommandExecuter(Application app) {
 		super(app);
+		buildCommandDocumentation();
+	}
+	
+	private void buildCommandDocumentation(){
+		doc = new HashMap<String, String>();
+		
+		doc.put("register", "register -u <username> -p <password> -fn <firstName> -ln <lastName> -email <email>");
+		doc.put("user", "user <brukernavn>");
+		doc.put("login", "login <username> <password>");
+		doc.put("appointment", "appointment -title <title> -date <date> -s <start> -e <end> [ -desc <description> -place <place> ]");
+		doc.put("delete", "delete <id>");
+		doc.put("edit", "edit <id> [ -title <title> -date <date> -s <start> -e <end> -desc <description> -place <place> ]");
+		doc.put("summon", "summon <id> <username1> [ <username2> <username3> ... ]");
+		doc.put("unsummon", "unsummon <id> <username1> [<username2> <username3> ... ]");
+		doc.put("reply", "reply <id> ( Y/N )");
+		doc.put("room", "room");
+		doc.put("reserve", "reserve -a <appointmentID> ( -r <roomID> / -c <capacity> )");
+		doc.put("calendar", "calendar [ -w <week> [ -y <year ] -u <username1> <username2> <username3> ... ]");
+		doc.put("notifications", "notifications");
+	}
+	
+	private boolean isValidInput(String[] input, String format){
+		// Parse format
+		List<String> mandatoryArguments = new LinkedList<String>();
+		List<String> optionalArguments = new LinkedList<String>();
+		Map<String, List<String>> children = new HashMap<String, List<String>>();
+		Map<String, List<String>> mustContainOneOf = new HashMap<String, List<String>>();
+		// TODO parse format
+		
+		boolean isValid = true;
+		// TODO validate
+		return isValid;
 	}
 
 	public void register(String[] array){
@@ -169,14 +206,10 @@ public class CommandExecuter extends ApplicationComponent {
 		String _date = array[index];
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 		Date date = df.parse(_date);
-		return date;	
+		return date;
 	}
 	
-
-	
-
-
-	//Denne metoden har ikke sikring for at folk er logget på 
+	// TODO check if logged in
 	public void delete(String[] array){		
 		String IDstring = "-1";
 		int ID;
@@ -381,5 +414,4 @@ public class CommandExecuter extends ApplicationComponent {
 		ce.stringToDate(s, 0);
 	
 	}
-
 }
