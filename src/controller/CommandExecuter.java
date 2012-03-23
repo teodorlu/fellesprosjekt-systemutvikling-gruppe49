@@ -154,7 +154,7 @@ public class CommandExecuter extends ApplicationComponent {
 				time = new Time((Integer.parseInt(s.substring(0, 2))), Integer.parseInt(s.substring(3, 5)));
 			}
 			
-			if(length == 4){
+			else if(length == 4){
 				time = new Time((Integer.parseInt(s.substring(0, 1))), Integer.parseInt(s.substring(2, 4)));
 			}
 			
