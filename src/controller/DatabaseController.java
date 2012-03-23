@@ -241,7 +241,7 @@ public class DatabaseController extends ApplicationComponent {
 	
 	public int[] deleteUser(String username){
 		String sql = "DELETE FROM ANSATT WHERE BrukerNavn='"+username+"'";
-		String sql2 = "DELETE FROM PAMINNELSE WHERE Paminner='"+username+"'";
+		String sql2 = "DELETE FROM PAMINNELSE WHERE SendtTil='"+username+"'";
 		int rowseffected[] = {-1,-1};
 		connect();
 		try {
@@ -373,7 +373,7 @@ public class DatabaseController extends ApplicationComponent {
 				String place = rs.getString(7);
 				
 				
-				String sql2 = "SELECT Paminner FROM PAMINNELSE WHERE Sender="+ID+" AND SkalDelta=1";
+				String sql2 = "SELECT SendtTil FROM PAMINNELSE WHERE AvtaleID="+ID+" AND SkalDelta=1";
 				Statement st2 = con.createStatement();
 				ResultSet rs2 = st2.executeQuery(sql2);
 				ArrayList<String> listOfParticipants = new ArrayList<String>();
