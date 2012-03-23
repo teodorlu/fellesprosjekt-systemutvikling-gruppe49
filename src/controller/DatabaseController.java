@@ -401,6 +401,23 @@ public class DatabaseController extends ApplicationComponent {
 		return listOfMeetings;
 	}
 	
+	public boolean summonToMeeting(String username, int appointmentID){
+		String sql = "INSERT INTO PAMINNELSE VALUES ('"+username+"', " +
+				""+appointmentID+", 'NULL', 0, 'Nytt')";
+		int rowsAffected = -1;
+		connect();
+		try {
+			Statement st = con.createStatement();
+			rowsAffected = st.executeUpdate(sql);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		disconnect();
+		if (rowsAffected >=1)
+			return true;
+		return false;
+	}
 	
 	private String incapsulate(String input){
 		return "'" + input + "'";
