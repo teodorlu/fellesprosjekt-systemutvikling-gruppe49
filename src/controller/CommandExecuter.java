@@ -349,8 +349,8 @@ public class CommandExecuter extends ApplicationComponent {
 	
 	public void summon(String[] array){
 		List<String> input = Arrays.asList(array);
-		List<Appointment> allMeetings = this.getApplication().getDatabaseController().retrieveMeetings(this.getApplication().getCurrentlyLoggedInUser());
-		List<String> usernames = this.getApplication().getDatabaseController().retriveUsernames();
+		List<Appointment> allMeetings = this.getApplication().getDatabaseController().retrieveMeetings(this.getApplication().getCurrentlyLoggedInUser());  //Laster inn en liste med appointments
+		
 
 		
 		
@@ -364,6 +364,27 @@ public class CommandExecuter extends ApplicationComponent {
 		
 		if(input.size() > 1){
 			int IDIndex = input.indexOf("summon")+1;
+			int ID = Integer.parseInt(getProperty(array, IDIndex));
+			
+			List<String> usernames = this.getApplication().getDatabaseController().retriveUsernames();
+			
+			for(int i = 0; i < allMeetings.size(); i++){
+				Meeting localMeeting = (Meeting) allMeetings.get(i);				//Cast til meeting fra appointment
+				if(localMeeting.getID()==ID){										//Funnet riktig Møte
+					for(int j = IDIndex+1; j < input.size(); j++){					//Går gjennom alle navna du skrev inn
+						
+						if(localMeeting.getParticipants().contains(getProperty(array, j))) System.out.println(getProperty(array, j)+" er allerede lagt til");  //Sjekker om brukeren allerede er i møtet, om ja sysout
+						
+						else {
+							if(usernames.contains(getProperty(array,j))){			//Sjekker om brukeren finnes i lista over brukere
+								this.getApplication().getDatabaseController().summonToMeeting(getProperty(array, j), localMeeting.getID());    //SummonToMeeting
+								System.out.println("Møteinkalling sendt til "+getProperty(array,j));										   //Output med navnet
+							}
+						}
+					}
+				}
+			}
+			
 			
 			
 		}
