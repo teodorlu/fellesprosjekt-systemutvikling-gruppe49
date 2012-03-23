@@ -38,7 +38,7 @@ public class CommandExecuter extends ApplicationComponent {
 		doc.put("delete", "delete <id>");
 		doc.put("edit", "edit <id> [ -title <title> -date <date> -s <start> -e <end> -desc <description> -place <place> ]");
 		doc.put("summon", "summon <id> <username1> [ <username2> <username3> ... ]");
-		doc.put("unsummon", "unsummon <id> <username1> [<username2> <username3> ... ]");
+		doc.put("unsummon", "unsummon <id> <username1> [ <username2> <username3> ... ]");
 		doc.put("reply", "reply <id> ( Y/N )");
 		doc.put("room", "room");
 		doc.put("reserve", "reserve -a <appointmentID> ( -r <roomID> / -c <capacity> )");
