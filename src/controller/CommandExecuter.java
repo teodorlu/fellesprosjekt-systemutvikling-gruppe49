@@ -20,6 +20,9 @@ import model.Appointment;
 import application.Application;
 import application.ApplicationComponent;
 
+import java.util.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 public class CommandExecuter extends ApplicationComponent {
 	
@@ -348,18 +351,30 @@ public class CommandExecuter extends ApplicationComponent {
 		
 	}
 	
+	 private String getDateTime() {
+	        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+	        Date date = new Date();
+	        return dateFormat.format(date);
+	    }
+	
 	public void rooms(){		
 		//TODO add user check
-		List<Room> roomList = getApplication().getDatabaseController().retrieveAllRooms();
-		
+//		List<Room> roomList = getApplication().getDatabaseController().retrieveAllRooms();
+//		int roomListSize = roomList.size();
+		String date = getDateTime();
+		System.out.println("" + date);
+//		for (int i=0; i<roomListSize; i++){
+//		
+//		}
 		
 	}
 	
 	
 	public static void main(String args[]) throws ParseException{
 		CommandExecuter ce = new CommandExecuter(null);
-		String[] s = {"2012-03-23"};
-		ce.stringToDate(s, 0);
+//		String[] s = {"2012-03-23"};
+//		ce.stringToDate(s, 0);
+		ce.rooms();
 	
 	}
 }
