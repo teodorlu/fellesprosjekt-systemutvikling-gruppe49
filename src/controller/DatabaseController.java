@@ -15,6 +15,7 @@ import application.Application;
 import application.ApplicationComponent;
 
 import model.Appointment;
+import model.Meeting;
 import model.Person;
 import model.Room;
 import model.User;
@@ -152,7 +153,7 @@ public class DatabaseController extends ApplicationComponent {
 			
 			while(rs.next()){
 				Appointment a = new Appointment( rs.getInt(1), rs.getDate(3), rs.getTime(8), 
-						rs.getTime(9), rs.getString(2), rs.getString(10), rs.getString(6));
+						rs.getTime(9), rs.getString(2), rs.getString(10), rs.getString(7));
 				listOfApp.add(a);
 			}
 		} catch (SQLException e) {
@@ -301,7 +302,7 @@ public class DatabaseController extends ApplicationComponent {
 			ResultSet rs = st.executeQuery(sql);
 			
 			while(rs.next()){
-				Room a = new Room(rs.getInt(1), rs.getInt(3), rs.getString(2));
+				Room a = new Room(rs.getString(1), rs.getInt(3), rs.getString(2));
 				allRooms.add(a);
 			}
 		} catch (SQLException e) {
@@ -350,15 +351,52 @@ public class DatabaseController extends ApplicationComponent {
 		return isAvailable ;
 	}
 	
+	public List<Appointment> retrieveMeetings(User user) {
+
+		String username = user.getUsername();
+		List<Appointment> listOfApp = new ArrayList<Appointment>();
+		String sql = "SELECT * FROM AVTALE WHERE AvtaleEier='"+username+"' " +
+				"AND ErAktiv=1 AND TYPE='Møte'";
+		try {
+			connect();
+			Statement st = con.createStatement();
+			ResultSet rs = st.executeQuery(sql);
+			
+			while(rs.next()){
+				int ID = rs.getInt(1);
+				String sql2 = "SELECT Paminner FROM PAMINNELSE WHERE Sender="+ID+" AND SkalDelta=1";
+				Statement st2 = con.createStatement();
+				ResultSet rs2 = st.executeQuery(sql2);
+				ArrayList<String> listOfParticipants = new ArrayList<String>();
+				while (rs2.next()){
+					listOfParticipants.add(rs2.getString(1));
+				}
+				Room room = null;
+				String roomName = rs.getString(6);
+				String sql3 = "SELECT * FROM ROOM WHERE RomID='"+roomName+"'";
+				Statement st3 = con.createStatement();
+				ResultSet rs3 = st.executeQuery(sql3);
+				while(rs.next()){
+					room = new Room(rs3.getString(1), rs3.getInt(3), rs.getString(2));
+				}
+				
+				Meeting m = new Meeting(ID, rs.getDate(3), rs.getTime(8), 
+						rs.getTime(9), rs.getString(2), rs.getString(10),
+						rs.getString(7), listOfParticipants, room);
+				
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		disconnect();
+		return listOfApp;
+	}
+	
 	
 	private String incapsulate(String input){
 		return "'" + input + "'";
 	}
 	
-	private String sqlInsert(String tabellnavn, Collection<String> properties){
-		// TODO: write
-		return null;
-	}
 	
 //	public static void main(String[] args) {
 //	DatabaseController dbc = new DatabaseController(null);
