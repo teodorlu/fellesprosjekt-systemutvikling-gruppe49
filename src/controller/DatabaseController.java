@@ -86,7 +86,7 @@ public class DatabaseController extends ApplicationComponent {
 		String title = incapsulate(appointment.getTitle());
 		java.util.Date date = appointment.getDate();
 		java.sql.Date sqlDate = new java.sql.Date(date.getYear(),date.getMonth(),date.getDate());
-		//String owner = incapsulate(this.getApplication().getCurrentlyLoggedInUser().getUsername());
+		String owner = incapsulate(this.getApplication().getCurrentlyLoggedInUser().getUsername());
 		String place = incapsulate(appointment.getPlace());
 		Time startTime = appointment.getStartTime();
 		java.sql.Time sqlStartTime = new java.sql.Time(startTime.returnHours(),startTime.returnMinutes(),00);
@@ -95,7 +95,7 @@ public class DatabaseController extends ApplicationComponent {
 		String desc = incapsulate(appointment.getDescription());
 		String sql = "INSERT INTO AVTALE (Tittel, Dato, AvtaleEier, TYPE, " +
 				"Sted, Starttid, Varighet, Beskrivelse, ErAktiv )" +
-				"VALUES ( " + title + ", '"+sqlDate+"', 'MAGRODAHL', " +
+				"VALUES ( " + title + ", '"+sqlDate+"', "+owner+", " +
 				"'Avtale', "+ place + ", '"+sqlStartTime+"', '"+sqlDuration+"', " + desc +", 1)";
 		connect();
 		int rowsAffected = -1;
