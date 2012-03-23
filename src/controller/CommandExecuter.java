@@ -11,6 +11,7 @@ import model.Person;
 import model.User;
 import model.Time;
 import model.Appointment;
+import model.Meeting;
 
 import application.Application;
 import application.ApplicationComponent;
@@ -309,6 +310,43 @@ public class CommandExecuter extends ApplicationComponent {
 			
 		}
 		
+		
+		
+	}
+	
+	public void summon(String[] array){
+		List<String> input = Arrays.asList(array);
+		List<String> usernames = this.getApplication().getDatabaseController().retriveUsernames();
+		List<Meeting> allMeetings;
+		int summonIndex, ID;
+		Meeting localMeeting;
+		boolean fantMote = false;
+		
+		allMeetings = this.getApplication().getDatabaseController().retrieveMeetings(this.getApplication().getCurrentlyLoggedInUser());
+		
+		summonIndex = input.indexOf("summon");
+		
+		ID = Integer.parseInt(getProperty(array, summonIndex+1));
+		for(int i = 0; i < allMeetings.size(); i++){
+			
+			
+			localMeeting = allMeetings.get(i);
+			if(localMeeting.getID()==ID){
+				for(int j = summonIndex + 2; j < input.size(); j++){
+					if(!localMeeting.getParticipants().contains(getProperty(array,j))){
+						if(usernames.contains(getProperty(array,j))){
+							//Lag ny notification med møteID og username
+							System.out.println("Denne brukeren finnes og her skal det lages notification: "+usernames.get(j));
+							fantMote = true;
+						}
+						else System.out.println("Brukernavn "+getProperty(array,j)+" finnes ikke!");
+					}
+					else System.out.println("Denne brukeren er allerede lagt til eller finnes ikke");
+				}
+			break;
+			}
+		}
+		if(fantMote == false) System.out.println("Fant ikke ditt møte");
 		
 		
 	}
