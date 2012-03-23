@@ -12,18 +12,18 @@ public class Meeting extends Appointment {
 	private String title;
 	private String description;
 	private String place; // denne er vel null på meeting? 
-	private ArrayList<Person> participants;
+	private ArrayList<String> participants;
 	private Room room;
+	private int ID;
 	
 	
 	
 	
-	public Meeting(Date date, Time startTime, Time appLength, String title,
-			String description, String place, ArrayList<Person> participants, Room room) {
-		super(date, startTime, appLength, title, description, place);
+	public Meeting( int ID, java.sql.Date date, java.sql.Time startTime, java.sql.Time appLength, String title,
+			String description, String place, ArrayList<String> participants, Room room) {
+		super(ID, date, startTime, appLength, title, description, place);
 		this.participants = participants;
 		changeRoom(room);
-		this.participants = participants;
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -40,21 +40,21 @@ public class Meeting extends Appointment {
 		return this.room;
 	}
 	
-	public ArrayList<Person> getParticipants(){
+	public ArrayList<String> getParticipants(){
 		return this.participants;
 	}
 
-	public void addParticipant(Person person){
-		if (participants.contains(person))
+	public void addParticipant(String username){
+		if (participants.contains(username))
 			System.out.println("This person is already in the meeting");
 		
 		else
-			participants.add(person);
+			participants.add(username);
 	}
 	
-	public void removeParticipant(Person person){
-		if (participants.contains(person))
-			participants.remove(person);
+	public void removeParticipant(String username){
+		if (participants.contains(username))
+			participants.remove(username);
 		
 		else
 			System.out.println("This person is not in the meeting");
@@ -76,6 +76,9 @@ public class Meeting extends Appointment {
 		System.out.println("" + this.description);
 	}
 	
+	public int getID(){
+		return this.ID;
+	}
 
 	
 }

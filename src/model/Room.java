@@ -7,13 +7,12 @@ package model;
 
 public class Room {
 	
-	private int roomId;
 	private boolean Available;
 	private int capacity;
-	private String location;
+	private String location, roomId;
 	private Meeting sender;
 	
-	public Room(int roomId, int capacity, String location, Meeting sender){
+	public Room(String roomId, int capacity, String location, Meeting sender){
 		this.roomId = roomId;
 		this.capacity = capacity;
 		this.Available = true;
@@ -21,7 +20,7 @@ public class Room {
 		this.sender = sender;
 		
 	}
-	public Room(int roomId, int capacity, String location){
+	public Room(String roomId, int capacity, String location){
 		this.roomId = roomId;
 		this.capacity = capacity;
 		this.location = location;
