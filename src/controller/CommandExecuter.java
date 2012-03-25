@@ -6,9 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 import model.Person;
 import model.Room;
@@ -46,19 +44,6 @@ public class CommandExecuter extends ApplicationComponent {
 		doc.put("reserve", "reserve -a <appointmentID> ( -r <roomID> / -c <capacity> )");
 		doc.put("calendar", "calendar [ -w <week> [ -y <year ] -u <username1> <username2> <username3> ... ]");
 		doc.put("notifications", "notifications");
-	}
-	
-	private boolean isValidInput(String[] input, String format){
-		// Parse format
-		List<String> mandatoryArguments = new LinkedList<String>();
-		List<String> optionalArguments = new LinkedList<String>();
-		Map<String, List<String>> children = new HashMap<String, List<String>>();
-		Map<String, List<String>> mustContainOneOf = new HashMap<String, List<String>>();
-		// TODO parse format
-		
-		boolean isValid = true;
-		// TODO validate
-		return isValid;
 	}
 
 	public void register(String[] array){
@@ -456,9 +441,8 @@ public class CommandExecuter extends ApplicationComponent {
 	
 	
 	public static void main(String args[]) throws ParseException{
-		CommandExecuter ce = new CommandExecuter(null);
 		String[] s = {"2012-03-23"};
-		ce.stringToDate(s, 0);
+		CommandExecuter.stringToDate(s, 0);
 	
 	}
 }
