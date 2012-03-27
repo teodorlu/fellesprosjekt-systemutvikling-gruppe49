@@ -1,9 +1,5 @@
 package application;
 
-import model.*;
-import view.*;
-import controller.*;
-
 public abstract class ApplicationComponent {
 	
 	private Application app;
