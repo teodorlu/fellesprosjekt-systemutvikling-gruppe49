@@ -46,7 +46,7 @@ public class ConsoleView extends ApplicationComponent{
 //	}
 	
 	public void showCommands(Iterable<String> commands) {
-		LinkedList<Object> objects = new LinkedList<>();
+		LinkedList<Object> objects = new LinkedList<Object>();
 		for (String command : commands)
 			objects.add(command);
 		showTitledList("Commands", objects);
