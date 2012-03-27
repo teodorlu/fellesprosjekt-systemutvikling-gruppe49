@@ -548,6 +548,22 @@ public class DatabaseController extends ApplicationComponent {
 		disconnect();
 		return listOfMeetingsAndAppointments;
 	}
+	public boolean unsummonToMeeting(String username, int appointmentID){
+		String sql = "DELETE FROM PAMINNELSE WHERE AvtaleID='"+appointmentID+"' AND SendtTil='"+username+"'";
+		int rowsAffected = -1;
+		connect();
+		try {
+			Statement st = con.createStatement();
+			rowsAffected = st.executeUpdate(sql);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		disconnect();
+		if (rowsAffected >=1)
+			return true;
+		return false;
+	}
 
 	public static void main(String[] args) {
 		DatabaseController dbc = new DatabaseController(null);
