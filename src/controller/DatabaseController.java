@@ -398,7 +398,7 @@ public class DatabaseController extends ApplicationComponent {
 	
 	public boolean summonToMeeting(String username, int appointmentID){
 		String sql = "INSERT INTO PAMINNELSE VALUES ('"+username+"', " +
-				""+appointmentID+", 'NULL', 0, 'Nytt')";
+				""+appointmentID+", 'NULL', -1, 'Nytt')";
 		int rowsAffected = -1;
 		connect();
 		try {
@@ -421,12 +421,11 @@ public class DatabaseController extends ApplicationComponent {
 	
 //	public static void main(String[] args) {
 //		DatabaseController dbc = new DatabaseController(null);
-//		User u = new User("magrodahl", "mamma");
-//		List<Appointment> b = dbc.retrieveAppointments(u);
+//		User u = new User("dzedumpor", "mamma");
+//		List<Meeting> b = dbc.retrieveMeetings(u);
 //
 //		for (int i = 0; i < b.size(); i++) {
-//			System.out.println(b.get(i).getDate());
-//			System.out.println(b.get(i).getStartTime());
+//			System.out.println(b.get(i).getID());
 //		}
 //
 //	}
