@@ -6,11 +6,10 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 import model.Person;
+import model.Room;
 import model.User;
 import model.Time;
 import model.Appointment;
@@ -39,25 +38,12 @@ public class CommandExecuter extends ApplicationComponent {
 		doc.put("delete", "delete <id>");
 		doc.put("edit", "edit <id> [ -title <title> -date <date> -s <start> -e <end> -desc <description> -place <place> ]");
 		doc.put("summon", "summon <id> <username1> [ <username2> <username3> ... ]");
-		doc.put("unsummon", "unsummon <id> <username1> [<username2> <username3> ... ]");
+		doc.put("unsummon", "unsummon <id> <username1> [ <username2> <username3> ... ]");
 		doc.put("reply", "reply <id> ( Y/N )");
 		doc.put("room", "room");
 		doc.put("reserve", "reserve -a <appointmentID> ( -r <roomID> / -c <capacity> )");
 		doc.put("calendar", "calendar [ -w <week> [ -y <year ] -u <username1> <username2> <username3> ... ]");
 		doc.put("notifications", "notifications");
-	}
-	
-	private boolean isValidInput(String[] input, String format){
-		// Parse format
-		List<String> mandatoryArguments = new LinkedList<String>();
-		List<String> optionalArguments = new LinkedList<String>();
-		Map<String, List<String>> children = new HashMap<String, List<String>>();
-		Map<String, List<String>> mustContainOneOf = new HashMap<String, List<String>>();
-		// TODO parse format
-		
-		boolean isValid = true;
-		// TODO validate
-		return isValid;
 	}
 
 	public void register(String[] array){
@@ -165,7 +151,7 @@ public class CommandExecuter extends ApplicationComponent {
 			this.getApplication().getDatabaseController().newAppointment(a);
 			//------------------------------------
 		}
-		else System.out.println("Har ikke med alle parameterne til appointment");
+		else System.out.println("Du må ha med -title <title>, -date date, -s <starttid>, -d <varighet>, med dato på formen YYYY-MM-DD og tid på formen HH:MM.");
 	}
 	
 	
@@ -431,11 +417,32 @@ public class CommandExecuter extends ApplicationComponent {
 	}
 	*/
 	
+	@SuppressWarnings("deprecation")
+	public void rooms(){		
+		//TODO add user check
+		List<Room> roomList = getApplication().getDatabaseController().retrieveAllRooms();
+		int roomListSize = roomList.size();
+		Date date = new Date();
+		StringBuilder returnStatement = new StringBuilder();
+		boolean availableRoomCheck = false;
+		for (int i=0; i<roomListSize; i++){
+			if(getApplication().getDatabaseController().isRoomAvailable(roomList.get(i).getRoomId(),
+			  (java.sql.Date) date, new Time(date.getHours(),date.getMinutes()), new Time(02,00))){
+				returnStatement.append(roomList.get(i).getRoomId() + " ");
+				availableRoomCheck = true;
+			}
+		}
+		if (availableRoomCheck)
+			System.out.println("Disse rommene er ledige: " +returnStatement);
+		else
+			System.out.println("Det er desverre ingen rom ledige");
+			
+	}
+	
 	
 	public static void main(String args[]) throws ParseException{
-		CommandExecuter ce = new CommandExecuter(null);
 		String[] s = {"2012-03-23"};
-		ce.stringToDate(s, 0);
+		CommandExecuter.stringToDate(s, 0);
 	
 	}
 }
