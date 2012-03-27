@@ -86,9 +86,5 @@ public class Meeting extends Appointment {
 		System.out.println("" + this.description);
 	}
 	
-	public int getID(){
-		return this.ID;
-	}
-
 	
 }
