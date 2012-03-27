@@ -340,11 +340,7 @@ public class CommandExecuter extends ApplicationComponent {
 
 		
 		
-		if(input.size()==1){
-			for(int i = 0; i < allMeetings.size();i++){
-				System.out.println(allMeetings.get(i).getTitle());
-			}
-		}
+		if(input.size()==1) System.out.println(doc.get("summon"));
 		
 		if(allMeetings.size() < 1) System.out.println("Du har ingen møter");
 		
@@ -366,10 +362,14 @@ public class CommandExecuter extends ApplicationComponent {
 					
 						if(!usernames.contains(getProperty(array,j)))			//Sjekker om brukeren finnes i lista over brukere
 							continue;
-						
-						this.getApplication().getDatabaseController().summonToMeeting(getProperty(array, j), localMeeting.getID());    //SummonToMeeting
-						System.out.println("Møteinkalling sendt til "+getProperty(array,j));										   //Output med navnet
-					
+
+						this.getApplication()
+								.getDatabaseController()
+								.summonToMeeting(getProperty(array, j),
+										localMeeting.getID()); // SummonToMeeting
+						System.out.println("Møteinkalling sendt til "
+								+ getProperty(array, j)); // Output med navnet
+
 					}
 				}
 			}
