@@ -618,8 +618,23 @@ public class DatabaseController extends ApplicationComponent {
 		
 	}
 	
-	public void updateSummon(String updatedORdeleted){
-		String sql = "UPDATE PAMINNELSE";
+	public void updateSummon(int avtaleID, String updatedORdeleted){
+		String sql = "";
+		if(updatedORdeleted.equals("updated"))
+			sql = "UPDATE PAMINNELSE SET SkalDelta=-1, TYPE='Oppdatert', " +
+					"BegrunnetSvar='NULL' WHERE AvtaleID="+avtaleID;
+		else if(updatedORdeleted.equals("deleted"))
+			sql = "UPDATE PAMINNELSE SET SkalDelta=-1, TYPE='Slettet', " +
+					"BegrunnetSvar='NULL' WHERE AvtaleID="+avtaleID;
+		connect();
+		try {
+			Statement st = con.createStatement();
+			st.executeUpdate(sql);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		disconnect();
 	}
 
 	private String incapsulate(String input) {
