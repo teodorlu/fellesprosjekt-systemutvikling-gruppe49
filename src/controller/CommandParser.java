@@ -1,10 +1,13 @@
 package controller;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
+import javax.management.ImmutableDescriptor;
 
 /**
  * 
@@ -16,16 +19,15 @@ import java.util.Map;
 
 public class CommandParser {
 	
-	private Map<String, String> explicitArguments;
+	private Map<String, String> explicitArgumentToParameterName;
 	private List<String> implicitArguments;
 	private boolean[] hasParsed;
 	private String ignoredCharacters;
 	private boolean lastArgumentCanBeMultiple;
 	private static String PREVIOUS_MULTIPLE_IDENTIFIER;
-	private Map<String, Integer> postionOf;
 	
 	public CommandParser(String[] format) {
-		explicitArguments = new LinkedHashMap<String, String>();
+		explicitArgumentToParameterName = new LinkedHashMap<String, String>();
 		implicitArguments = new LinkedList<String>();
 		hasParsed = new boolean[format.length];
 		hasParsed[0] = true;
@@ -34,17 +36,17 @@ public class CommandParser {
 		parseFormat(format);
 	}
 	
-	public Map<String, String> parseInput(String [] input) {
-		Map<String, String> inputMapping = new HashMap<String, String>();
-		
-		// TODO
-		// Need a system for translating input to a map -> location of input is important.
-		// 1 - fill arguments from List<implicit>
-		// 2 - fill arguments from Map<Explicit>
-		// 3 - check for recurring argument
-		
-		return inputMapping;
-	}
+//	public Map<String, String> parseInput(String [] input) {
+//		Map<String, String> inputMapping = new HashMap<String, String>();
+//		
+//		// TODO
+//		// Need a system for translating input to a map -> location of input is important.
+//		// 1 - fill arguments from List<implicit>
+//		// 2 - fill arguments from Map<Explicit>
+//		// 3 - check for recurring argument
+//		
+//		return inputMapping;
+//	}
 	
 	private void parseFormat(String[] format) {
 		for (int i = 0; i < format.length; i++) {
@@ -62,7 +64,7 @@ public class CommandParser {
 			}
 			
 			if (isParameter(word)) {
-				explicitArguments.put(word, stripped(format[i+1]));
+				explicitArgumentToParameterName.put(stripped(format[i+1]), word);
 				hasParsed[i] = true;
 				hasParsed[i+1] = true;
 				continue;
@@ -117,7 +119,7 @@ public class CommandParser {
 	public String toString() {
 		StringBuilder ret = new StringBuilder();
 		ret.append("Parser:\n");
-		ret.append("explicits: " + explicitArguments + "\n");
+		ret.append("explicits: " + explicitArgumentToParameterName + "\n");
 		ret.append("implicits: " + implicitArguments + "\n");
 		
 		if (lastArgumentCanBeMultiple)
@@ -127,11 +129,33 @@ public class CommandParser {
 	}
 
 	private Object getMultipleAllowedOfName() {
-		if (!explicitArguments.isEmpty()) {
-			Object[] values = explicitArguments.values().toArray();
+		if (!explicitArgumentToParameterName.isEmpty()) {
+			Object[] values = explicitArgumentToParameterName.keySet().toArray();
 			return values[values.length-1];
 		}
 		return implicitArguments.get(implicitArguments.size() - 1);
+	}
+	
+	public Map<String, String> parseInput(String[] inputArray) {
+		List<String> input = Arrays.asList(inputArray);
+		HashMap<String, String> parametersToArguments = new HashMap<String, String>();
+		
+		if (input.size() < 1)
+			throw new IllegalArgumentException();
+		
+		for (int i = 1; i < input.size(); i++) {
+			String s = input.get(i);
+			
+			if ( i <= implicitArguments.size() ) {
+				
+				
+				
+			}
+				
+		}
+		
+		// TODO
+		return parametersToArguments;
 	}
 
 	@SuppressWarnings("unused")
