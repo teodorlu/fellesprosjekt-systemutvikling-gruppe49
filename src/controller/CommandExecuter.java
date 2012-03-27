@@ -129,7 +129,7 @@ public class CommandExecuter extends ApplicationComponent {
 	}
 
 	public void appointment(String[] array) throws ParseException{
-		if(isLoggedIn()==true){
+		if(isLoggedIn()){
 			List<String> input = Arrays.asList(array);
 			String title = "", desc = "", place = "", sStart, sEnd;
 			Date date;
@@ -219,9 +219,8 @@ public class CommandExecuter extends ApplicationComponent {
 		return date;
 	}
 
-	// TODO check if logged in
 	public void delete(String[] array){		
-		if(isLoggedIn()==true){
+		if(isLoggedIn()){
 			String IDstring = "-1";
 			int ID;
 			List<String> input = Arrays.asList(array);
@@ -239,7 +238,7 @@ public class CommandExecuter extends ApplicationComponent {
 	}
 
 	public void user(String[] array){
-		if(isLoggedIn()==true){
+		if(isLoggedIn()){
 			List<String> input = Arrays.asList(array);
 			List<String> usernames;
 			String username;
@@ -260,7 +259,7 @@ public class CommandExecuter extends ApplicationComponent {
 	}
 
 	public void edit(String[] array){
-		if(isLoggedIn()==true){
+		if(isLoggedIn()){
 
 			List<String> input = Arrays.asList(array);
 			List<Appointment> appointments;
@@ -342,7 +341,7 @@ public class CommandExecuter extends ApplicationComponent {
 	}
 
 	public void summon(String[] array){
-		if(isLoggedIn()==true){
+		if(isLoggedIn()){
 
 			List<String> input = Arrays.asList(array);
 

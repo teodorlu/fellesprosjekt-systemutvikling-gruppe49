@@ -380,7 +380,6 @@ public class DatabaseController extends ApplicationComponent {
 			e.printStackTrace();
 		}
 		disconnect();
-
 		return isAvailable;
 	}
 
@@ -631,7 +630,6 @@ public class DatabaseController extends ApplicationComponent {
 			Statement st = con.createStatement();
 			st.executeUpdate(sql);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		disconnect();
