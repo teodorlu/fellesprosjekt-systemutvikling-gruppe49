@@ -142,7 +142,7 @@ public class ConsoleView extends ApplicationComponent{
 		output.println("Antall meldinger: " + notificationList.size());
 		for (int i = 0; i < notificationList.size(); i++) {
 			Notification n = notificationList.get(i);
-			output.println("Melding nr " + i + ": " + n);
+			output.println("Melding nr " + i+1 + ": " + n.getSender().getTitle() + ". MøteID: " + n.getSender().getID());
 		}
 	}
 

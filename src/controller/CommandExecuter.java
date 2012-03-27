@@ -11,6 +11,7 @@ import java.util.List;
 
 import model.Notification;
 import model.Person;
+import model.ReplyStatus;
 import model.Room;
 import model.User;
 import model.Time;
@@ -452,30 +453,36 @@ public class CommandExecuter extends ApplicationComponent {
 			List<Notification> notificationList;
 			List<String> input = Arrays.asList(array);
 			
-			notificationList = this.getApplication().getDatabaseController().retrieveNotifications();
+			notificationList = this.getApplication().getDatabaseController().retrieveNotifications(this.getApplication().getCurrentlyLoggedInUser());
 			
 			this.getApplication().getConsoleView().showNotifications(notificationList);
-
-			if(input.contains("-reply")){
-				int inputID = input.indexOf("-reply");
-				int notificationID = Integer.parseInt(getProperty(array, inputID+1)); 
-				if(input.size() >= notificationID+1){
-					String reply = input.get(notificationID+1);
-					if(reply.toLowerCase().equals("-y")){
-						notificationList.get(notificationID).setReply("Attending");
-						this.getApplication().getCurrentlyLoggedInUser().getPersonalCalendar().addAppointment(notificationList.get(notificationID).getSender());
+		}
+	}
+	
+	public void reply(String[] array){
+		List<String> input = Arrays.asList(array);
+//		reply -id -y/n -reason
+		
+		List<Notification> notifications = this.getApplication().getDatabaseController().retrieveNotifications(this.getApplication().getCurrentlyLoggedInUser());
+		
+		String answer;
+		
+		if(input.contains("reply")){
+			int ReplyIndex = input.indexOf("reply");
+			int ID = Integer.parseInt(getProperty(array, ReplyIndex + 1));
+			
+			for (int i = 0; i < notifications.size(); i++) {
+				if(ID == notifications.get(i).getSender().getID()){
+					if (input.contains("y") || input.contains("yes")){
+						this.getApplication().getDatabaseController().replyToSummon(ID, 1, answer);
+						notifications.get(i).setReplyStatus(ReplyStatus.JA);
 					}
-					else if(reply.toLowerCase().equals("-n")){
-						notificationList.get(notificationID).setReply("Not attending");
+					else if(input.contains("n") || input.contains("no")){
+						this.getApplication().getDatabaseController().replyToSummon(ID, 0, answer);
+						notifications.get(i).setReplyStatus(ReplyStatus.NEI);
 					}
-					else
-						this.getApplication().getConsoleView().showNotificationInvalidReplyError();
 				}
-				else 
-					this.getApplication().getConsoleView().showNotificationNoReplyError();
 			}
-			else 
-				this.getApplication().getConsoleView().showNotificationNoReplyError();
 		}
 	}
 	
