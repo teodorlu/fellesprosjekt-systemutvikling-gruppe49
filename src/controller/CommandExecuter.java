@@ -213,6 +213,7 @@ public class CommandExecuter extends ApplicationComponent {
 	
 	// TODO check if logged in
 	public void delete(String[] array){		
+		if(isLoggedIn()==true){
 		String IDstring = "-1";
 		int ID;
 		List<String> input = Arrays.asList(array);
@@ -226,9 +227,11 @@ public class CommandExecuter extends ApplicationComponent {
 		else{
 			this.getApplication().getConsoleView().showApplicationDoesNotExistError();
 		}
+		}
 	}
 
 	public void user(String[] array){
+		if(isLoggedIn()==true){
 		List<String> input = Arrays.asList(array);
 		List<String> usernames;
 		String username;
@@ -244,11 +247,14 @@ public class CommandExecuter extends ApplicationComponent {
 		else{
 			this.getApplication().getConsoleView().showAllUsers();
 
+		}	
 		}
 	}
-	//Denne metoden har ikke sikring for at du er logget på, stygg output som kræsjer programmet om du ikke er!
+
 	public void edit(String[] array){
+		if(isLoggedIn()==true){
 		
+			
 		List<String> input = Arrays.asList(array);
 		List<Appointment> appointments;
 		Appointment localAppointment;
@@ -322,12 +328,15 @@ public class CommandExecuter extends ApplicationComponent {
 			}
 			
 		}
+		}
 		
 		
 		
 	}
 	
 	public void summon(String[] array){
+		if(isLoggedIn()==true){
+		
 		List<String> input = Arrays.asList(array);
 		List<Meeting> allMeetings = this.getApplication().getDatabaseController().retrieveMeetings(this.getApplication().getCurrentlyLoggedInUser());  //Laster inn en liste med appointments
 		
@@ -381,6 +390,7 @@ public class CommandExecuter extends ApplicationComponent {
 			
 			
 			
+		}
 		}
 	}
 	
