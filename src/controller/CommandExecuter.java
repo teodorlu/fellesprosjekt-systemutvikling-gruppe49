@@ -335,9 +335,20 @@ public class CommandExecuter extends ApplicationComponent {
 		
 		if(allMeetings.size() < 1) System.out.println("Du har ingen møter");
 		
-		if(input.size() > 1){
+		if(input.size() == 2){
+			int IDIndex = input.indexOf("summon") + 1;
+			int ID = Integer.parseInt(getProperty(array,IDIndex));
+			
+			for(int k = 0; k < allMeetings.size(); k++){
+				Meeting localMeeting = allMeetings.get(k);
+				if(localMeeting.getID()==ID)System.out.println(localMeeting.getParticipants());  //Printer ut participants
+			}
+		}
+		
+		else if(input.size() > 1){
 			int IDIndex = input.indexOf("summon")+1;
 			int ID = Integer.parseInt(getProperty(array, IDIndex));
+			
 			
 			List<String> usernames = this.getApplication().getDatabaseController().retriveUsernames();
 			
