@@ -2,9 +2,11 @@ package view;
 
 import java.io.PrintStream;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 import model.Appointment;
+import model.Meeting;
 import model.Notification;
 import model.Person;
 import model.Time;
@@ -31,17 +33,84 @@ public class ConsoleView extends ApplicationComponent{
 		output.println("---------------------------------");
 	}
 
+//	public void showCommands(Iterable<String> commands) {
+//		output.println("+---------------------------+");
+//		output.println("|  Available commands are:  |");
+//		output.println("+---------------------------+");
+//		
+//		for (String command : commands){
+//			String line = String.format("| %-25s |", command);
+//			output.println(line);
+//		}
+//		
+//		output.println("+---------------------------+");
+//	}
+	
 	public void showCommands(Iterable<String> commands) {
-		output.println("+---------------------------+");
-		output.println("|  Available commands are:  |");
-		output.println("+---------------------------+");
+		LinkedList<Object> objects = new LinkedList<>();
+		for (String command : commands)
+			objects.add(command);
+		showTitledList("Commands", objects);
+	}
+	
+	
+	
+	public void showTitledList(String title, Iterable<Object> contents) {
+	int longestStringLength = 0;
+	for (Object o : contents) {
+		String s = o.toString();
+		if (s.length() > longestStringLength)
+			longestStringLength = s.length();
+	}
+	
+	showTitledList(title, contents, longestStringLength);
+}
+
+	public void showTitledList(String title, Iterable<Object> contents, int textWidth) {
+		output.println(separator(textWidth));
+
+		// Header
+		String titleFormat = 
+				"| " +
+				"%-" + textWidth + "s" +
+				" |";
+		output.println(String.format(titleFormat, title));
 		
-		for (String command : commands){
-			String line = String.format("| %-25s |", command);
+		output.println(separator(textWidth));
+		
+		// Content
+		for (Object o : contents) {
+			String format = "| %-" +
+					textWidth +
+					"s |";
+			String line = String.format(format, o.toString());
 			output.println(line);
 		}
 		
-		output.println("+---------------------------+");
+		output.println(separator(textWidth));
+	}
+	
+	private String separator(int textWidth) {
+		StringBuilder ret = new StringBuilder();
+		ret.append("+-");
+		ret.append( repeated("-", textWidth) );
+		ret.append("-+");
+		return ret.toString();
+	}
+	
+	private String repeated(String src, int times) {
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < times; i++) {
+			sb.append(src);
+		}
+		return sb.toString();
+	}
+
+	public LinkedList<Object> toIterableOfObject(Iterable<String> contents) {
+		LinkedList<Object> ls = new LinkedList<Object>();
+		for (String s : contents)
+			ls.add((Object) s);
+		return ls;
 	}
 
 	public void showSucessfulLoginMessage(Person owner) {
@@ -79,9 +148,9 @@ public class ConsoleView extends ApplicationComponent{
 	public void showApplicationDoesNotExistError() {
 		output.println("This is not a valid appointment ID");
 		output.println("Valid appontments: ");
-		List<Appointment> appointments = getApplication().getDatabaseController().retrieveAppointments(this.getApplication().getCurrentlyLoggedInUser());
+		List<Appointment> appointments = getApplication().getDatabaseController().retrieveMeetingsAndAppointments(this.getApplication().getCurrentlyLoggedInUser());
 		for(int i = 0; i < appointments.size();i++){
-			Appointment a = appointments.get(i);
+			Meeting a = (Meeting) appointments.get(i);
 			output.println("ID: "+a.getID()+" Tittle: "+a.getTitle());
 		}
 	}
@@ -168,6 +237,15 @@ public class ConsoleView extends ApplicationComponent{
 	
 	public void showNoMeetings(){
 		output.println("Du har ingen Møter");
+	}
+
+	public void showNoReply() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void showNoReplyArgumentsError() {
+		output.println("For å svare, skriv reply -id <møte id> <y/n> -reason <grunn for svar>");
 	}
 	
 	
