@@ -494,9 +494,6 @@ public class DatabaseController extends ApplicationComponent {
 		return notifications;
 	}
 
-	private String incapsulate(String input) {
-		return "'" + input + "'";
-	}
 	
 	public List<Appointment> retrieveMeetingsAndAppointments(User user) {
 
@@ -548,11 +545,30 @@ public class DatabaseController extends ApplicationComponent {
 		disconnect();
 		return listOfMeetingsAndAppointments;
 	}
-
-	public static void main(String[] args) {
-		DatabaseController dbc = new DatabaseController(null);
-		User u = new User("magrodahl", "mamma");
-		dbc.retrieveNotifications(u);
-
+	
+	public void replyToSummon(int ID, int yesORno, String reason){
+		String sql = "UPDATE PAMINNELSE SET BegrunnetSvar='"+reason+"', SkalDelta="+yesORno+
+			" WHERE AvtaleID="+ID+" AND SendtTil='"
+			+this.getApplication().getCurrentlyLoggedInUser().getUsername()+"'";
+		connect();
+		try {
+			Statement st = con.createStatement();
+			st.executeUpdate(sql);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		disconnect();
 	}
+
+	private String incapsulate(String input) {
+		return "'" + input + "'";
+	}
+	
+//	public static void main(String[] args) {
+//		DatabaseController dbc = new DatabaseController(null);
+//		User u = new User("magrodahl", "mamma");
+//		dbc.retrieveNotifications(u);
+//
+//	}
 }
