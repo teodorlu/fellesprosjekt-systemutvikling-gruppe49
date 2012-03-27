@@ -6,7 +6,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import model.Appointment;
-import model.Meeting;
 import model.Notification;
 import model.Person;
 import model.Time;
@@ -148,9 +147,9 @@ public class ConsoleView extends ApplicationComponent{
 	public void showApplicationDoesNotExistError() {
 		output.println("This is not a valid appointment ID");
 		output.println("Valid appontments: ");
-		List<Appointment> appointments = getApplication().getDatabaseController().retrieveMeetingsAndAppointments(this.getApplication().getCurrentlyLoggedInUser());
+		List<Appointment> appointments = getApplication().getDatabaseController().retrieveAppointments(this.getApplication().getCurrentlyLoggedInUser());
 		for(int i = 0; i < appointments.size();i++){
-			Meeting a = (Meeting) appointments.get(i);
+			Appointment a = appointments.get(i);
 			output.println("ID: "+a.getID()+" Tittle: "+a.getTitle());
 		}
 	}
@@ -237,15 +236,6 @@ public class ConsoleView extends ApplicationComponent{
 	
 	public void showNoMeetings(){
 		output.println("Du har ingen Møter");
-	}
-
-	public void showNoReply() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void showNoReplyArgumentsError() {
-		output.println("For å svare, skriv reply -id <møte id> <y/n> -reason <grunn for svar>");
 	}
 	
 	
