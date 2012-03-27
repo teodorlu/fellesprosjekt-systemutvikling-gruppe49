@@ -302,7 +302,8 @@ public class DatabaseController extends ApplicationComponent {
 	}
 
 	public boolean tryDeleteAppointment(int ID) {
-		String sql = "UPDATE AVTALE SET ErAktiv=0 WHERE AvtaleID=" + ID;
+		String sql = "UPDATE AVTALE SET ErAktiv=0 WHERE AvtaleID=" + ID +" AND AvtaleEier='"+
+		this.getApplication().getCurrentlyLoggedInUser().getUsername()+"'";
 		int res = -1;
 		connect();
 		try {
@@ -516,28 +517,52 @@ public class DatabaseController extends ApplicationComponent {
 				String desc = rs.getString(10);
 				String place = rs.getString(7);
 				
-				
-				String sql2 = "SELECT SendtTil FROM PAMINNELSE WHERE AvtaleID="+ID;
-				Statement st2 = con.createStatement();
-				ResultSet rs2 = st2.executeQuery(sql2);
-				ArrayList<String> listOfParticipants = new ArrayList<String>();
-				while (rs2.next()){
-					listOfParticipants.add(rs2.getString(1));
+				if (rs.getString(5).equals("Avtale")) {
+					Appointment a = new Appointment(ID, date, sTime, dur,
+							title, desc, place);
+					listOfMeetingsAndAppointments.add(a);
+
+				} else if (rs.getString(5).equals("Møte")) {
+					String sql2 = "SELECT SendtTil FROM PAMINNELSE WHERE AvtaleID="
+							+ ID;
+					Statement st2 = con.createStatement();
+					ResultSet rs2 = st2.executeQuery(sql2);
+					ArrayList<String> listOfParticipants = new ArrayList<String>();
+					while (rs2.next()) {
+						listOfParticipants.add(rs2.getString(1));
+					}
+
+					Room room = null;
+					String sql3 = "SELECT * FROM ROM WHERE RomID='" + roomName
+							+ "'";
+					Statement st3 = con.createStatement();
+					ResultSet rs3 = st3.executeQuery(sql3);
+					while (rs3.next()) {
+						room = new Room(rs3.getString(1), rs3.getInt(3),
+								rs3.getString(2));
+					}
+					Meeting m = new Meeting(ID, date, sTime, dur, title, desc,
+							place, listOfParticipants, room);
+					listOfMeetingsAndAppointments.add(m);
 				}
-				
-				Room room = null;
-				String sql3 = "SELECT * FROM ROM WHERE RomID='"+roomName+"'";
-				Statement st3 = con.createStatement();
-				ResultSet rs3 = st3.executeQuery(sql3);
-				while(rs3.next()){
-					room = new Room(rs3.getString(1), rs3.getInt(3), rs3.getString(2));
+
+			}
+			String sql4 = "SELECT AvtaleID FROM PAMINNELSE WHERE SendtTil='"+
+				this.getApplication().getCurrentlyLoggedInUser().getUsername()+
+				"' AND SkalDelta=1";
+			Statement st4 = con.createStatement();
+			ResultSet rs4 = st.executeQuery(sql4);
+			while(rs4.next()){
+				String sql5 = "SELECT * FROM AVTALE WHERE AvtaleID ="+rs4.getInt(1);
+				Statement st5 = con.createStatement();
+				ResultSet rs5 = st.executeQuery(sql5);
+				while(rs5.next()){
+					Appointment a = new Appointment(rs5.getInt(1),
+							rs5.getDate(3), rs5.getTime(8), rs5.getTime(9),
+							rs5.getString(2), rs5.getString(10),
+							rs5.getString(7));
+					listOfMeetingsAndAppointments.add(a);
 				}
-				//System.out.println(ID+"+");
-				Meeting m = new Meeting(ID, date, sTime, dur, title, desc,
-						place, listOfParticipants, room);
-				//System.out.println(m.getID()+"-");
-				listOfMeetingsAndAppointments.add(m);
-				
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -571,7 +596,8 @@ public class DatabaseController extends ApplicationComponent {
 			Statement st =con.createStatement();
 			ResultSet rs = st.executeQuery(sql);
 			while(rs.next()){
-				String sql2 = "SELECT * FROM PAMINNELSE WHERE AvtaleID="+rs.getInt(1)+" AND SkalDelta<>-1";
+				String sql2 = "SELECT * FROM PAMINNELSE WHERE AvtaleID="
+					+rs.getInt(1)+" AND SkalDelta<>-1";
 				Statement st2 = con.createStatement();
 				ResultSet rs2 = st2.executeQuery(sql2);
 				Appointment a = new Appointment(rs2.getInt(1),
@@ -592,6 +618,10 @@ public class DatabaseController extends ApplicationComponent {
 		disconnect();
 		return notifications;
 		
+	}
+	
+	public void updateSummon(String updatedORdeleted){
+		String sql = "UPDATE PAMINNELSE";
 	}
 
 	private String incapsulate(String input) {
