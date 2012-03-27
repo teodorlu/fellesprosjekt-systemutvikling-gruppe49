@@ -433,6 +433,7 @@ public class CommandExecuter extends ApplicationComponent {
 					String reply = input.get(notificationID+1);
 					if(reply.toLowerCase().equals("-y")){
 						notificationList.get(notificationID).setReply("Attending");
+						this.getApplication().getCurrentlyLoggedInUser().getPersonalCalendar().addAppointment(notificationList.get(notificationID).getSender());
 					}
 					else if(reply.toLowerCase().equals("-n")){
 						notificationList.get(notificationID).setReply("Not attending");
@@ -476,7 +477,6 @@ public class CommandExecuter extends ApplicationComponent {
 	public static void main(String args[]) throws ParseException{
 		String[] s = {"2012-03-23"};
 		CommandExecuter.stringToDate(s, 0);
-	
 	}
 	
 	
