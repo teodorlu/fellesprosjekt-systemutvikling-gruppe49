@@ -1,10 +1,13 @@
 package controller;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
+import javax.management.ImmutableDescriptor;
 
 /**
  * 
@@ -33,17 +36,17 @@ public class CommandParser {
 		parseFormat(format);
 	}
 	
-	public Map<String, String> parseInput(String [] input) {
-		Map<String, String> inputMapping = new HashMap<String, String>();
-		
-		// TODO
-		// Need a system for translating input to a map -> location of input is important.
-		// 1 - fill arguments from List<implicit>
-		// 2 - fill arguments from Map<Explicit>
-		// 3 - check for recurring argument
-		
-		return inputMapping;
-	}
+//	public Map<String, String> parseInput(String [] input) {
+//		Map<String, String> inputMapping = new HashMap<String, String>();
+//		
+//		// TODO
+//		// Need a system for translating input to a map -> location of input is important.
+//		// 1 - fill arguments from List<implicit>
+//		// 2 - fill arguments from Map<Explicit>
+//		// 3 - check for recurring argument
+//		
+//		return inputMapping;
+//	}
 	
 	private void parseFormat(String[] format) {
 		for (int i = 0; i < format.length; i++) {
@@ -131,6 +134,28 @@ public class CommandParser {
 			return values[values.length-1];
 		}
 		return implicitArguments.get(implicitArguments.size() - 1);
+	}
+	
+	public Map<String, String> parseInput(String[] inputArray) {
+		List<String> input = Arrays.asList(inputArray);
+		HashMap<String, String> parametersToArguments = new HashMap<String, String>();
+		
+		if (input.size() < 1)
+			throw new IllegalArgumentException();
+		
+		for (int i = 1; i < input.size(); i++) {
+			String s = input.get(i);
+			
+			if ( i <= implicitArguments.size() ) {
+				
+				
+				
+			}
+				
+		}
+		
+		// TODO
+		return parametersToArguments;
 	}
 
 	@SuppressWarnings("unused")
