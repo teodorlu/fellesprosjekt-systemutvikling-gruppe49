@@ -37,7 +37,7 @@ public class ConsoleView extends ApplicationComponent{
 		output.println("+---------------------------+");
 		
 		for (String command : commands){
-			String line = String.format("| %25s |", command);
+			String line = String.format("| %-25s |", command);
 			output.println(line);
 		}
 		
@@ -153,5 +153,22 @@ public class ConsoleView extends ApplicationComponent{
 	public void showNotificationNoReplyError() {
 		output.println("Ugyldig input. For å se og svare på meldinger, skriv notification -reply <velg melding. 0-indeksert> -y/n");
 	}
+	
+	public void showAppointmentAddedPerson(String name){
+		output.println("Brukeren "+name+" er lagt til i Møte!");
+	}
+	
+	public void showAppointmentAlreadyContains(String name){
+		output.println( name+" er allerede lagt til!");
+	}
+	
+	public void showUserDoesNotExist(String name){
+		output.println(name+" finnes ikke i lista over brukere!");
+	}
+	
+	public void showNoMeetings(){
+		output.println("Du har ingen Møter");
+	}
+	
 	
 }

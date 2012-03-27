@@ -398,7 +398,7 @@ public class DatabaseController extends ApplicationComponent {
 	
 	public boolean summonToMeeting(String username, int appointmentID){
 		String sql = "INSERT INTO PAMINNELSE VALUES ('"+username+"', " +
-				""+appointmentID+", 'NULL', 0, 'Nytt')";
+				""+appointmentID+", 'NULL', -1, 'Nytt')";
 		int rowsAffected = -1;
 		connect();
 		try {
@@ -414,19 +414,71 @@ public class DatabaseController extends ApplicationComponent {
 		return false;
 	}
 	
+
+	
 	private String incapsulate(String input){
 		return "'" + input + "'";
+	}
+	
+	public List<Appointment> retrieveMeetingsAndAppointments(User user) {
+
+		String username = user.getUsername();
+		List<Appointment> listOfMeetingsAndAppointments = new ArrayList<Appointment>();
+		String sql = "SELECT * FROM AVTALE WHERE AvtaleEier='"+username+"' " +
+				"AND ErAktiv=1";
+		try {
+			connect();
+			Statement st = con.createStatement();
+			ResultSet rs = st.executeQuery(sql);
+			
+			while(rs.next()){
+				int ID = rs.getInt(1);
+				String roomName = rs.getString(6);
+				Date date = rs.getDate(3);
+				java.sql.Time sTime = rs.getTime(8);
+				java.sql.Time dur = rs.getTime(9);
+				String title = rs.getString(2);
+				String desc = rs.getString(10);
+				String place = rs.getString(7);
+				
+				
+				String sql2 = "SELECT SendtTil FROM PAMINNELSE WHERE AvtaleID="+ID;
+				Statement st2 = con.createStatement();
+				ResultSet rs2 = st2.executeQuery(sql2);
+				ArrayList<String> listOfParticipants = new ArrayList<String>();
+				while (rs2.next()){
+					listOfParticipants.add(rs2.getString(1));
+				}
+				
+				Room room = null;
+				String sql3 = "SELECT * FROM ROM WHERE RomID='"+roomName+"'";
+				Statement st3 = con.createStatement();
+				ResultSet rs3 = st3.executeQuery(sql3);
+				while(rs3.next()){
+					room = new Room(rs3.getString(1), rs3.getInt(3), rs3.getString(2));
+				}
+				//System.out.println(ID+"+");
+				Meeting m = new Meeting(ID, date, sTime, dur, title, desc,
+						place, listOfParticipants, room);
+				//System.out.println(m.getID()+"-");
+				listOfMeetingsAndAppointments.add(m);
+				
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		disconnect();
+		return listOfMeetingsAndAppointments;
 	}
 	
 	
 //	public static void main(String[] args) {
 //		DatabaseController dbc = new DatabaseController(null);
-//		User u = new User("magrodahl", "mamma");
-//		List<Appointment> b = dbc.retrieveAppointments(u);
+//		User u = new User("dzedumpor", "mamma");
+//		List<Meeting> b = dbc.retrieveMeetings(u);
 //
 //		for (int i = 0; i < b.size(); i++) {
-//			System.out.println(b.get(i).getDate());
-//			System.out.println(b.get(i).getStartTime());
+//			System.out.println(b.get(i).getID());
 //		}
 //
 //	}
