@@ -116,7 +116,8 @@ public class CommandExecuter extends ApplicationComponent {
 			this.getApplication().getDatabaseController()
 					.updateLoginStatus(user, false);
 			this.getApplication().setCurrentUser(null);
-		}
+			this.getApplication().logout();
+			}
 	}
 	
 	public void appointment(String[] array) throws ParseException{
