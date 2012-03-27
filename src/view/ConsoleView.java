@@ -36,7 +36,7 @@ public class ConsoleView extends ApplicationComponent{
 		output.println("+---------------------------+");
 		
 		for (String command : commands){
-			String line = String.format("| %25s |", command);
+			String line = String.format("| %-25s |", command);
 			output.println(line);
 		}
 		
