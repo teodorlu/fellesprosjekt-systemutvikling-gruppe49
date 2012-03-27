@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import model.Appointment;
+import model.Notification;
 import model.Person;
 import model.Time;
 import model.User;
@@ -131,6 +132,26 @@ public class ConsoleView extends ApplicationComponent{
 
 	public void showAppointmentPlaceChange(String place) {
 		output.println("Sted ble endret til: "+ place);
+	}
+
+	public void showLoginOptions() {
+		output.println("For å logge på, skriv login -u <username> -p <password>");
+	}
+
+	public void showNotifications(List<Notification> notificationList) {
+		output.println("Antall meldinger: " + notificationList.size());
+		for (int i = 0; i < notificationList.size(); i++) {
+			Notification n = notificationList.get(i);
+			output.println("Melding nr " + i + ": " + n);
+		}
+	}
+
+	public void showNotificationInvalidReplyError() {
+		output.println("Ikke et gyldig svar. Gyldige svar er y/n");
+	}
+
+	public void showNotificationNoReplyError() {
+		output.println("Ugyldig input. For å se og svare på meldinger, skriv notification -reply <velg melding. 0-indeksert> -y/n");
 	}
 	
 }

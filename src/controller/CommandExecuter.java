@@ -1,5 +1,6 @@
 package controller;
 
+import java.security.acl.NotOwnerException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -8,6 +9,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import model.Notification;
 import model.Person;
 import model.Room;
 import model.User;
@@ -95,6 +97,11 @@ public class CommandExecuter extends ApplicationComponent {
 	
 	public void login(String[] array){
 		List<String> input = Arrays.asList(array);
+		
+		if(input.size() == 1)
+			this.getApplication().getConsoleView().showLoginOptions();
+		
+		
 		int uIndex, pIndex;
 		String username, password;
 		
@@ -407,7 +414,41 @@ public class CommandExecuter extends ApplicationComponent {
 		
 		
 	}
-	*/
+	 */
+
+
+	public void notification(String[] array){
+		if(isLoggedIn()){
+			List<Notification> notificationList;
+			List<String> input = Arrays.asList(array);
+			
+			notificationList = this.getApplication().getDatabaseController().retrieveNotifications();
+			
+			this.getApplication().getConsoleView().showNotifications(notificationList);
+
+			if(input.contains("-reply")){
+				int inputID = input.indexOf("-reply");
+				int notificationID = Integer.parseInt(getProperty(array, inputID+1)); 
+				if(input.size() >= notificationID+1){
+					String reply = input.get(notificationID+1);
+					if(reply.toLowerCase().equals("-y")){
+						notificationList.get(notificationID).setReply("Attending");
+					}
+					else if(reply.toLowerCase().equals("-n")){
+						notificationList.get(notificationID).setReply("Not attending");
+					}
+					else
+						this.getApplication().getConsoleView().showNotificationInvalidReplyError();
+				}
+				else 
+					this.getApplication().getConsoleView().showNotificationNoReplyError();
+			}
+			else 
+				this.getApplication().getConsoleView().showNotificationNoReplyError();
+		}
+	}
+	
+	
 	
 	@SuppressWarnings("deprecation")
 	public void rooms(){		
