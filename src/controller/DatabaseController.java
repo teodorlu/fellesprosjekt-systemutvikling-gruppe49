@@ -7,8 +7,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 import application.Application;
@@ -37,16 +35,12 @@ public class DatabaseController extends ApplicationComponent {
 			String user = "magnurod_fellesp";
 			String pw = "stabak";
 			con = DriverManager.getConnection(url, user, pw);
-			
-//			if (con != null)
-//				System.out.println("nice");
 
 		} catch (SQLException ex) {
 			System.out.println("Tilkobling feilet: " + ex.getMessage());
-		} catch (ClassNotFoundException ex) {
-			System.out
-					.println("Feilet under driverlasting: " + ex.getMessage());
-			System.out.println(ex);
+		} catch (ClassNotFoundException e) {
+			System.out.println("Feilet under driverlasting: " + e.getMessage());
+			System.out.println(e);
 		} catch (InstantiationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -143,7 +137,7 @@ public class DatabaseController extends ApplicationComponent {
 	public List<Appointment> retrieveAppointments(User user) {
 
 		String username = user.getUsername();
-		List<Appointment> listOfApp = new ArrayList<Appointment>();
+		List<Appointment> appointments = new ArrayList<Appointment>();
 		String sql = "SELECT * FROM AVTALE WHERE AvtaleEier='"+username+"' " +
 				"AND ErAktiv=1 AND TYPE='Avtale'";
 		try {
@@ -154,13 +148,13 @@ public class DatabaseController extends ApplicationComponent {
 			while(rs.next()){
 				Appointment a = new Appointment( rs.getInt(1), rs.getDate(3), rs.getTime(8), 
 						rs.getTime(9), rs.getString(2), rs.getString(10), rs.getString(7));
-				listOfApp.add(a);
+				appointments.add(a);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		disconnect();
-		return listOfApp;
+		return appointments;
 	}
 	
 	public void updateLoginStatus(User user, boolean isOnline){
@@ -299,10 +293,10 @@ public class DatabaseController extends ApplicationComponent {
 		try {
 			connect();
 			Statement st = con.createStatement();
-			ResultSet rs = st.executeQuery(sql);
+			ResultSet roomRowIterator = st.executeQuery(sql);
 			
-			while(rs.next()){
-				Room a = new Room(rs.getString(1), rs.getInt(3), rs.getString(2));
+			while(roomRowIterator.next()){
+				Room a = new Room(roomRowIterator.getString(1), roomRowIterator.getInt(3), roomRowIterator.getString(2));
 				allRooms.add(a);
 			}
 		} catch (SQLException e) {
