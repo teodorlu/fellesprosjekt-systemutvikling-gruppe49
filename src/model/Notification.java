@@ -12,44 +12,34 @@ import java.util.ArrayList;
 
 public class Notification {
 	
-	private enum eType{Nytt, Oppdatert, Slettet};
-	private enum eReply {Ja, Nei, Ubesvart};
-	eType type;
-	eReply reply;
+
+	NotificationType type;
+	ReplyStatus reply;
 	private Appointment sender;
-	private ArrayList<Person> receivers;	
+	private User receiver;	
 	private String text;
 	
-	public Notification(String text, eType type, eReply reply, Appointment sender, ArrayList<Person> receivers) {
+	public Notification(String text, NotificationType type, ReplyStatus reply, Appointment sender, User receiver) {
 		this.text = text;
 		this.type = type;
 		this.reply = reply;
 		this.sender = sender;
-		this.receivers = receivers;
+		this.receiver = receiver;
 
 	}
 
-	public eType getType() {
+	public NotificationType getType() {
 		return type;
 	}
 
-	public void setType(eType type) {
+	public void setType(NotificationType type) {
 		this.type = type;
 	}
 
-	public ArrayList<Person> getReceivers() {
-		return receivers;
+	public User getReceivers() {
+		return receiver;
 	}
 
-	public void addReceivers(ArrayList<Person> receivers) {
-		this.receivers.addAll(receivers);
-	}
-	
-	public void deleteReceiver(Person person){
-		if(this.receivers.contains(person)){
-			this.receivers.remove(person);
-		}
-	}
 
 	public String getText() {
 		return text;
@@ -59,7 +49,7 @@ public class Notification {
 		this.text = text;
 	}
 
-	public eReply getReply() {
+	public ReplyStatus getReply() {
 		return reply;
 	}
 
