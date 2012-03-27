@@ -19,12 +19,14 @@ public class Meeting extends Appointment {
 	
 	
 	
-	public Meeting( int ID, java.sql.Date date, java.sql.Time startTime, java.sql.Time appLength, String title,
+	public Meeting( int ID, Date date, java.sql.Time startTime, java.sql.Time appLength, String title,
 			String description, String place, ArrayList<String> participants, Room room) {
 		super(ID, date, startTime, appLength, title, description, place);
 		this.participants = participants;
 		//changeRoom(room);
 		this.room = room;
+		//System.out.println(ID+"/");
+		//System.out.println(this.ID +"*");
 	}
 	public Meeting( int ID, Date date, Time startTime, Time appLength, String title,
 			String description, String place, ArrayList<String> participants, Room room) {

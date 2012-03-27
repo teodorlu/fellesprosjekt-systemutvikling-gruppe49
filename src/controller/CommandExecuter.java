@@ -51,6 +51,10 @@ public class CommandExecuter extends ApplicationComponent {
 		List<String> input = Arrays.asList(array);
 		String username, password, firstName, lastName, _email;
 		
+		if(input.size() == 1){
+			this.getApplication().getConsoleView().showRegError("noInput");
+			return;
+		}
 		if(input.contains("-u")){
 			int uIndex = input.indexOf("-u");
 			
@@ -76,17 +80,17 @@ public class CommandExecuter extends ApplicationComponent {
 							
 							this.getApplication().getDatabaseController().Save(u);
 						}
-						else System.out.println("Feil input: Email");
+						else this.getApplication().getConsoleView().showRegError("mail");
 						
 						
 					}
-					else System.out.println("Feil input: Etternavn"); //Feilmelding istedenfor
+					else this.getApplication().getConsoleView().showRegError("etternavn");
 				}
-				else System.out.println("Feil input: Fornavn");
+				else this.getApplication().getConsoleView().showRegError("fornavn");
 			}
-			else System.out.println("Feil input: Password");
+			else this.getApplication().getConsoleView().showRegError("passord");
 		}
-		else System.out.println("Feil input: Username");
+		else this.getApplication().getConsoleView().showRegError("username");
 	}
 	
 	public void login(String[] array){
@@ -102,6 +106,16 @@ public class CommandExecuter extends ApplicationComponent {
 			
 			User user = new User(username, password);
 			this.getApplication().tryLogIn(user);
+		}
+	}
+	
+	
+	public void logout(String[] array) {
+		if (isLoggedIn()) {
+			User user = this.getApplication().getCurrentlyLoggedInUser();
+			this.getApplication().getDatabaseController()
+					.updateLoginStatus(user, false);
+			this.getApplication().setCurrentUser(null);
 		}
 	}
 	
@@ -144,14 +158,13 @@ public class CommandExecuter extends ApplicationComponent {
 			
 			//ToDo må lage en appointment som blir sendt til databasen! (Husk dato og tid lenger oppe)
 			
-			
-			System.out.println("Tittel: "+title+" Date: "+ date.toString()+" Start: "+ startTime.toString()+" Duration: "+ appLength.toString()+" Desc: "+ desc+" Place: "+ place);
+			this.getApplication().getConsoleView().showAppontmentDetails(title, date.toString(), startTime.toString(), appLength.toString(), desc, place);
 			Appointment a = new Appointment(date, startTime, appLength, title, desc, place);
 			//this.getApplication().getCurrentlyLoggedInUser().getPersonalCalendar().addAppointment(a);
 			this.getApplication().getDatabaseController().newAppointment(a);
 			//------------------------------------
 		}
-		else System.out.println("Du må ha med -title <title>, -date date, -s <starttid>, -d <varighet>, med dato på formen YYYY-MM-DD og tid på formen HH:MM.");
+		else this.getApplication().getConsoleView().showAppontmentInputError();
 	}
 	
 	
@@ -200,27 +213,18 @@ public class CommandExecuter extends ApplicationComponent {
 		String IDstring = "-1";
 		int ID;
 		List<String> input = Arrays.asList(array);
-		List<Appointment> appointments;
 		int deleteIndex = input.indexOf("delete");
 		if(input.size() > 1) IDstring = getProperty(array, deleteIndex+1);
 		ID = Integer.parseInt(IDstring);
-		
-		
-		
-		
-		if (this.getApplication().getDatabaseController().tryDeleteAppointment(ID))
-				System.out.println("The appointment has been deleted");
-			else{
-				System.out.println("This is not a valid appointment ID");
-				System.out.println("Mulige avtaler"); //hvordan finner jeg mulige avtaler? 
-				appointments = this.getApplication().getDatabaseController().retrieveAppointments(this.getApplication().getCurrentlyLoggedInUser());
-				for(int i = 0; i < appointments.size();i++){
-					Appointment a = appointments.get(i);
-					System.out.println("ID: "+a.getID()+" Tittle: "+a.getTitle());
-				}
-			}
+
+		if (this.getApplication().getDatabaseController().tryDeleteAppointment(ID)){
+			this.getApplication().getConsoleView().showApplicationDeleted();
+		}
+		else{
+			this.getApplication().getConsoleView().showApplicationDoesNotExistError();
+		}
 	}
-	
+
 	public void user(String[] array){
 		List<String> input = Arrays.asList(array);
 		List<String> usernames;
@@ -231,21 +235,12 @@ public class CommandExecuter extends ApplicationComponent {
 			
 			uIndex = input.indexOf("user");
 			username = getProperty(array ,uIndex+1);
-			Person a;
-			a = this.getApplication().getDatabaseController().retriveUser(username);
-			System.out.println("Brukernavn: "+a.getUsername());
-			System.out.println("Fornavn: "+a.getFirstName());
-			System.out.println("Etternavn: "+a.getLastName());
-			System.out.println("E-mail: "+a.getEmail());
+			this.getApplication().getConsoleView().showUser(username);
 		}
 		
 		else{
-			//Skriv ut en liste med alle brukernavna
-			usernames = this.getApplication().getDatabaseController().retriveUsernames();
-			for(int i = 0; i < usernames.size(); i++){
-				String name = usernames.get(i);
-				System.out.println(name);
-			}
+			this.getApplication().getConsoleView().showAllUsers();
+
 		}
 	}
 	//Denne metoden har ikke sikring for at du er logget på, stygg output som kræsjer programmet om du ikke er!
@@ -258,11 +253,7 @@ public class CommandExecuter extends ApplicationComponent {
 		appointments = this.getApplication().getDatabaseController().retrieveAppointments(this.getApplication().getCurrentlyLoggedInUser());
 		
 		if(input.contains("edit") && input.size() == 1){
-					
-			for(int i = 0; i < appointments.size(); i++){
-				Appointment a = appointments.get(i);
-				System.out.println("ID: "+a.getID()+" Tittel: "+a.getTitle());   
-			}
+			this.getApplication().getConsoleView().showAppointments(appointments);
 		}
 		
 		else if(input.contains("edit") && input.size() > 1){
@@ -275,8 +266,8 @@ public class CommandExecuter extends ApplicationComponent {
 					
 					if(input.contains("-title")){
 						int titleIndex = input.indexOf("-title");
-						if(this.getApplication().getDatabaseController().editAppointment(ID, "Tittel", getProperty(array, titleIndex+1))) 
-							System.out.println("Tittel ble endret til "+getProperty(array,titleIndex+1));
+						if(this.getApplication().getDatabaseController().editAppointment(ID, "Tittel", getProperty(array, titleIndex+1)))
+							this.getApplication().getConsoleView().showAppointmentTitleChange(getProperty(array,titleIndex+1));
 					}
 						
 										
@@ -285,21 +276,21 @@ public class CommandExecuter extends ApplicationComponent {
 						int dateIndex = input.indexOf("-date");
 						localAppointment.setDate(stringToDate(array, dateIndex+1));
 						if(this.getApplication().getDatabaseController().editAppointment(ID, "Dato", getProperty(array, dateIndex+1))) 
-							System.out.println("Dato ble endre til: "+stringToDate(array,dateIndex+1));
+							this.getApplication().getConsoleView().showAppointmentDateChange(stringToDate(array,dateIndex+1));
 					}
 					
 					if(input.contains("-s")){
 						int startIndex = input.indexOf("-s");
 						localAppointment.setStartTime(getTimeProperty(input.get(startIndex+1)));
 						if(this.getApplication().getDatabaseController().editAppointment(ID, "Starttid", getProperty(array, startIndex+1)))
-							System.out.println("StartTid ble endre til: "+getTimeProperty(input.get(startIndex+1)));
+							this.getApplication().getConsoleView().showAppointmentStartTimeChange(getTimeProperty(input.get(startIndex+1)));
 					}
 					
 					if(input.contains("-d")){
 						int durationIndex = input.indexOf("-d");
 						localAppointment.setAppLength(getTimeProperty(input.get(durationIndex+1)));
 						if(this.getApplication().getDatabaseController().editAppointment(ID, "Varighet", getProperty(array, durationIndex+1)))
-							System.out.println("Varighet ble endre til: "+getTimeProperty(input.get(durationIndex+1)));
+							this.getApplication().getConsoleView().showAppointmentLengthChange(getTimeProperty(input.get(durationIndex+1)));
 					}
 					} catch (ParseException e) {
 						e.getMessage();
@@ -311,13 +302,13 @@ public class CommandExecuter extends ApplicationComponent {
 					if(input.contains("-desc")){
 						int descIndex = input.indexOf("-desc");
 						if(this.getApplication().getDatabaseController().editAppointment(ID, "Beskrivelse", getProperty(array, descIndex+1)))
-							System.out.println("Beskrivelse ble endret til: "+getProperty(array, descIndex+1));
+							this.getApplication().getConsoleView().showAppointmentDescriptionChange(getProperty(array, descIndex+1));
 					}
 					
 					if(input.contains("-place")){
 						int placeIndex = input.indexOf("-place");
 						if(this.getApplication().getDatabaseController().editAppointment(ID, "Sted", getProperty(array, placeIndex+1)))
-							System.out.println("Sted ble endret til: "+getProperty(array,placeIndex+1));
+							this.getApplication().getConsoleView().showAppointmentPlaceChange(getProperty(array,placeIndex+1));
 					}
 								
 					break;
@@ -456,4 +447,17 @@ public class CommandExecuter extends ApplicationComponent {
 		CommandExecuter.stringToDate(s, 0);
 	
 	}
+	
+	
+	private boolean isLoggedIn(){
+		if(this.getApplication().getLoggedIn())
+			return true;
+		this.getApplication().getConsoleView().showNotLoggedIn();
+		return false;
+			
+		
+	}
+	
+	
 }
+
