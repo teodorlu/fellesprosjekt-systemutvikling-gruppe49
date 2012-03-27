@@ -137,7 +137,7 @@ public class DatabaseController extends ApplicationComponent {
 	public List<Appointment> retrieveAppointments(User user) {
 
 		String username = user.getUsername();
-		List<Appointment> listOfApp = new ArrayList<Appointment>();
+		List<Appointment> appointments = new ArrayList<Appointment>();
 		String sql = "SELECT * FROM AVTALE WHERE AvtaleEier='"+username+"' " +
 				"AND ErAktiv=1 AND TYPE='Avtale'";
 		try {
@@ -148,13 +148,13 @@ public class DatabaseController extends ApplicationComponent {
 			while(rs.next()){
 				Appointment a = new Appointment( rs.getInt(1), rs.getDate(3), rs.getTime(8), 
 						rs.getTime(9), rs.getString(2), rs.getString(10), rs.getString(7));
-				listOfApp.add(a);
+				appointments.add(a);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		disconnect();
-		return listOfApp;
+		return appointments;
 	}
 	
 	public void updateLoginStatus(User user, boolean isOnline){
