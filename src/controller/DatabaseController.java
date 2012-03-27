@@ -549,11 +549,11 @@ public class DatabaseController extends ApplicationComponent {
 				this.getApplication().getCurrentlyLoggedInUser().getUsername()+
 				"' AND SkalDelta=1";
 			Statement st4 = con.createStatement();
-			ResultSet rs4 = st.executeQuery(sql4);
+			ResultSet rs4 = st4.executeQuery(sql4);
 			while(rs4.next()){
 				String sql5 = "SELECT * FROM AVTALE WHERE AvtaleID ="+rs4.getInt(1);
 				Statement st5 = con.createStatement();
-				ResultSet rs5 = st.executeQuery(sql5);
+				ResultSet rs5 = st5.executeQuery(sql5);
 				while(rs5.next()){
 					Appointment a = new Appointment(rs5.getInt(1),
 							rs5.getDate(3), rs5.getTime(8), rs5.getTime(9),
