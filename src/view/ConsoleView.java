@@ -132,6 +132,10 @@ public class ConsoleView extends ApplicationComponent{
 	public void showAppointmentPlaceChange(String place) {
 		output.println("Sted ble endret til: "+ place);
 	}
+	public void showNoAppointments(){
+		output.println("Du har ingen avtaler/møter");
+	}
+	
 	
 	public void showAppointmentAddedPerson(String name){
 		output.println("Brukeren "+name+" er lagt til i Møte!");
