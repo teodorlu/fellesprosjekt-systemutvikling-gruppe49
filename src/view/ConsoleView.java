@@ -245,5 +245,11 @@ public class ConsoleView extends ApplicationComponent{
 	public void showNoReplyArgumentsError() {
 		output.println("For å svare, skriv reply -id <møte id> <y/n> -reason <grunn for svar>");
 	}
+	public void showAppointmentDoesNotContain(String name){
+		output.println(name+" er ikke medlem av møte!");
+	}
+	public void showAppointmentRemovedPerson(String name){
+		output.println(name+" er ikke medlem av møte!");
+	}
 	
 }
