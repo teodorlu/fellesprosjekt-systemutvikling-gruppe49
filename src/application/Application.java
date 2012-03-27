@@ -97,10 +97,14 @@ public class Application {
 	public boolean getLoggedIn(){
 		return this.loggedIn;
 	}
+	public void logout() {
+		loggedIn = false;		
+	}
 	
 	public static void main(String[] args) {
 		new Application();
 	}
+
 
 	
 }
