@@ -561,10 +561,10 @@ public class CommandExecuter extends ApplicationComponent {
 						this.getApplication()
 								.getDatabaseController()
 								.unsummonToMeeting(getProperty(array, j),
-										localMeeting.getID()); // SummonToMeeting
+										localMeeting.getID()); // unsummonToMeeting
 									this.getApplication().getConsoleView().showAppointmentRemovedPerson(getProperty(array,j)); // Output med navnet
 						
-							this.getApplication().getDatabaseController().editAppointment(localMeeting.getID(), "TYPE", "Møte");
+	//						this.getApplication().getDatabaseController().editAppointment(localMeeting.getID(), "TYPE", "Møte");
 
 					}
 				}
