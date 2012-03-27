@@ -338,7 +338,10 @@ public class CommandExecuter extends ApplicationComponent {
 		if(isLoggedIn()==true){
 		
 		List<String> input = Arrays.asList(array);
-		List<Meeting> allMeetings = this.getApplication().getDatabaseController().retrieveMeetings(this.getApplication().getCurrentlyLoggedInUser());  //Laster inn en liste med appointments
+		
+		List<Appointment> allMeetings = this.getApplication().getDatabaseController().retrieveMeetingsAndAppointments(this.getApplication().getCurrentlyLoggedInUser());  //Laster inn en liste med meetings
+		
+		List<Appointment> allAppointments = this.getApplication().getDatabaseController().retrieveAppointments(this.getApplication().getCurrentlyLoggedInUser()); //Laster en liste med appointments
 		
 
 		
@@ -352,7 +355,7 @@ public class CommandExecuter extends ApplicationComponent {
 			int ID = Integer.parseInt(getProperty(array,IDIndex));
 			
 			for(int k = 0; k < allMeetings.size(); k++){
-				Meeting localMeeting = allMeetings.get(k);
+				Meeting localMeeting = (Meeting)allMeetings.get(k);
 				if(localMeeting.getID()==ID)System.out.println(localMeeting.getParticipants());  //Printer ut participants
 			}
 		}
@@ -365,14 +368,17 @@ public class CommandExecuter extends ApplicationComponent {
 			List<String> usernames = this.getApplication().getDatabaseController().retriveUsernames();
 			
 			for(int i = 0; i < allMeetings.size(); i++){
-				Meeting localMeeting = allMeetings.get(i);				//Cast til meeting fra appointment
+				Meeting localMeeting = (Meeting)allMeetings.get(i);				//Cast til meeting fra appointment
 				if(localMeeting.getID()==ID){										//Funnet riktig Møte
 					for(int j = IDIndex+1; j < input.size(); j++){					//Går gjennom alle navna du skrev inn
+						
+						if(!usernames.contains(getProperty(array,j))) System.out.println("Brukeren "+getProperty(array,j)+" finnes ikke!");
 						
 						if (localMeeting.getParticipants().contains(getProperty(array, j))){
 							System.out.println(getProperty(array, j)+" er allerede lagt til");  //Sjekker om brukeren allerede er i møtet, om ja sysout
 							continue;
 						}
+						
 					
 						if(!usernames.contains(getProperty(array,j)))			//Sjekker om brukeren finnes i lista over brukere
 							continue;
@@ -383,6 +389,8 @@ public class CommandExecuter extends ApplicationComponent {
 										localMeeting.getID()); // SummonToMeeting
 						System.out.println("Møteinkalling sendt til "
 								+ getProperty(array, j)); // Output med navnet
+						
+							this.getApplication().getDatabaseController().editAppointment(localMeeting.getID(), "TYPE", "Møte");
 
 					}
 				}
