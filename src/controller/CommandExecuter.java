@@ -105,6 +105,16 @@ public class CommandExecuter extends ApplicationComponent {
 		}
 	}
 	
+	
+	public void logout(String[] array) {
+		if (isLoggedIn()) {
+			User user = this.getApplication().getCurrentlyLoggedInUser();
+			this.getApplication().getDatabaseController()
+					.updateLoginStatus(user, false);
+			this.getApplication().setCurrentUser(null);
+		}
+	}
+	
 	public void appointment(String[] array) throws ParseException{
 		List<String> input = Arrays.asList(array);
 		String title = "", desc = "", place = "", sStart, sEnd;
@@ -445,4 +455,17 @@ public class CommandExecuter extends ApplicationComponent {
 		CommandExecuter.stringToDate(s, 0);
 	
 	}
+	
+	
+	private boolean isLoggedIn(){
+		if(this.getApplication().getLoggedIn())
+			return true;
+		this.getApplication().getConsoleView().showNotLoggedIn();
+		return false;
+			
+		
+	}
+	
+	
 }
+
