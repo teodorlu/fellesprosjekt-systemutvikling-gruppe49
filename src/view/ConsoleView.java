@@ -147,7 +147,7 @@ public class ConsoleView extends ApplicationComponent{
 	public void showApplicationDoesNotExistError() {
 		output.println("This is not a valid appointment ID");
 		output.println("Valid appontments: ");
-		List<Appointment> appointments = getApplication().getDatabaseController().retrieveAppointments(this.getApplication().getCurrentlyLoggedInUser());
+		List<Appointment> appointments = getApplication().getDatabaseController().retrieveMeetingsAndAppointments(this.getApplication().getCurrentlyLoggedInUser());
 		for(int i = 0; i < appointments.size();i++){
 			Appointment a = appointments.get(i);
 			output.println("ID: "+a.getID()+" Tittle: "+a.getTitle());
@@ -238,5 +238,12 @@ public class ConsoleView extends ApplicationComponent{
 		output.println("Du har ingen Møter");
 	}
 	
+	public void showEditInputError() {
+		output.println("For å endre, skriv edit [-tittel <tittel> -date <date> ... ]");
+	}
+	
+	public void showNoReplyArgumentsError() {
+		output.println("For å svare, skriv reply -id <møte id> <y/n> -reason <grunn for svar>");
+	}
 	
 }
