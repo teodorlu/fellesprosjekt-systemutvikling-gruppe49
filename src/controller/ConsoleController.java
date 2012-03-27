@@ -75,6 +75,11 @@ public class ConsoleController extends ApplicationComponent {
 				executer.login(arguments);
 			}
 		});
+		commands.put("unsummon", new Command() {
+			void execute(String[] arguments) {
+				executer.unsummon(arguments);
+			}
+		});
 		
 		commands.put("logout", new Command() {
 			void execute(String[] arguments) {
