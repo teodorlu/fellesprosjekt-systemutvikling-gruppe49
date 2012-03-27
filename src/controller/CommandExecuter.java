@@ -429,7 +429,54 @@ public class CommandExecuter extends ApplicationComponent {
 			System.out.println("Det er desverre ingen rom ledige");
 			
 	}
-	
+	public void unsummon(String[] array){
+		List<String> input = Arrays.asList(array);
+		List<Meeting> allMeetings = this.getApplication().getDatabaseController().retrieveMeetings(this.getApplication().getCurrentlyLoggedInUser());  //Laster inn en liste med appointments
+		
+
+		
+		
+		if(input.size()==1) System.out.println(doc.get("unsummon"));
+		
+		if(allMeetings.size() < 1) System.out.println("Du har ingen møter");
+		
+		if(input.size() > 1){
+			int IDIndex = input.indexOf("unsummon")+1;
+			int ID = Integer.parseInt(getProperty(array, IDIndex));
+			
+			List<String> usernames = this.getApplication().getDatabaseController().retriveUsernames();
+			
+			for(int i = 0; i < allMeetings.size(); i++){
+				Meeting localMeeting = allMeetings.get(i);				//Cast til meeting fra appointment
+				if(localMeeting.getID()==ID){										//Funnet riktig Møte
+					for(int j = IDIndex+1; j < input.size(); j++){					//Går gjennom alle navna du skrev inn
+						
+						if (localMeeting.getParticipants().contains(getProperty(array, j))){
+							System.out.println(getProperty(array, j)+" er allerede lagt til");  //Sjekker om brukeren allerede er i møtet, om ja sysout
+							continue;
+						}
+					
+						if(!usernames.contains(getProperty(array,j)))			//Sjekker om brukeren finnes i lista over brukere
+							continue;
+
+						this.getApplication()
+								.getDatabaseController()
+								.unsummonToMeeting(getProperty(array, j),
+										localMeeting.getID()); // unsummonToMeeting
+						System.out.println("Møteinkalling sendt til "
+								+ getProperty(array, j)); // Output med navnet
+
+					}
+				}
+			}
+			
+			
+			
+		}
+		
+		
+		
+	}
 	
 	public static void main(String args[]) throws ParseException{
 		String[] s = {"2012-03-23"};
@@ -446,6 +493,7 @@ public class CommandExecuter extends ApplicationComponent {
 			
 		
 	}
+	
 	
 	
 }
