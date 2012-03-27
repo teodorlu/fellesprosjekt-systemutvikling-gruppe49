@@ -36,7 +36,7 @@ public class ConsoleView extends ApplicationComponent{
 		output.println("+---------------------------+");
 		
 		for (String command : commands){
-			String line = String.format("| %25s |", command);
+			String line = String.format("| %-25s |", command);
 			output.println(line);
 		}
 		
@@ -132,5 +132,22 @@ public class ConsoleView extends ApplicationComponent{
 	public void showAppointmentPlaceChange(String place) {
 		output.println("Sted ble endret til: "+ place);
 	}
+	
+	public void showAppointmentAddedPerson(String name){
+		output.println("Brukeren "+name+" er lagt til i Møte!");
+	}
+	
+	public void showAppointmentAlreadyContains(String name){
+		output.println( name+" er allerede lagt til!");
+	}
+	
+	public void showUserDoesNotExist(String name){
+		output.println(name+" finnes ikke i lista over brukere!");
+	}
+	
+	public void showNoMeetings(){
+		output.println("Du har ingen Møter");
+	}
+	
 	
 }
