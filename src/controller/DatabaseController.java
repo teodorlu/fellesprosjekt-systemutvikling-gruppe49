@@ -367,7 +367,7 @@ public class DatabaseController extends ApplicationComponent {
 				String place = rs.getString(7);
 				
 				
-				String sql2 = "SELECT SendtTil FROM PAMINNELSE WHERE AvtaleID="+ID+" AND SkalDelta=1";
+				String sql2 = "SELECT SendtTil FROM PAMINNELSE WHERE AvtaleID="+ID;
 				Statement st2 = con.createStatement();
 				ResultSet rs2 = st2.executeQuery(sql2);
 				ArrayList<String> listOfParticipants = new ArrayList<String>();
@@ -421,11 +421,13 @@ public class DatabaseController extends ApplicationComponent {
 	public static void main(String[] args) {
 	DatabaseController dbc = new DatabaseController(null);
 	User u = new User("dzedumpor", "mamma");
-	System.out.println(dbc.retrieveMeetings(u));
+	List<Meeting> moter = dbc.retrieveMeetings(u);
 
+	for (int i = 0; i < moter.size(); i++) {
+		System.out.println(moter.get(i).getID());
+	}
 	
-	
-	
+//	
 	}
 }
 
