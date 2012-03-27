@@ -418,14 +418,14 @@ public class DatabaseController extends ApplicationComponent {
 	}
 	
 	
-//	public static void main(String[] args) {
-//	DatabaseController dbc = new DatabaseController(null);
-//	User u = new User("dzedumpor", "mamma");
-//	System.out.println(dbc.retrieveMeetings(u));
-//
-//	
-//	
-//	
-//	}
+	public static void main(String[] args) {
+	DatabaseController dbc = new DatabaseController(null);
+	User u = new User("dzedumpor", "mamma");
+	System.out.println(dbc.retrieveMeetings(u));
+
+	
+	
+	
+	}
 }
 
