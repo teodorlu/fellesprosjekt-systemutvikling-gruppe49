@@ -9,7 +9,6 @@ import java.util.Set;
 import model.*;
 import view.*;
 import controller.*;
-
 public class Application {
 	
 	private Person currentlyLoggedInUser = null;

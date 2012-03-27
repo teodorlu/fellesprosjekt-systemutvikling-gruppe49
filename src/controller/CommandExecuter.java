@@ -460,26 +460,37 @@ public class CommandExecuter extends ApplicationComponent {
 	}
 	
 	public void reply(String[] array){
-		List<String> input = Arrays.asList(array);
-//		reply -id -y/n -reason
-		
-		List<Notification> notifications = this.getApplication().getDatabaseController().retrieveNotifications(this.getApplication().getCurrentlyLoggedInUser());
-		
-		String answer;
-		
-		if(input.contains("reply")){
-			int ReplyIndex = input.indexOf("reply");
-			int ID = Integer.parseInt(getProperty(array, ReplyIndex + 1));
-			
-			for (int i = 0; i < notifications.size(); i++) {
-				if(ID == notifications.get(i).getSender().getID()){
-					if (input.contains("y") || input.contains("yes")){
-						this.getApplication().getDatabaseController().replyToSummon(ID, 1, answer);
-						notifications.get(i).setReplyStatus(ReplyStatus.JA);
-					}
-					else if(input.contains("n") || input.contains("no")){
-						this.getApplication().getDatabaseController().replyToSummon(ID, 0, answer);
-						notifications.get(i).setReplyStatus(ReplyStatus.NEI);
+		if(isLoggedIn()){
+			List<String> input = Arrays.asList(array);
+			//		reply -id -y/n -reason
+
+			List<Notification> notifications = this.getApplication().getDatabaseController().retrieveNotifications(this.getApplication().getCurrentlyLoggedInUser());
+
+			String answer;
+
+			if(input.contains("reply")){
+				if(input.size() < 3){
+					this.getApplication().getConsoleView().showNoReplyArgumentsError();
+					return;
+				}
+				int idIndex = input.indexOf("-id");
+				int ID = Integer.parseInt(getProperty(array, idIndex + 1));
+				int reasonIndex = input.indexOf("-reason");
+				if(getProperty(array, reasonIndex +1) != null)
+					answer = getProperty(array, reasonIndex +1);
+				else
+					answer = null;
+
+				for (int i = 0; i < notifications.size(); i++) {
+					if(ID == notifications.get(i).getSender().getID()){
+						if (input.contains("y") || input.contains("yes")){
+							this.getApplication().getDatabaseController().replyToSummon(ID, 1, answer);
+							notifications.get(i).setReplyStatus(ReplyStatus.JA);
+						}
+						else if(input.contains("n") || input.contains("no")){
+							this.getApplication().getDatabaseController().replyToSummon(ID, 0, answer);
+							notifications.get(i).setReplyStatus(ReplyStatus.NEI);
+						}
 					}
 				}
 			}
