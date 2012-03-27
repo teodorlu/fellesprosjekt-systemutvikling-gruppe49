@@ -382,9 +382,10 @@ public class DatabaseController extends ApplicationComponent {
 				while(rs3.next()){
 					room = new Room(rs3.getString(1), rs3.getInt(3), rs3.getString(2));
 				}
-				
+				//System.out.println(ID+"+");
 				Meeting m = new Meeting(ID, date, sTime, dur, title, desc,
 						place, listOfParticipants, room);
+				//System.out.println(m.getID()+"-");
 				listOfMeetings.add(m);
 				
 			}
@@ -418,16 +419,16 @@ public class DatabaseController extends ApplicationComponent {
 	}
 	
 	
-	public static void main(String[] args) {
-	DatabaseController dbc = new DatabaseController(null);
-	User u = new User("dzedumpor", "mamma");
-	List<Meeting> moter = dbc.retrieveMeetings(u);
-
-	for (int i = 0; i < moter.size(); i++) {
-		System.out.println(moter.get(i).getID());
-	}
-	
-//	
-	}
+//	public static void main(String[] args) {
+//		DatabaseController dbc = new DatabaseController(null);
+//		User u = new User("magrodahl", "mamma");
+//		List<Appointment> b = dbc.retrieveAppointments(u);
+//
+//		for (int i = 0; i < b.size(); i++) {
+//			System.out.println(b.get(i).getDate());
+//			System.out.println(b.get(i).getStartTime());
+//		}
+//
+//	}
 }
 

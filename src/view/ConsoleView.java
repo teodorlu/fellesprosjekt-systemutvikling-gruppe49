@@ -46,6 +46,10 @@ public class ConsoleView extends ApplicationComponent{
 	public void showFailedLoginMessage(User user) {
 		output.println("Login as " + user.getUsername() + " failed");
 	}
+
+	public void showNotLoggedIn() {
+		output.println("You are not logged in!");
+	}
 	
 	
 	

@@ -20,6 +20,8 @@ public class Application {
 	
 	private ConsoleView consoleView;
 	
+	private boolean loggedIn;
+	
 	
 	public Person getCurrentlyLoggedInUser() {
 		return currentlyLoggedInUser;
@@ -82,11 +84,18 @@ public class Application {
 		if (isValid) {
 			Person currentlyLoggedInPerson = getDatabaseController().retriveUser(user.getUsername());    //Dzenan enda denne, se på denne om alt går mongoklikk!!!
 			this.setCurrentUser(currentlyLoggedInPerson);
+			getDatabaseController().updateLoginStatus(currentlyLoggedInUser, true);
+			loggedIn = true;
 			this.getConsoleView().showSucessfulLoginMessage(currentlyLoggedInPerson);
 		}
 		else {
 			this.getConsoleView().showFailedLoginMessage(user);
+			loggedIn = false;
 		}
+	}
+	
+	public boolean getLoggedIn(){
+		return this.loggedIn;
 	}
 	
 	public static void main(String[] args) {
