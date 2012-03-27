@@ -120,6 +120,7 @@ public class CommandExecuter extends ApplicationComponent {
 	}
 	
 	public void appointment(String[] array) throws ParseException{
+		if(isLoggedIn()==true){
 		List<String> input = Arrays.asList(array);
 		String title = "", desc = "", place = "", sStart, sEnd;
 		Date date;
@@ -165,6 +166,7 @@ public class CommandExecuter extends ApplicationComponent {
 			//------------------------------------
 		}
 		else this.getApplication().getConsoleView().showAppontmentInputError();
+		}
 	}
 	
 	
