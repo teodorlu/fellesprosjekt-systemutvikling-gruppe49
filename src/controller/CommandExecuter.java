@@ -348,7 +348,7 @@ public class CommandExecuter extends ApplicationComponent {
 		
 		if(input.size()==1) System.out.println(doc.get("summon"));
 		
-		if(allMeetings.size() < 1) System.out.println("Du har ingen møter");
+		if(allMeetings.size() < 1) this.getApplication().getConsoleView().showNoMeetings();
 		
 		if(input.size() == 2){
 			int IDIndex = input.indexOf("summon") + 1;
@@ -372,10 +372,10 @@ public class CommandExecuter extends ApplicationComponent {
 				if(localMeeting.getID()==ID){										//Funnet riktig Møte
 					for(int j = IDIndex+1; j < input.size(); j++){					//Går gjennom alle navna du skrev inn
 						
-						if(!usernames.contains(getProperty(array,j))) System.out.println("Brukeren "+getProperty(array,j)+" finnes ikke!");
+						if(!usernames.contains(getProperty(array,j))) this.getApplication().getConsoleView().showUserDoesNotExist(getProperty(array, j));
 						
 						if (localMeeting.getParticipants().contains(getProperty(array, j))){
-							System.out.println(getProperty(array, j)+" er allerede lagt til");  //Sjekker om brukeren allerede er i møtet, om ja sysout
+							this.getApplication().getConsoleView().showAppointmentAlreadyContains(getProperty(array,j));
 							continue;
 						}
 						
@@ -387,8 +387,7 @@ public class CommandExecuter extends ApplicationComponent {
 								.getDatabaseController()
 								.summonToMeeting(getProperty(array, j),
 										localMeeting.getID()); // SummonToMeeting
-						System.out.println("Møteinkalling sendt til "
-								+ getProperty(array, j)); // Output med navnet
+									this.getApplication().getConsoleView().showAppointmentAddedPerson(getProperty(array,j)); // Output med navnet
 						
 							this.getApplication().getDatabaseController().editAppointment(localMeeting.getID(), "TYPE", "Møte");
 
