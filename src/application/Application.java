@@ -9,20 +9,19 @@ import java.util.Set;
 import model.*;
 import view.*;
 import controller.*;
-
 public class Application {
-	
+
 	private Person currentlyLoggedInUser = null;
 	private Set<Person> otherCalendarOwners;
-	
+
 	private ConsoleController consoleController;
 	private DatabaseController databaseController;
-	
+
 	private ConsoleView consoleView;
-	
+
 	private boolean loggedIn;
-	
-	
+
+
 	public Person getCurrentlyLoggedInUser() {
 		return currentlyLoggedInUser;
 	}
@@ -34,11 +33,11 @@ public class Application {
 	public Set<Person> getOtherCalendarOwners() {
 		return new HashSet<Person>(otherCalendarOwners);
 	}
-	
+
 	public void addOtherCalendarOwners(Collection<Person> others){
 		otherCalendarOwners.addAll(others);
 	}
-	
+
 	public void removeOtherCalendarOwners(Collection<Person> others){
 		otherCalendarOwners.removeAll(others);
 	}
@@ -59,14 +58,14 @@ public class Application {
 		// Assign settings here.
 		InputStream input = System.in;
 		PrintStream output = (PrintStream) System.out;
-		
+
 		consoleController = new ConsoleController(this, input);
 		consoleView = new ConsoleView(this, output);
 		databaseController = new DatabaseController(this);
-		
+
 		run();
 	}
-	
+
 	private void run(){
 		consoleView.welcome();
 		while(true){
@@ -77,10 +76,10 @@ public class Application {
 			}
 		}
 	}
-	
+
 	public void tryLogIn(User user) {
 		boolean isValid = getDatabaseController().authenticated(user);
-		
+
 		if (isValid) {
 			Person currentlyLoggedInPerson = getDatabaseController().retriveUser(user.getUsername());    //Dzenan enda denne, se på denne om alt går mongoklikk!!!
 			this.setCurrentUser(currentlyLoggedInPerson);
@@ -93,18 +92,18 @@ public class Application {
 			loggedIn = false;
 		}
 	}
-	
+
 	public boolean getLoggedIn(){
 		return this.loggedIn;
 	}
 	public void logout() {
 		loggedIn = false;		
 	}
-	
+
 	public static void main(String[] args) {
 		new Application();
 	}
 
 
-	
+
 }

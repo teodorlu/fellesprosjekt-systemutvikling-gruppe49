@@ -48,6 +48,10 @@ public class Notification {
 	public void setText(String text) {
 		this.text = text;
 	}
+	
+	public void setReplyStatus(ReplyStatus reply){
+		this.reply = reply;
+	}
 
 	public ReplyStatus getReply() {
 		return reply;
