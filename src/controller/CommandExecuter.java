@@ -461,6 +461,61 @@ public class CommandExecuter extends ApplicationComponent {
 			
 	}
 	
+	public void unsummon(String[] array){
+		if(isLoggedIn()==true){
+		
+		List<String> input = Arrays.asList(array);
+		
+		List<Appointment> allMeetings = this.getApplication().getDatabaseController().retrieveMeetingsAndAppointments(this.getApplication().getCurrentlyLoggedInUser());  //Laster inn en liste med meetings
+		
+		
+		
+		if(input.size()==1) System.out.println(doc.get("unsummon"));
+		
+		if(allMeetings.size() < 1) this.getApplication().getConsoleView().showNoMeetings();
+		
+		
+		else if(input.size() > 1){
+			int IDIndex = input.indexOf("unsummon")+1;
+			int ID = Integer.parseInt(getProperty(array, IDIndex));
+			
+			
+			List<String> usernames = this.getApplication().getDatabaseController().retriveUsernames();
+			
+			for(int i = 0; i < allMeetings.size(); i++){
+				Meeting localMeeting = (Meeting)allMeetings.get(i);				//Cast til meeting fra appointment
+				if(localMeeting.getID()==ID){										//Funnet riktig Møte
+					for(int j = IDIndex+1; j < input.size(); j++){					//Går gjennom alle navna du skrev inn
+						
+						if(!usernames.contains(getProperty(array,j))) this.getApplication().getConsoleView().showUserDoesNotExist(getProperty(array, j));
+						
+						if (!localMeeting.getParticipants().contains(getProperty(array, j))){
+							this.getApplication().getConsoleView().showAppointmentDoesNotContain(getProperty(array,j));
+							continue;
+						}
+						
+					
+						if(!usernames.contains(getProperty(array,j)))			//Sjekker om brukeren finnes i lista over brukere
+							continue;
+
+						this.getApplication()
+								.getDatabaseController()
+								.unsummonToMeeting(getProperty(array, j),
+										localMeeting.getID()); // SummonToMeeting
+									this.getApplication().getConsoleView().showAppointmentRemovedPerson(getProperty(array,j)); // Output med navnet
+						
+							this.getApplication().getDatabaseController().editAppointment(localMeeting.getID(), "TYPE", "Møte");
+
+					}
+				}
+			}
+			
+			
+			
+		}
+		}
+	}
+	
 	
 	public static void main(String args[]) throws ParseException{
 		String[] s = {"2012-03-23"};

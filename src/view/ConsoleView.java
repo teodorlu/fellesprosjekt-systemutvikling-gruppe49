@@ -148,6 +148,10 @@ public class ConsoleView extends ApplicationComponent{
 	public void showNoMeetings(){
 		output.println("Du har ingen Møter");
 	}
-	
-	
+	public void showAppointmentDoesNotContain(String name){
+		output.println( name+" er ikke innkalt.");
+	}
+	public void showAppointmentRemovedPerson(String name){
+		output.println("Brukeren "+name+" er fjernet fra Møte!");
+	}
 }
