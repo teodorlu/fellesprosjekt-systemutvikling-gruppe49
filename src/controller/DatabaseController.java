@@ -560,6 +560,39 @@ public class DatabaseController extends ApplicationComponent {
 		}
 		disconnect();
 	}
+	
+	public List<Notification> retrieveReplys(){
+		String sql = "SELECT * FROM AVTALE WHERE AvtaleEier='"
+			+this.getApplication().getCurrentlyLoggedInUser().getUsername()+
+			"' AND ErAktiv=1 AND TYPE='Møte'";
+		connect();
+		List<Notification> notifications = new ArrayList<Notification>();
+		try {
+			Statement st =con.createStatement();
+			ResultSet rs = st.executeQuery(sql);
+			while(rs.next()){
+				String sql2 = "SELECT * FROM PAMINNELSE WHERE AvtaleID="+rs.getInt(1)+" AND SkalDelta<>-1";
+				Statement st2 = con.createStatement();
+				ResultSet rs2 = st2.executeQuery(sql2);
+				Appointment a = new Appointment(rs2.getInt(1),
+						rs2.getDate(3), rs2.getTime(8), rs2.getTime(9),
+						rs2.getString(2), rs2.getString(10),
+						rs2.getString(7));
+				while(rs2.next()){
+					Notification n = new Notification(rs2.getString(3),
+							string2enum.get(rs2.getString(5)), int2enum.get(rs2.getInt(4)),
+							a, retriveUser(rs2.getString(1)));
+					notifications.add(n);
+				}
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		disconnect();
+		return notifications;
+		
+	}
 
 	private String incapsulate(String input) {
 		return "'" + input + "'";
