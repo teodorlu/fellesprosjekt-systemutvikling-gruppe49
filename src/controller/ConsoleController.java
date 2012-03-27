@@ -110,6 +110,12 @@ public class ConsoleController extends ApplicationComponent {
 			}
 		});
 		
+		commands.put("notifications", new Command() {
+			void execute(String[] arguments) {
+				executer.notification(arguments);
+			}
+		});
+		
 		
 	}
 

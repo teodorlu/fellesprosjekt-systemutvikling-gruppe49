@@ -1,5 +1,6 @@
 package controller;
 
+import java.security.acl.NotOwnerException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -8,7 +9,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import model.Notification;
 import model.Person;
+import model.ReplyStatus;
 import model.Room;
 import model.User;
 import model.Time;
@@ -95,6 +98,11 @@ public class CommandExecuter extends ApplicationComponent {
 	
 	public void login(String[] array){
 		List<String> input = Arrays.asList(array);
+		
+		if(input.size() == 1)
+			this.getApplication().getConsoleView().showLoginOptions();
+		
+		
 		int uIndex, pIndex;
 		String username, password;
 		
@@ -437,7 +445,48 @@ public class CommandExecuter extends ApplicationComponent {
 		
 		
 	}
-	*/
+	 */
+
+
+	public void notification(String[] array){
+		if(isLoggedIn()){
+			List<Notification> notificationList;
+			List<String> input = Arrays.asList(array);
+			
+			notificationList = this.getApplication().getDatabaseController().retrieveNotifications(this.getApplication().getCurrentlyLoggedInUser());
+			
+			this.getApplication().getConsoleView().showNotifications(notificationList);
+		}
+	}
+	
+	public void reply(String[] array){
+		List<String> input = Arrays.asList(array);
+//		reply -id -y/n -reason
+		
+		List<Notification> notifications = this.getApplication().getDatabaseController().retrieveNotifications(this.getApplication().getCurrentlyLoggedInUser());
+		
+		String answer;
+		
+		if(input.contains("reply")){
+			int ReplyIndex = input.indexOf("reply");
+			int ID = Integer.parseInt(getProperty(array, ReplyIndex + 1));
+			
+			for (int i = 0; i < notifications.size(); i++) {
+				if(ID == notifications.get(i).getSender().getID()){
+					if (input.contains("y") || input.contains("yes")){
+						this.getApplication().getDatabaseController().replyToSummon(ID, 1, answer);
+						notifications.get(i).setReplyStatus(ReplyStatus.JA);
+					}
+					else if(input.contains("n") || input.contains("no")){
+						this.getApplication().getDatabaseController().replyToSummon(ID, 0, answer);
+						notifications.get(i).setReplyStatus(ReplyStatus.NEI);
+					}
+				}
+			}
+		}
+	}
+	
+	
 	
 	@SuppressWarnings("deprecation")
 	public void rooms(){		
@@ -465,7 +514,6 @@ public class CommandExecuter extends ApplicationComponent {
 	public static void main(String args[]) throws ParseException{
 		String[] s = {"2012-03-23"};
 		CommandExecuter.stringToDate(s, 0);
-	
 	}
 	
 	
