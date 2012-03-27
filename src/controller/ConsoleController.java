@@ -116,6 +116,11 @@ public class ConsoleController extends ApplicationComponent {
 			}
 		});
 		
+		commands.put("reply", new Command() {
+			void execute(String[] arguments) {
+				executer.reply(arguments);
+			}
+		});
 		
 	}
 
