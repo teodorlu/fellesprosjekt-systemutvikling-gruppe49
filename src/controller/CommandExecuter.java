@@ -121,6 +121,7 @@ public class CommandExecuter extends ApplicationComponent {
 	}
 	
 	public void appointment(String[] array) throws ParseException{
+		if(isLoggedIn()==true){
 		List<String> input = Arrays.asList(array);
 		String title = "", desc = "", place = "", sStart, sEnd;
 		Date date;
@@ -166,6 +167,7 @@ public class CommandExecuter extends ApplicationComponent {
 			//------------------------------------
 		}
 		else this.getApplication().getConsoleView().showAppontmentInputError();
+		}
 	}
 	
 	
@@ -211,6 +213,7 @@ public class CommandExecuter extends ApplicationComponent {
 	
 	// TODO check if logged in
 	public void delete(String[] array){		
+		if(isLoggedIn()==true){
 		String IDstring = "-1";
 		int ID;
 		List<String> input = Arrays.asList(array);
@@ -224,9 +227,11 @@ public class CommandExecuter extends ApplicationComponent {
 		else{
 			this.getApplication().getConsoleView().showApplicationDoesNotExistError();
 		}
+		}
 	}
 
 	public void user(String[] array){
+		if(isLoggedIn()==true){
 		List<String> input = Arrays.asList(array);
 		List<String> usernames;
 		String username;
@@ -242,11 +247,14 @@ public class CommandExecuter extends ApplicationComponent {
 		else{
 			this.getApplication().getConsoleView().showAllUsers();
 
+		}	
 		}
 	}
-	//Denne metoden har ikke sikring for at du er logget på, stygg output som kræsjer programmet om du ikke er!
+
 	public void edit(String[] array){
+		if(isLoggedIn()==true){
 		
+			
 		List<String> input = Arrays.asList(array);
 		List<Appointment> appointments;
 		Appointment localAppointment;
@@ -320,37 +328,57 @@ public class CommandExecuter extends ApplicationComponent {
 			}
 			
 		}
+		}
 		
 		
 		
 	}
 	
 	public void summon(String[] array){
+		if(isLoggedIn()==true){
+		
 		List<String> input = Arrays.asList(array);
-		List<Meeting> allMeetings = this.getApplication().getDatabaseController().retrieveMeetings(this.getApplication().getCurrentlyLoggedInUser());  //Laster inn en liste med appointments
+		
+		List<Appointment> allMeetings = this.getApplication().getDatabaseController().retrieveMeetingsAndAppointments(this.getApplication().getCurrentlyLoggedInUser());  //Laster inn en liste med meetings
+		
+		List<Appointment> allAppointments = this.getApplication().getDatabaseController().retrieveAppointments(this.getApplication().getCurrentlyLoggedInUser()); //Laster en liste med appointments
 		
 
 		
 		
 		if(input.size()==1) System.out.println(doc.get("summon"));
 		
-		if(allMeetings.size() < 1) System.out.println("Du har ingen møter");
+		if(allMeetings.size() < 1) this.getApplication().getConsoleView().showNoMeetings();
 		
-		if(input.size() > 1){
+		if(input.size() == 2){
+			int IDIndex = input.indexOf("summon") + 1;
+			int ID = Integer.parseInt(getProperty(array,IDIndex));
+			
+			for(int k = 0; k < allMeetings.size(); k++){
+				Meeting localMeeting = (Meeting)allMeetings.get(k);
+				if(localMeeting.getID()==ID)System.out.println(localMeeting.getParticipants());  //Printer ut participants
+			}
+		}
+		
+		else if(input.size() > 1){
 			int IDIndex = input.indexOf("summon")+1;
 			int ID = Integer.parseInt(getProperty(array, IDIndex));
+			
 			
 			List<String> usernames = this.getApplication().getDatabaseController().retriveUsernames();
 			
 			for(int i = 0; i < allMeetings.size(); i++){
-				Meeting localMeeting = allMeetings.get(i);				//Cast til meeting fra appointment
+				Meeting localMeeting = (Meeting)allMeetings.get(i);				//Cast til meeting fra appointment
 				if(localMeeting.getID()==ID){										//Funnet riktig Møte
 					for(int j = IDIndex+1; j < input.size(); j++){					//Går gjennom alle navna du skrev inn
 						
+						if(!usernames.contains(getProperty(array,j))) this.getApplication().getConsoleView().showUserDoesNotExist(getProperty(array, j));
+						
 						if (localMeeting.getParticipants().contains(getProperty(array, j))){
-							System.out.println(getProperty(array, j)+" er allerede lagt til");  //Sjekker om brukeren allerede er i møtet, om ja sysout
+							this.getApplication().getConsoleView().showAppointmentAlreadyContains(getProperty(array,j));
 							continue;
 						}
+						
 					
 						if(!usernames.contains(getProperty(array,j)))			//Sjekker om brukeren finnes i lista over brukere
 							continue;
@@ -359,8 +387,9 @@ public class CommandExecuter extends ApplicationComponent {
 								.getDatabaseController()
 								.summonToMeeting(getProperty(array, j),
 										localMeeting.getID()); // SummonToMeeting
-						System.out.println("Møteinkalling sendt til "
-								+ getProperty(array, j)); // Output med navnet
+									this.getApplication().getConsoleView().showAppointmentAddedPerson(getProperty(array,j)); // Output med navnet
+						
+							this.getApplication().getDatabaseController().editAppointment(localMeeting.getID(), "TYPE", "Møte");
 
 					}
 				}
@@ -368,6 +397,7 @@ public class CommandExecuter extends ApplicationComponent {
 			
 			
 			
+		}
 		}
 	}
 	
