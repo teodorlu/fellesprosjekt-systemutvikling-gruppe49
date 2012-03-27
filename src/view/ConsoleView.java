@@ -29,7 +29,7 @@ public class ConsoleView extends ApplicationComponent{
 	}
 	
 	public void welcome(){
-		output.println("  Calendar Console, version 0.1");
+		output.println("  Calendar Console, version 0.1.1");
 		output.println("---------------------------------");
 	}
 
@@ -246,6 +246,10 @@ public class ConsoleView extends ApplicationComponent{
 
 	public void showNoReplyArgumentsError() {
 		output.println("For å svare, skriv reply -id <møte id> <y/n> -reason <grunn for svar>");
+	}
+
+	public void showEditInputError() {
+		output.println("For å endre, skriv edit [-tittel <tittel> -date <date> ... ]");
 	}
 	
 	
