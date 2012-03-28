@@ -353,11 +353,13 @@ public class ConsoleView extends ApplicationComponent {
 						+ ", Dato: " + m.getDate() + ", Start: " + m.getStartTime()
 						+ ", Varighet: " + m.getAppLength() + ", Sted: "
 						+ m.getPlace() + ", Beskrivelse: " + m.getDescription()+", Type: "+type+", Deltakere: "+m.getParticipants()+", Rom: "+m.getRoom());
+			} else {
+				output.println("ID:" + a.getID() + ", Tittel: " + a.getTitle()
+						+ ", Dato: " + a.getDate() + ", Start: " + a.getStartTime()
+						+ ", Varighet: " + a.getAppLength() + ", Sted: "
+						+ a.getPlace() + ", Beskrivelse: " + a.getDescription()+", Type: "+type);
+				
 			}
-			output.println("ID:" + a.getID() + ", Tittel: " + a.getTitle()
-					+ ", Dato: " + a.getDate() + ", Start: " + a.getStartTime()
-					+ ", Varighet: " + a.getAppLength() + ", Sted: "
-					+ a.getPlace() + ", Beskrivelse: " + a.getDescription()+", Type: "+type);
 		}
 	}
 
