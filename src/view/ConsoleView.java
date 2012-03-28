@@ -320,4 +320,8 @@ public class ConsoleView extends ApplicationComponent{
 		output.println(outString);
 	}
 	
+	public void showIllegalIntSummon(){
+		output.println("Dette er ikke en gyldig ID!");
+	}
+	
 }
