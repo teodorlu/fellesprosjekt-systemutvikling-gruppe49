@@ -654,6 +654,17 @@ public class CommandExecuter extends ApplicationComponent {
 		
 	}
 	
+	public void mycal(String[] array) {
+		if (isLoggedIn()) {
+			List<Appointment> allAppointmentsAndMeetings = this
+					.getApplication()
+					.getDatabaseController()
+					.retrieveMeetingsAndAppointments(
+							this.getApplication().getCurrentlyLoggedInUser());
+			this.getApplication().getConsoleView().showAllMeetingsAndApps(allAppointmentsAndMeetings);
+		}
+	}
+	
 	private boolean isLoggedIn(){
 		if(this.getApplication().getLoggedIn())
 			return true;

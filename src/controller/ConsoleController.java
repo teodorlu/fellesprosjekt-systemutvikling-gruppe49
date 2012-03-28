@@ -150,6 +150,11 @@ public class ConsoleController extends ApplicationComponent {
 			}
 		});
 		
+		commands.put("mycal", new Command() {
+			void execute(String[] arguments) {
+				executer.mycal(arguments);
+			}
+		});
 	}
 
 	public java.util.Set<String> getCommands() {
