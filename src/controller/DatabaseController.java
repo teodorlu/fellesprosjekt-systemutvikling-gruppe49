@@ -77,7 +77,7 @@ public class DatabaseController extends ApplicationComponent {
 		}
 	}
 
-	public void Save(Person user) {
+	public boolean Save(Person user) {
 		String username = incapsulate(user.getUsername());
 		String pw = incapsulate(user.getPassword());
 		String fname = incapsulate(user.getFirstName());
@@ -85,14 +85,18 @@ public class DatabaseController extends ApplicationComponent {
 		String email = incapsulate(user.getEmail());
 		String sql = "INSERT INTO ANSATT VALUES ( " + username + ", " + pw
 				+ ", " + fname + ", " + lname + ", " + email + ", 0)";
+		int rowsAffected=-1;
 		try {
 			connect();
 			Statement st = con.createStatement();
-			int res = st.executeUpdate(sql);
+			rowsAffected = st.executeUpdate(sql);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.out.println(e.getMessage());
 		}
 		disconnect();
+		if(rowsAffected >= 1)
+			return true;
+		return false;
 	}
 
 	public boolean newAppointment(Appointment appointment) {
