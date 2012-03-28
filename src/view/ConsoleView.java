@@ -190,7 +190,6 @@ public class ConsoleView extends ApplicationComponent{
 	public void showAllUsers() {
 		outString = "Users: ";
 		output.println(outString);
-		List<String> usernames = getApplication().getDatabaseController().retriveUsernames();
 		for(int i = 0; i < usernames.size(); i++){
 			String outString = usernames.get(i);
 			output.println(outString);
@@ -247,6 +246,12 @@ public class ConsoleView extends ApplicationComponent{
 		for (int i = 0; i < notificationList.size(); i++) {
 			Notification n = notificationList.get(i);
 			output.println("Melding nr " + i+1 + ": " + n.getSender().getTitle() + ". MøteID: " + n.getSender().getID());
+		}
+	}
+	
+	public void showNotificationsReplies(List<Notification> notificationList){
+		for (Notification n : notificationList){
+			output.println("MøteID: " + n.getSender().getID()+ ":: "+n.getReceivers().getUsername()+ " har svart "+ n.getReply());
 		}
 	}
 
@@ -315,6 +320,11 @@ public class ConsoleView extends ApplicationComponent{
 		}
 	}
 
+	public void showRegSuccess() {
+		outString = "Brukeren er blitt lagt til.";
+		output.println(outString);
+	}
+	
 	public void showSummonHelp() {
 		outString = "summon <id> <username1> [ <username2> <username3> ... ]";
 		output.println(outString);
