@@ -362,5 +362,18 @@ public class ConsoleView extends ApplicationComponent {
 			}
 		}
 	}
+	public void showAppointmentRoomDoesNotExist(String RoomID) {
+		outString = RoomID + " er ikke et rom.";
+		output.println(outString);
+	}
+	public void showAppointmentRoomReserved(String RoomID) {
+		outString = RoomID + " er blitt reservert for avtalen.";
+		output.println(outString);
+	}
+	public void showAppointmentRoomAlreadyReserved(String RoomID) {
+		outString = RoomID + " er allerede reservert for dette tidspunktet.";
+		output.println(outString);
+	}
+	
 
 }

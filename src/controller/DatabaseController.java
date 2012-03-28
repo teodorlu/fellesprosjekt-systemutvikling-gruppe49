@@ -700,9 +700,36 @@ public class DatabaseController extends ApplicationComponent {
 		return output;
 	}
 
-
 	private String incapsulate(String input) {
 		return "'" + input + "'";
 	}
+	
+	public void reserveRoomWithID(int avtaleID, String roomID){
+		String sql = "UPDATE AVTALE SET AvtaleRom='"+roomID+"' WHERE AvtaleID='"+avtaleID+"'";
+		try {
+			connect();
+			Statement st = con.createStatement();
+			st.executeUpdate(sql);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	public Appointment retrieveAnAppointment(int avtaleID){
+		Appointment output = null;
+		String sql = "SELECT * FROM AVTALE WHERE AvtaleID = '"+avtaleID+"'";
+		try {
+			connect();
+			Statement st = con.createStatement();
+			ResultSet rs = st.executeQuery(sql);
+			while (rs.next()) {
+				output = new Appointment(avtaleID, rs.getDate(3), rs.getTime(8), rs.getTime(9), rs.getString(2), rs.getString(10), rs.getString(7));
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return output;
+	}
+
 	
 }
