@@ -674,6 +674,13 @@ public class CommandExecuter extends ApplicationComponent {
 
 	}
 
+	public void exit(String[] arguments) {
+		if (this.getApplication().getLoggedIn()) {
+			this.getApplication().logout();
+		}
+		System.exit(0);
+	}
+
 
 }
 
