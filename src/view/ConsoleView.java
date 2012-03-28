@@ -244,6 +244,12 @@ public class ConsoleView extends ApplicationComponent{
 			output.println("Melding nr " + i+1 + ": " + n.getSender().getTitle() + ". MøteID: " + n.getSender().getID());
 		}
 	}
+	
+	public void showNotificationsReplies(List<Notification> notificationList){
+		for (Notification n : notificationList){
+			output.println("MøteID: " + n.getSender().getID()+ ":: "+n.getReceivers().getUsername()+ " har svart "+ n.getReply());
+		}
+	}
 
 	public void showNotificationInvalidReplyError() {
 		outString = "Ikke et gyldig svar. Gyldige svar er y/n";
