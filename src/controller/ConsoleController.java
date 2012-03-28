@@ -155,6 +155,12 @@ public class ConsoleController extends ApplicationComponent {
 				executer.mycal(arguments);
 			}
 		});
+		
+		commands.put("exit", new Command() {
+			void execute(String[] arguments) {
+				executer.exit(arguments);
+			}
+		});
 	}
 
 	public java.util.Set<String> getCommands() {
