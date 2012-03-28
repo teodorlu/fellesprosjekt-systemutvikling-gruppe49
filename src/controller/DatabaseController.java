@@ -77,7 +77,7 @@ public class DatabaseController extends ApplicationComponent {
 		}
 	}
 
-	public void Save(Person user) {
+	public boolean Save(Person user) {
 		String username = incapsulate(user.getUsername());
 		String pw = incapsulate(user.getPassword());
 		String fname = incapsulate(user.getFirstName());
@@ -85,14 +85,18 @@ public class DatabaseController extends ApplicationComponent {
 		String email = incapsulate(user.getEmail());
 		String sql = "INSERT INTO ANSATT VALUES ( " + username + ", " + pw
 				+ ", " + fname + ", " + lname + ", " + email + ", 0)";
+		int rowsAffected=-1;
 		try {
 			connect();
 			Statement st = con.createStatement();
-			int res = st.executeUpdate(sql);
+			rowsAffected = st.executeUpdate(sql);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.out.println(e.getMessage());
 		}
 		disconnect();
+		if(rowsAffected >= 1)
+			return true;
+		return false;
 	}
 
 	public boolean newAppointment(Appointment appointment) {
@@ -262,7 +266,7 @@ public class DatabaseController extends ApplicationComponent {
 
 	}
 
-	public List<String> retriveUsernames() {
+	public List<String> retrieveUsernames() {
 		String sql = "SELECT BrukerNavn FROM ANSATT";
 		List<String> listOfUsernames = new ArrayList<String>();
 		connect();
@@ -628,18 +632,26 @@ public class DatabaseController extends ApplicationComponent {
 			Statement st =con.createStatement();
 			ResultSet rs = st.executeQuery(sql);
 			while(rs.next()){
+				Appointment a = new Appointment(rs.getInt(1),
+						rs.getDate(3), rs.getTime(8), rs.getTime(9),
+						rs.getString(2), rs.getString(10),
+						rs.getString(7));
 				String sql2 = "SELECT * FROM PAMINNELSE WHERE AvtaleID="
-					+rs.getInt(1)+" AND SkalDelta<>-1";
+						+rs.getInt(1);
 				Statement st2 = con.createStatement();
 				ResultSet rs2 = st2.executeQuery(sql2);
-				Appointment a = new Appointment(rs2.getInt(1),
-						rs2.getDate(3), rs2.getTime(8), rs2.getTime(9),
-						rs2.getString(2), rs2.getString(10),
-						rs2.getString(7));
 				while(rs2.next()){
+					String sql3 = "SELECT * FROM ANSATT WHERE BrukerNavn='"+rs2.getString(1)+"'";
+					Statement st3 = con.createStatement();
+					ResultSet rs3 = st3.executeQuery(sql3);
+					Person user = null;
+					while (rs3.next()){
+						user = new Person(rs3.getString(1), rs3.getString(2),
+								rs3.getString(3), rs3.getString(4), rs3.getString(5));	
+					}
 					Notification n = new Notification(rs2.getString(3),
 							string2enum.get(rs2.getString(5)), int2enum.get(rs2.getInt(4)),
-							a, retrieveUser(rs2.getString(1)));
+							a, user);
 					notifications.add(n);
 				}
 			}
@@ -670,10 +682,7 @@ public class DatabaseController extends ApplicationComponent {
 		disconnect();
 	}
 
-	private String incapsulate(String input) {
-		return "'" + input + "'";
-	}
-	public int retriveNumOfParticipants(int avtaleID){
+	public int retrieveNumOfParticipants(int avtaleID){
 		int output = -1;
 		String sql = "SELECT COUNT(*) FROM PAMINNELSE WHERE AvtaleID='"+avtaleID+"'";
 		try {
@@ -690,11 +699,10 @@ public class DatabaseController extends ApplicationComponent {
 		disconnect();
 		return output;
 	}
+
+
+	private String incapsulate(String input) {
+		return "'" + input + "'";
+	}
 	
-//	public static void main(String[] args) {
-//		DatabaseController dbc = new DatabaseController(null);
-//		User u = new User("magrodahl", "mamma");
-//		dbc.retrieveNotifications(u);
-//
-//	}
 }
