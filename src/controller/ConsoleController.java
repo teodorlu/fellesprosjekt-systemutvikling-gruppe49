@@ -109,11 +109,6 @@ public class ConsoleController extends ApplicationComponent {
 				executer.logout(arguments);
 			}
 		});
-		commands.put("user", new Command() {
-			void execute(String[] arguments) {
-				executer.user(arguments);
-			}
-		});
 		
 		commands.put("appointment", new Command() {    //Ikke sikker at denne funker
 			void execute(String[] arguments) {
