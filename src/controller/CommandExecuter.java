@@ -104,10 +104,6 @@ public class CommandExecuter extends ApplicationComponent {
 	public void login(String[] array){
 		List<String> input = Arrays.asList(array);
 
-		if(input.size() == 1)
-			this.getApplication().getConsoleView().showLoginOptions();
-
-
 		int uIndex, pIndex;
 		String username, password;
 
@@ -116,10 +112,15 @@ public class CommandExecuter extends ApplicationComponent {
 			pIndex  =input.indexOf("-p");
 			username = getProperty(array, uIndex+1);
 			password = getProperty(array, pIndex+1);
-
+			if(username == null || password == null){
+				this.getApplication().getConsoleView().showLoginOptions();
+				return;
+			}
 			User user = new User(username, password);
 			this.getApplication().tryLogIn(user);
 		}
+		else
+			this.getApplication().getConsoleView().showLoginOptions();
 	}
 
 
@@ -188,12 +189,11 @@ public class CommandExecuter extends ApplicationComponent {
 
 
 		if(index >= array.length){
-
-			throw new IllegalArgumentException();
+			return null;
 		}
 		String word = array[index];
 		if(word.charAt(0)=='-'){
-			throw new IllegalArgumentException();
+			return null;
 		}
 		return word;		
 	}
