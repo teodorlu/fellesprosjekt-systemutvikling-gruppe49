@@ -164,7 +164,7 @@ public class ConsoleView extends ApplicationComponent{
 	}
 
 	public void showAllUsers() {
-		List<String> usernames = getApplication().getDatabaseController().retriveUsernames();
+		List<String> usernames = getApplication().getDatabaseController().retrieveUsernames();
 		for(int i = 0; i < usernames.size(); i++){
 			String name = usernames.get(i);
 			output.println(name);

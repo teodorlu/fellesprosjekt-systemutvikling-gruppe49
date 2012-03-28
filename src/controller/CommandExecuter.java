@@ -376,7 +376,7 @@ public class CommandExecuter extends ApplicationComponent {
 				int ID = Integer.parseInt(getProperty(array, IDIndex));
 
 
-				List<String> usernames = this.getApplication().getDatabaseController().retriveUsernames();
+				List<String> usernames = this.getApplication().getDatabaseController().retrieveUsernames();
 
 				for(int i = 0; i < allMeetings.size(); i++){
 					Meeting localMeeting = (Meeting)allMeetings.get(i);				//Cast til meeting fra appointment
@@ -546,7 +546,7 @@ public class CommandExecuter extends ApplicationComponent {
 			int ID = Integer.parseInt(getProperty(array, IDIndex));
 			
 			
-			List<String> usernames = this.getApplication().getDatabaseController().retriveUsernames();
+			List<String> usernames = this.getApplication().getDatabaseController().retrieveUsernames();
 			
 			for(int i = 0; i < allMeetings.size(); i++){
 				Meeting localMeeting = (Meeting)allMeetings.get(i);				//Cast til meeting fra appointment
@@ -573,7 +573,7 @@ public class CommandExecuter extends ApplicationComponent {
 						slettet++;
 					}
 					if(slettet > 0){
-						int medlemmer = this.getApplication().getDatabaseController().retriveNumOfParticipants(localMeeting.getID());
+						int medlemmer = this.getApplication().getDatabaseController().retrieveNumOfParticipants(localMeeting.getID());
 						if(medlemmer == 0){
 							this.getApplication().getDatabaseController().editAppointment(localMeeting.getID(), "TYPE", "Avtale");
 							this.getApplication().getConsoleView().showAppointmentChangeToApp();
