@@ -108,7 +108,8 @@ public class Application {
 		return this.loggedIn;
 	}
 	public void logout() {
-		loggedIn = false;		
+		loggedIn = false;
+		this.getConsoleView().showCompletedLogout();
 	}
 
 	public static void main(String[] args) {
