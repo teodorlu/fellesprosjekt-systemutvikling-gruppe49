@@ -25,6 +25,7 @@ import application.ApplicationComponent;
 public class CommandExecuter extends ApplicationComponent {
 
 	private HashMap<String, String> doc;
+	List<Notification> notificationList;
 
 	public CommandExecuter(Application app) {
 		super(app);
@@ -47,6 +48,10 @@ public class CommandExecuter extends ApplicationComponent {
 		doc.put("reserve", "reserve -a <appointmentID> ( -r <roomID> / -c <capacity> )");
 		doc.put("calendar", "calendar [ -w <week> [ -y <year ] -u <username1> <username2> <username3> ... ]");
 		doc.put("notifications", "notifications");
+	}
+	
+	public List<Notification> getNotificationList(){
+		return this.notificationList;
 	}
 
 	public void register(String[] array){
@@ -356,7 +361,7 @@ public class CommandExecuter extends ApplicationComponent {
 
 
 			if(input.size()==1){
-				System.out.println(doc.get("summon"));
+				this.getApplication().getConsoleView().showSummonHelp();
 				return;
 			}
 
@@ -478,7 +483,6 @@ public class CommandExecuter extends ApplicationComponent {
 
 	public void notification(String[] array){
 		if(isLoggedIn()){
-			List<Notification> notificationList;
 			List<String> input = Arrays.asList(array);
 
 			notificationList = this.getApplication().getDatabaseController().retrieveNotifications(this.getApplication().getCurrentlyLoggedInUser());
