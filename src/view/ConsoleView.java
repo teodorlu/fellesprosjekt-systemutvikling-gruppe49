@@ -156,7 +156,7 @@ public class ConsoleView extends ApplicationComponent{
 
 	public void showUser(String username) {
 		Person a;
-		a = getApplication().getDatabaseController().retriveUser(username);
+		a = getApplication().getDatabaseController().retrieveUser(username);
 		output.println("Brukernavn: "+a.getUsername());
 		output.println("Fornavn: "+a.getFirstName());
 		output.println("Etternavn: "+a.getLastName());
@@ -167,7 +167,7 @@ public class ConsoleView extends ApplicationComponent{
 		List<String> usernames = getApplication().getDatabaseController().retriveUsernames();
 		for(int i = 0; i < usernames.size(); i++){
 			String name = usernames.get(i);
-			System.out.println(name);
+			output.println(name);
 		}
 	}
 
@@ -253,6 +253,18 @@ public class ConsoleView extends ApplicationComponent{
 	}
 	public void showAppointmentChangeToApp(){
 		output.println("Ingen fler deltagere, møte forandret til avtale");
+	}
+
+	public void showCompletedLogout() {
+		output.println("Du har blitt logget ut.");
+	}
+
+	public void showOnlineUsers() {
+		List<String> usernames = getApplication().getDatabaseController().getOnlineUsersNames();
+		for(int i = 0; i < usernames.size(); i++){
+			String name = usernames.get(i);
+			output.println(name);
+		}
 	}
 	
 }
