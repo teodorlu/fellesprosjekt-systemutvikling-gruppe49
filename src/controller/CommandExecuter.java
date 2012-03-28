@@ -482,12 +482,15 @@ public class CommandExecuter extends ApplicationComponent {
 
 	public void notification(String[] array){
 		if(isLoggedIn()){
-			List<Notification> notificationList;
 			List<String> input = Arrays.asList(array);
-
-			notificationList = this.getApplication().getDatabaseController().retrieveNotifications(this.getApplication().getCurrentlyLoggedInUser());
-
-			this.getApplication().getConsoleView().showNotifications(notificationList);
+			List<Notification> notificationList;
+			if(input.size()==1){
+				notificationList = this.getApplication().getDatabaseController().retrieveNotifications(this.getApplication().getCurrentlyLoggedInUser());
+				this.getApplication().getConsoleView().showNotifications(notificationList);				
+			} else if (input.contains("replies")){
+				notificationList = this.getApplication().getDatabaseController().retrieveReplys();
+				this.getApplication().getConsoleView().showNotificationsReplies(notificationList);
+			}			
 		}
 	}
 
