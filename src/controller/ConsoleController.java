@@ -17,6 +17,7 @@ import application.ApplicationComponent;
 public class ConsoleController extends ApplicationComponent {
 	
 	private final InputStream input;
+	private String testInput;
 	private final BufferedReader reader;
 	private final Map<String, Command> commands;
 	private final CommandExecuter executer;
@@ -31,6 +32,28 @@ public class ConsoleController extends ApplicationComponent {
 		executer = new CommandExecuter(this.getApplication()); 
 		registerCommands();
 	}
+	
+//	For testing
+	public ConsoleController(Application app, String testInput, String command){
+		super(app);
+		
+//		For å ungå "may not have been init"-error:
+		this.input = null;		
+		InputStream fooStream = System.in;
+		InputStreamReader isr = new InputStreamReader(fooStream);
+		this.reader = new BufferedReader(isr);
+		
+		this.testInput = testInput;
+		commands = new HashMap<String, Command>();
+		executer = new CommandExecuter(this.getApplication()); 
+		registerCommands();
+		
+		String[] testInputStringList = testInput.split(" ");
+		String keyword = testInputStringList[0];
+		commands.get(keyword).execute(testInputStringList);
+	}
+//	End for Testing
+	
 	
 	public boolean parseNext(){
 		boolean executedCommand = true;
