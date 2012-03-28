@@ -17,11 +17,24 @@ import application.ApplicationComponent;
 public class ConsoleView extends ApplicationComponent{
 
 	private PrintStream output;
+	private String testOutput;
+	private String outString;
 	
 	public ConsoleView(Application app, PrintStream output) {
 		super(app);
 		this.output = output;
 	}
+	
+	public String getOutString(){
+		return this.outString;
+	}
+	
+//	For testing
+	public ConsoleView(Application app, String testOutput){
+		super(app);
+		this.testOutput = testOutput;
+	}
+//	End for testing
 	
 	public void println(String message){
 		output.println(message);
@@ -113,7 +126,8 @@ public class ConsoleView extends ApplicationComponent{
 	}
 
 	public void showSucessfulLoginMessage(Person owner) {
-		output.println("Sucessfully logged in as " + owner.getUsername());
+		outString = "Sucessfully logged in as " + owner.getUsername();
+		output.println(outString);
 	}
 
 	public void showFailedLoginMessage(User user) {

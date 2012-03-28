@@ -65,6 +65,17 @@ public class Application {
 
 		run();
 	}
+	
+//	TESTER
+	public Application(String arg, String command){
+		
+		String input = arg;
+		PrintStream output = (PrintStream) System.out;
+		
+		databaseController = new DatabaseController(this);
+		consoleView = new ConsoleView(this, output);
+		consoleController = new ConsoleController(this, input, command);
+	}
 
 	private void run(){
 		consoleView.welcome();
@@ -77,7 +88,7 @@ public class Application {
 		}
 	}
 
-	public void tryLogIn(User user) {
+	public void tryLogIn(User user) {	
 		boolean isValid = getDatabaseController().authenticated(user);
 
 		if (isValid) {
