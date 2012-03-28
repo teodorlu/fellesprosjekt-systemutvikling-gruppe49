@@ -649,13 +649,45 @@ public class CommandExecuter extends ApplicationComponent {
 			List<String> input = Arrays.asList(array);
 			int appIDIndex = input.indexOf("-a") + 1;
 			String appID = input.get(appIDIndex);
-			int applicationID = -1;
 			String RoomID = "-1";
 			String needCapacity = "-1";
 			int capacity = -1;
+			int applicationID = -1;
+			try{
+				applicationID = Integer.parseInt(appID);
+			}catch(NumberFormatException e){
+				e.printStackTrace();
+			}
 			if(input.contains("-r")){
 				int RoomIDIndex = input.indexOf("-r") + 1;
 				RoomID = input.get(RoomIDIndex);
+
+				List<Room> allRooms = this.getApplication().getDatabaseController().retrieveAllRooms();
+				List<String> allRoomIDs = new ArrayList<String>();
+				for(int i=0; i < allRooms.size();i++){
+					allRoomIDs.add(allRooms.get(i).getRoomId());
+				}
+				if(allRoomIDs.contains(RoomID)){
+					Appointment thisApp = this.getApplication().getDatabaseController().retrieveAnAppointment(applicationID, this.getApplication().getCurrentlyLoggedInUser().getUsername());
+					if(thisApp == null){
+						this.getApplication().getConsoleView().showAppointmentNoSuchApp();
+						return;
+					}
+					java.sql.Date a = new java.sql.Date(thisApp.getDate().getTime());
+					a.setMonth(a.getMonth()+1);
+					a.setYear(a.getYear()+1900);
+					if(this.getApplication().getDatabaseController().isRoomAvailable(RoomID, 
+							a ,
+							thisApp.getStartTime(), 
+							thisApp.getAppLength()  )){
+						this.getApplication().getDatabaseController().reserveRoomWithID(applicationID, RoomID);
+						this.getApplication().getConsoleView().showAppointmentRoomReserved(RoomID);
+					}else{
+						this.getApplication().getConsoleView().showAppointmentRoomAlreadyReserved(RoomID);
+					}
+				}else{
+					this.getApplication().getConsoleView().showAppointmentRoomDoesNotExist(RoomID);
+				}
 			}else if(input.contains("-c")){
 				int capacityIndex = input.indexOf("-c")+1;
 				needCapacity = input.get(capacityIndex);
@@ -664,48 +696,43 @@ public class CommandExecuter extends ApplicationComponent {
 				}catch(NumberFormatException e){
 					e.printStackTrace();
 				}
-				
-				
-				
-				return;
-				
-				
-				
+				List<Room> capRooms = this.getApplication().getDatabaseController().retrieveRoomsWCapacity(capacity);
+				if(capRooms.size() <= 0){
+					this.getApplication().getConsoleView().showAppointmentNoRoomsWCap();
+					return;
+				}
+				Appointment thisApp = this.getApplication().getDatabaseController().retrieveAnAppointment(applicationID, this.getApplication().getCurrentlyLoggedInUser().getUsername());
+				if(thisApp == null){
+					this.getApplication().getConsoleView().showAppointmentNoSuchApp();
+					return;
+				}
+				java.sql.Date a = new java.sql.Date(thisApp.getDate().getTime());
+				a.setMonth(a.getMonth()+1);
+				a.setYear(a.getYear()+1900);	
+				for(int i = 0; i < capRooms.size();i++){
+					if(!this.getApplication().getDatabaseController().isRoomAvailable(capRooms.get(i).getRoomId(),
+							a, 
+							thisApp.getStartTime(), 
+							thisApp.getAppLength()	)){
+						capRooms.remove(i);
+					}
+				}
+				if(capRooms.size() > 0){
+					RoomID = capRooms.get(0).getRoomId();
+					this.getApplication().getDatabaseController().reserveRoomWithID(applicationID, RoomID);
+					this.getApplication().getConsoleView().showAppointmentRoomReserved(RoomID);
+					return;
+				}else{
+					this.getApplication().getConsoleView().showAppointmentNoRoomsWCapAvail();
+					return;
+				}		
 			}else{
 				System.out.println(doc.get("reserve"));
 				return;
-			}
-			try{
-				applicationID = Integer.parseInt(appID);
-			}catch(NumberFormatException e){
-				e.printStackTrace();
-			}
-			List<Room> allRooms = this.getApplication().getDatabaseController().retrieveAllRooms();
-			List<String> allRoomIDs = new ArrayList<String>();
-			for(int i=0; i < allRooms.size();i++){
-				allRoomIDs.add(allRooms.get(i).getRoomId());
-			}
-			if(allRoomIDs.contains(RoomID)){
-				Appointment thisApp = this.getApplication().getDatabaseController().retrieveAnAppointment(applicationID);
-				java.sql.Date a = new java.sql.Date(thisApp.getDate().getTime());
-				a.setMonth(a.getMonth()+1);
-				a.setYear(a.getYear()+1900);
-				if(this.getApplication().getDatabaseController().isRoomAvailable(RoomID, 
-						a ,
-						thisApp.getStartTime(), 
-						thisApp.getAppLength()  )){
-					this.getApplication().getDatabaseController().reserveRoomWithID(applicationID, RoomID);
-					this.getApplication().getConsoleView().showAppointmentRoomReserved(RoomID);
-				}else{
-					this.getApplication().getConsoleView().showAppointmentRoomAlreadyReserved(RoomID);
-				}
-			}else{
-				this.getApplication().getConsoleView().showAppointmentRoomDoesNotExist(RoomID);
-			}
-			
+			}		
 		}
 	}
-
+	
 	
 	public void calendar(String[] array){
 		List<String> input = Arrays.asList(array);
