@@ -266,7 +266,7 @@ public class DatabaseController extends ApplicationComponent {
 
 	}
 
-	public List<String> retriveUsernames() {
+	public List<String> retrieveUsernames() {
 		String sql = "SELECT BrukerNavn FROM ANSATT";
 		List<String> listOfUsernames = new ArrayList<String>();
 		connect();
@@ -682,7 +682,7 @@ public class DatabaseController extends ApplicationComponent {
 		disconnect();
 	}
 
-	public int retriveNumOfParticipants(int avtaleID){
+	public int retrieveNumOfParticipants(int avtaleID){
 		int output = -1;
 		String sql = "SELECT COUNT(*) FROM PAMINNELSE WHERE AvtaleID='"+avtaleID+"'";
 		try {
