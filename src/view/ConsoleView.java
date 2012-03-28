@@ -309,5 +309,10 @@ public class ConsoleView extends ApplicationComponent{
 			output.println(name);
 		}
 	}
+
+	public void showRegSuccess() {
+		outString = "Brukeren er blitt lagt til.";
+		output.println(outString);
+	}
 	
 }
