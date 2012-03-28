@@ -131,31 +131,40 @@ public class ConsoleView extends ApplicationComponent{
 	}
 
 	public void showFailedLoginMessage(User user) {
-		output.println("Login as " + user.getUsername() + " failed");
+		outString = "Login as " + user.getUsername() + " failed";
+		output.println(outString);
 	}
 
 	public void showNotLoggedIn() {
-		output.println("You are not logged in!");
+		outString = "You are not logged in!";
+		output.println(outString);
 	}
 	
 	public void showRegError(String errorType){
-		if(errorType.equals("noInput")) 
-			output.println("Du må ha med register -u <username> -p <password> -fn <firstName> -ln <lastName> -email <email>");
-		else
-			output.println("Feil input. Skriv inn riktig " + errorType);
+		if(errorType.equals("noInput")){ 
+			outString = "Du må ha med register -u <username> -p <password> -fn <firstName> -ln <lastName> -email <email>";
+			output.println(outString);
+		}
+		else{
+			outString = "Feil input. Skriv inn riktig " + errorType;
+			output.println(outString);
+		}
 	}
 
 	public void showAppontmentInputError() {
-		output.println("Du må ha med -title <title>, -date date, -s <starttid>, -d <varighet>, med dato på formen YYYY-MM-DD og tid på formen HH:MM.");
+		outString = "Du må ha med -title <title>, -date date, -s <starttid>, -d <varighet>, med dato på formen YYYY-MM-DD og tid på formen HH:MM.";
+		output.println(outString);
 	}
 
 	public void showAppontmentDetails(String title, String date,
 			String startTime, String appLength, String desc, String place) {
-		output.println("Tittel: "+title+" Date: "+ date +" Start: "+ startTime +" Duration: "+ appLength +" Desc: "+ desc+" Place: "+ place);
+		outString = "Tittel: "+title+" Date: "+ date +" Start: "+ startTime +" Duration: "+ appLength +" Desc: "+ desc+" Place: "+ place;
+		output.println(outString);
 	}
 
 	public void showApplicationDeleted() {
-		output.println("The appointment has been deleted");
+		outString = "The appointment has been deleted";
+		output.println(outString);
 	}
 
 	public void showApplicationDoesNotExistError() {
@@ -193,35 +202,43 @@ public class ConsoleView extends ApplicationComponent{
 	}
 
 	public void showAppointmentTitleChange(String title) {
-		output.println("Tittel ble endret til "+ title);
+		outString = "Tittel ble endret til "+ title;
+		output.println(outString);
 	}
 
 	public void showAppointmentDateChange(Date date) {
-		output.println("Dato ble endret til: "+ date);
+		outString = "Dato ble endret til: "+ date;
+		output.println(outString);
 	}
 
 	public void showAppointmentStartTimeChange(Time startTime) {
-		output.println("StartTid ble endret til: "+ startTime);
+		outString = "StartTid ble endret til: "+ startTime;
+		output.println(outString);
 	}
 
 	public void showAppointmentLengthChange(Time appLength) {
-		output.println("Varighet ble endret til: "+ appLength);
+		outString = "Varighet ble endret til: "+ appLength;
+		output.println(outString);
 	}
 
 	public void showAppointmentDescriptionChange(String description) {
-		output.println("Beskrivelse ble endret til: "+ description);
+		outString = "Beskrivelse ble endret til: "+ description;
+		output.println(outString);
 	}
 
 	public void showAppointmentPlaceChange(String place) {
-		output.println("Sted ble endret til: "+ place);
+		outString = "Sted ble endret til: "+ place;
+		output.println(outString);
 	}
 
 	public void showLoginOptions() {
-		output.println("For å logge på, skriv login -u <username> -p <password>");
+		outString = "For å logge på, skriv login -u <username> -p <password>";
+		output.println(outString);
 	}
 
 	public void showNotifications(List<Notification> notificationList) {
-		output.println("Antall meldinger: " + notificationList.size());
+		outString = "Antall meldinger: " + notificationList.size();
+		output.println(outString);
 		for (int i = 0; i < notificationList.size(); i++) {
 			Notification n = notificationList.get(i);
 			output.println("Melding nr " + i+1 + ": " + n.getSender().getTitle() + ". MøteID: " + n.getSender().getID());
@@ -229,48 +246,60 @@ public class ConsoleView extends ApplicationComponent{
 	}
 
 	public void showNotificationInvalidReplyError() {
-		output.println("Ikke et gyldig svar. Gyldige svar er y/n");
+		outString = "Ikke et gyldig svar. Gyldige svar er y/n";
+		output.println(outString);
 	}
 
 	public void showNotificationNoReplyError() {
-		output.println("Ugyldig input. For å se og svare på meldinger, skriv notification -reply <velg melding. 0-indeksert> -y/n");
+		outString = "Ugyldig input. For å se og svare på meldinger, skriv notification -reply <velg melding. 0-indeksert> -y/n";
+		output.println(outString);
 	}
 	
 	public void showAppointmentAddedPerson(String name){
-		output.println("Brukeren "+name+" er lagt til i Møte!");
+		outString = "Brukeren "+name+" er lagt til i Møte!";
+		output.println(outString);
 	}
 	
 	public void showAppointmentAlreadyContains(String name){
-		output.println( name+" er allerede lagt til!");
+		outString = name+" er allerede lagt til!";
+		output.println(outString);
 	}
 	
 	public void showUserDoesNotExist(String name){
-		output.println(name+" finnes ikke i lista over brukere!");
+		outString = name+" finnes ikke i lista over brukere!";
+		output.println(outString);
 	}
 	
 	public void showNoMeetings(){
-		output.println("Du har ingen Møter");
+		outString = "Du har ingen Møter";
+		output.println(outString);
 	}
 	
 	public void showEditInputError() {
-		output.println("For å endre, skriv edit [-tittel <tittel> -date <date> ... ]");
+		outString = "For å endre, skriv edit [-tittel <tittel> -date <date> ... ]";
+		output.println(outString);
 	}
 	
 	public void showNoReplyArgumentsError() {
-		output.println("For å svare, skriv reply -id <møte id> <y/n> -reason <grunn for svar>");
+		outString = "For å svare, skriv reply -id <møte id> <y/n> -reason <grunn for svar>";
+		output.println(outString);
 	}
 	public void showAppointmentDoesNotContain(String name){
-		output.println(name+" er ikke medlem av møte!");
+		outString = name+" er ikke medlem av møte!";
+		output.println(outString);
 	}
 	public void showAppointmentRemovedPerson(String name){
-		output.println(name+" er fjernet fra møte");
+		outString = name+" er fjernet fra møte";
+		output.println(outString);
 	}
 	public void showAppointmentChangeToApp(){
-		output.println("Ingen fler deltagere, møte forandret til avtale");
+		outString = "Ingen fler deltagere, møte forandret til avtale";
+		output.println(outString);
 	}
 
 	public void showCompletedLogout() {
-		output.println("Du har blitt logget ut.");
+		outString = "Du har blitt logget ut.";
+		output.println(outString);
 	}
 
 	public void showOnlineUsers() {
