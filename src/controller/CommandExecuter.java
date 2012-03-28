@@ -148,7 +148,11 @@ public class CommandExecuter extends ApplicationComponent {
 				title = getProperty(array, titleIndex+1);
 
 				dateIndex = input.indexOf("-date");
-				date = stringToDate(array, dateIndex+1); 
+				date = stringToDate(array, dateIndex+1);
+				if(date == null){
+					this.getApplication().getConsoleView().showAppontmentInputError();
+					return;
+				}
 
 				startIndex = input.indexOf("-s");
 				sStart = getProperty(array, startIndex+1); 
@@ -171,7 +175,6 @@ public class CommandExecuter extends ApplicationComponent {
 				}
 
 				//ToDo må lage en appointment som blir sendt til databasen! (Husk dato og tid lenger oppe)
-
 				this.getApplication().getConsoleView().showAppontmentDetails(title, date.toString(), startTime.toString(), appLength.toString(), desc, place);
 				Appointment a = new Appointment(date, startTime, appLength, title, desc, place);
 				//this.getApplication().getCurrentlyLoggedInUser().getPersonalCalendar().addAppointment(a);
@@ -218,8 +221,22 @@ public class CommandExecuter extends ApplicationComponent {
 	private static Date stringToDate(String[] array, int index) throws ParseException{
 		String _date = array[index];
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+		if(!validDate(_date, df))
+			return null;
 		Date date = df.parse(_date);
 		return date;
+	}
+
+	private static boolean validDate(String date, DateFormat df) {
+        df.setLenient(false);
+        try {
+            df.parse(date);
+        } catch (ParseException e) {
+            System.out.println("Date " + date + " is not valid according to " +
+                    ((SimpleDateFormat) df).toPattern() + " pattern.");
+            return false;
+        }
+		return true;
 	}
 
 	public void delete(String[] array){		
