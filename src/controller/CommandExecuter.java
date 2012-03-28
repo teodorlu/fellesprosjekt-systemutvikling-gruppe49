@@ -125,7 +125,6 @@ public class CommandExecuter extends ApplicationComponent {
 			.updateLoginStatus(user, false);
 			this.getApplication().setCurrentUser(null);
 			this.getApplication().logout();
-			this.getApplication().getConsoleView().showCompletedLogout();
 		}
 	}
 

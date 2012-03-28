@@ -276,7 +276,7 @@ public class ConsoleView extends ApplicationComponent{
 	}
 	
 	public void showEditInputError() {
-		outString = "For å endre, skriv edit [-tittel <tittel> -date <date> ... ]";
+		outString = "For å endre, skriv edit [-title <tittel> -date <date> -s <StartTime> -d <Duration> -desc <description> -place <Place> ]";
 		output.println(outString);
 	}
 	
