@@ -85,8 +85,12 @@ public class CommandParser {
 	}
 	
 	private boolean lastArgumentIsImplicit() {
-		// Implicits are always first, and the repeating parameter is allways last
+		// Implicits are always first, and the repeating parameter is always last
 		return this.explicitParameterNameToParameterIdentifier.isEmpty();
+	}
+	
+	public String getRepeatingParameter() {
+		return this.repeatingParameter;
 	}
 
 	private boolean containsOnlyIgnorableCharactersAfter(String[] format, int i) {
@@ -135,7 +139,7 @@ public class CommandParser {
 		ret.append("implicits: " + implicitParameters + "\n");
 		
 		if (lastArgumentCanBeMultiple)
-			ret.append("Ends with multiple inputs: " + getLastExplicitParameter() + "\n");
+			ret.append("Ends with multiple inputs: " + getRepeatingParameter());
 		
 		return ret.toString();
 	}
@@ -149,9 +153,10 @@ public class CommandParser {
 		return this.implicitParameters.get(implicitParameters.size() - 1);
 	}
 	
-	public Map<String, String> parseInput(String[] inputArray) {
+	public InputContent parseInput(String[] inputArray) {
 		List<String> input = Arrays.asList(inputArray);
-		HashMap<String, String> parametersToArguments = new HashMap<String, String>();
+		HashMap<String, String> parameterToArgument = new HashMap<String, String>();
+		List<String> repeatingArguments = new LinkedList<String>();
 		
 		if (input.size() < 1)
 			throw new IllegalArgumentException();
@@ -162,7 +167,7 @@ public class CommandParser {
 			// input's fist content is the command name, hence +1
 			if (i < implicitParameters.size() + 1) {
 				String parameter = implicitParameters.get(i + 1);
-				parametersToArguments.put(parameter, argument);
+				parameterToArgument.put(parameter, argument);
 			} else {
 				// isExplicitArgument
 				if (argument.charAt(0) == '-') {
@@ -177,22 +182,23 @@ public class CommandParser {
 					
 					String parameter = this.explicitParameterNameToParameterIdentifier.get(parameterIdentifier);
 					
-					parametersToArguments.put(parameter, argument);
+					parameterToArgument.put(parameter, argument);
 				}
 			}
 		}
 		
 		// Fix repeating arguments
 		if (this.lastArgumentCanBeMultiple) {
-			int firstRepeatingArgumentIndex;
 			if (this.lastArgumentIsImplicit()) {
-				firstRepeatingArgumentIndex = implicitParameters.size() -1 +1; // first argument is command name 
-				// TODO
+				int firstRepeatingArgumentIndex = implicitParameters.size() -1 +1; // first argument is command name 
+				for (int i = firstRepeatingArgumentIndex; i < input.size(); i++) {
+					repeatingArguments.add(input.get(i));
+				}
 			}
-			
 		}
 		
-		return parametersToArguments;
+		InputContent content = new InputContent(parameterToArgument, repeatingArguments);
+		return content;
 	}
 
 	@SuppressWarnings("unused")
@@ -205,5 +211,10 @@ public class CommandParser {
 		CommandParser p2 = new CommandParser("calendar [ -w <week> [ -y <year> ] -u <username1> ... ]".split(" "));
 //		System.out.println(p1);
 		System.out.println(p2);
+		
+		String[] input = "calendar -w 3 -u teodor andre".split(" ");
+		InputContent content = p2.parseInput(input);
+		"Hallo".charAt(0);
+		
 	}
 }

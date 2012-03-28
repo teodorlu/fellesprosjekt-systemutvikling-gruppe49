@@ -346,6 +346,7 @@ public class CommandExecuter extends ApplicationComponent {
 		if(isLoggedIn()){
 
 			List<String> input = Arrays.asList(array);
+			int ID = -1;
 
 
 			List<Appointment> allALL = this.getApplication().getDatabaseController().retrieveAppointments(this.getApplication().getCurrentlyLoggedInUser());
@@ -362,7 +363,12 @@ public class CommandExecuter extends ApplicationComponent {
 
 			if(input.size() == 2){
 				int IDIndex = input.indexOf("summon") + 1;
-				int ID = Integer.parseInt(getProperty(array,IDIndex));
+				try{
+					ID = Integer.parseInt(getProperty(array,IDIndex));
+				}catch (IllegalArgumentException e){
+					this.getApplication().getConsoleView().showIllegalIntSummon();
+				}
+				
 
 				for(int k = 0; k < allALL.size(); k++){
 					Appointment localMeeting = allALL.get(k);
@@ -377,7 +383,7 @@ public class CommandExecuter extends ApplicationComponent {
 
 			else if(input.size() > 1){
 				int IDIndex = input.indexOf("summon")+1;
-				int ID = Integer.parseInt(getProperty(array, IDIndex));
+				ID = Integer.parseInt(getProperty(array, IDIndex));
 
 
 				List<String> usernames = this.getApplication().getDatabaseController().retriveUsernames();
@@ -611,6 +617,16 @@ public class CommandExecuter extends ApplicationComponent {
 			
 		}
 		}
+	}
+	
+	public void calendar(String[] array){
+		List<String> input = Arrays.asList(array);
+		
+		if(input.size() == 1){
+			
+		}
+		
+		
 	}
 	
 	private boolean isLoggedIn(){
