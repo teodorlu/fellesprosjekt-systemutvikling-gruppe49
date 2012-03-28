@@ -695,10 +695,4 @@ public class DatabaseController extends ApplicationComponent {
 		return output;
 	}
 	
-//	public static void main(String[] args) {
-//		DatabaseController dbc = new DatabaseController(null);
-//		User u = new User("magrodahl", "mamma");
-//		dbc.retrieveNotifications(u);
-//
-//	}
 }

@@ -492,7 +492,7 @@ public class CommandExecuter extends ApplicationComponent {
 
 			List<Notification> notifications = this.getApplication().getDatabaseController().retrieveNotifications(this.getApplication().getCurrentlyLoggedInUser());
 
-			String answer;
+			String answer = "";
 
 			if(input.contains("reply")){
 				if(input.size() < 3){
@@ -502,10 +502,11 @@ public class CommandExecuter extends ApplicationComponent {
 				int idIndex = input.indexOf("-id");
 				int ID = Integer.parseInt(getProperty(array, idIndex + 1));
 				int reasonIndex = input.indexOf("-reason");
-				if(getProperty(array, reasonIndex +1) != null)
-					answer = getProperty(array, reasonIndex +1);
-				else
-					answer = null;
+				for (int i = reasonIndex+1; i < input.size(); i++){
+					if(getProperty(array, i) != null){
+						answer += " "+getProperty(array, i);					
+					}
+				}
 
 				for (int i = 0; i < notifications.size(); i++) {
 					if(ID == notifications.get(i).getSender().getID()){
@@ -612,13 +613,6 @@ public class CommandExecuter extends ApplicationComponent {
 		}
 	}
 	
-
-	public static void main(String args[]) throws ParseException{
-		String[] s = {"2012-03-23"};
-		CommandExecuter.stringToDate(s, 0);
-	}
-
-
 	private boolean isLoggedIn(){
 		if(this.getApplication().getLoggedIn())
 			return true;
