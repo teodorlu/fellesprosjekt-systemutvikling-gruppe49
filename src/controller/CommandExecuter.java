@@ -526,16 +526,17 @@ public class CommandExecuter extends ApplicationComponent {
 		
 		List<String> input = Arrays.asList(array);
 		
-		List<Appointment> allMeetings = this.getApplication().getDatabaseController().retrieveMeetingsAndAppointments(this.getApplication().getCurrentlyLoggedInUser());  //Laster inn en liste med meetings
+		List<Meeting> allMeetings = this.getApplication().getDatabaseController().retrieveMeetings(this.getApplication().getCurrentlyLoggedInUser());  //Laster inn en liste med meetings
 		
 		
 		
 		if(input.size()==1) System.out.println(doc.get("unsummon"));
 		
-		if(allMeetings.size() < 1) this.getApplication().getConsoleView().showNoMeetings();
+		if(allMeetings.size() < 1) {
+			this.getApplication().getConsoleView().showNoMeetings();
 		
 		
-		else if(input.size() > 1){
+		}else if(input.size() > 1){
 			int IDIndex = input.indexOf("unsummon")+1;
 			int ID = Integer.parseInt(getProperty(array, IDIndex));
 			
@@ -545,6 +546,7 @@ public class CommandExecuter extends ApplicationComponent {
 			for(int i = 0; i < allMeetings.size(); i++){
 				Meeting localMeeting = (Meeting)allMeetings.get(i);				//Cast til meeting fra appointment
 				if(localMeeting.getID()==ID){										//Funnet riktig Møte
+					int slettet = 0;
 					for(int j = IDIndex+1; j < input.size(); j++){					//Går gjennom alle navna du skrev inn
 						
 						if(!usernames.contains(getProperty(array,j))) this.getApplication().getConsoleView().showUserDoesNotExist(getProperty(array, j));
@@ -563,9 +565,15 @@ public class CommandExecuter extends ApplicationComponent {
 								.unsummonToMeeting(getProperty(array, j),
 										localMeeting.getID()); // unsummonToMeeting
 									this.getApplication().getConsoleView().showAppointmentRemovedPerson(getProperty(array,j)); // Output med navnet
-						
-	//						this.getApplication().getDatabaseController().editAppointment(localMeeting.getID(), "TYPE", "Møte");
+						slettet++;
+					}
+					if(slettet > 0){
+						int medlemmer = this.getApplication().getDatabaseController().retriveNumOfParticipants(localMeeting.getID());
+						if(medlemmer == 0){
+							this.getApplication().getDatabaseController().editAppointment(localMeeting.getID(), "TYPE", "Avtale");
+							this.getApplication().getConsoleView().showAppointmentChangeToApp();
 
+						}
 					}
 				}
 			}

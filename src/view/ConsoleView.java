@@ -249,7 +249,10 @@ public class ConsoleView extends ApplicationComponent{
 		output.println(name+" er ikke medlem av møte!");
 	}
 	public void showAppointmentRemovedPerson(String name){
-		output.println(name+" er ikke medlem av møte!");
+		output.println(name+" er fjernet fra møte");
+	}
+	public void showAppointmentChangeToApp(){
+		output.println("Ingen fler deltagere, møte forandret til avtale");
 	}
 	
 }

@@ -654,6 +654,22 @@ public class DatabaseController extends ApplicationComponent {
 	private String incapsulate(String input) {
 		return "'" + input + "'";
 	}
+	public int retriveNumOfParticipants(int avtaleID){
+		int output = -1;
+		String sql = "SELECT COUNT(*) FROM PAMINNELSE WHERE AvtaleID='"+avtaleID+"'";
+		try {
+			connect();
+			Statement st = con.createStatement();
+			ResultSet rs = st.executeQuery(sql);
+			while (rs.next()) {
+				output = rs.getInt(1);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return output;
+	}
 	
 //	public static void main(String[] args) {
 //		DatabaseController dbc = new DatabaseController(null);
