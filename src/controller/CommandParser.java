@@ -19,16 +19,17 @@ import javax.management.ImmutableDescriptor;
 
 public class CommandParser {
 	
-	private Map<String, String> explicitArgumentToParameterName;
-	private List<String> implicitArguments;
+	private Map<String, String> explicitParameterIdentifierToParameterName;
+	private List<String> implicitParameter;
 	private boolean[] hasParsed;
 	private String ignoredCharacters;
 	private boolean lastArgumentCanBeMultiple;
 	private static String PREVIOUS_MULTIPLE_IDENTIFIER;
+	private static String REPEATING_PARAMETER;
 	
 	public CommandParser(String[] format) {
-		explicitArgumentToParameterName = new LinkedHashMap<String, String>();
-		implicitArguments = new LinkedList<String>();
+		explicitParameterIdentifierToParameterName = new LinkedHashMap<String, String>();
+		implicitParameter = new LinkedList<String>();
 		hasParsed = new boolean[format.length];
 		hasParsed[0] = true;
 		ignoredCharacters = "[]()/";
@@ -59,12 +60,12 @@ public class CommandParser {
 				continue;
 			
 			if (isIncapsulated(word)){
-				implicitArguments.add(stripped(word));
+				implicitParameter.add(stripped(word));
 				continue;
 			}
 			
 			if (isParameter(word)) {
-				explicitArgumentToParameterName.put(stripped(format[i+1]), word);
+				explicitParameterIdentifierToParameterName.put(stripped(format[i+1]), word);
 				hasParsed[i] = true;
 				hasParsed[i+1] = true;
 				continue;
@@ -72,7 +73,7 @@ public class CommandParser {
 			
 			if (word.equals(PREVIOUS_MULTIPLE_IDENTIFIER)
 					&& containsOnlyIgnorableCharactersAfter(format, i)) {
-				lastArgumentCanBeMultiple = true;
+				this.lastArgumentCanBeMultiple = true;
 			}
 		}
 	}
@@ -119,8 +120,8 @@ public class CommandParser {
 	public String toString() {
 		StringBuilder ret = new StringBuilder();
 		ret.append("Parser:\n");
-		ret.append("explicits: " + explicitArgumentToParameterName + "\n");
-		ret.append("implicits: " + implicitArguments + "\n");
+		ret.append("explicits: " + explicitParameterIdentifierToParameterName + "\n");
+		ret.append("implicits: " + implicitParameter + "\n");
 		
 		if (lastArgumentCanBeMultiple)
 			ret.append("Ends with multiple inputs: " + getMultipleAllowedOfName() + "\n");
@@ -129,11 +130,11 @@ public class CommandParser {
 	}
 
 	private Object getMultipleAllowedOfName() {
-		if (!explicitArgumentToParameterName.isEmpty()) {
-			Object[] values = explicitArgumentToParameterName.keySet().toArray();
+		if (!explicitParameterIdentifierToParameterName.isEmpty()) {
+			Object[] values = explicitParameterIdentifierToParameterName.keySet().toArray();
 			return values[values.length-1];
 		}
-		return implicitArguments.get(implicitArguments.size() - 1);
+		return implicitParameter.get(implicitParameter.size() - 1);
 	}
 	
 	public Map<String, String> parseInput(String[] inputArray) {
@@ -144,17 +145,36 @@ public class CommandParser {
 			throw new IllegalArgumentException();
 		
 		for (int i = 1; i < input.size(); i++) {
-			String s = input.get(i);
+			String argument = input.get(i);
 			
-			if ( i <= implicitArguments.size() ) {
-				
-				
-				
+			// input's fist content is the command name, hence +1
+			if (i < implicitParameter.size() + 1) {
+				String parameter = implicitParameter.get(i + 1);
+				parametersToArguments.put(parameter, argument);
+			} else {
+				// isExplicitArgument
+				if (argument.charAt(0) == '-') {
+					if (i + 1 >= input.size())
+						throw new IllegalArgumentException();
+					
+					String parameterIdentifier = argument;
+					argument = input.get(i+1);
+					
+					if (argument.charAt(0) == '-')
+						throw new IllegalArgumentException();
+					
+					String parameter = this.explicitParameterIdentifierToParameterName.get(parameterIdentifier);
+					
+					parametersToArguments.put(parameter, argument);
+				}
 			}
-				
 		}
 		
-		// TODO
+		// Fix repeating arguments
+		if (this.lastArgumentCanBeMultiple) {
+			
+		}
+		
 		return parametersToArguments;
 	}
 
