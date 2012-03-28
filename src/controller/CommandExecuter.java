@@ -82,11 +82,9 @@ public class CommandExecuter extends ApplicationComponent {
 						if(input.contains("-email")){
 							int emailIndex = input.indexOf("-email");
 							_email = getProperty(array, emailIndex +1);
-							Person u = new Person(username, password, firstName, lastName, _email);
-
-							System.out.println(_email);
-
-							this.getApplication().getDatabaseController().Save(u);
+							Person u = new Person(username, password, firstName, lastName, _email);						
+							if(this.getApplication().getDatabaseController().Save(u));
+								this.getApplication().getConsoleView().showRegSuccess();
 						}
 						else this.getApplication().getConsoleView().showRegError("mail");
 
@@ -410,7 +408,7 @@ public class CommandExecuter extends ApplicationComponent {
 				ID = Integer.parseInt(getProperty(array, IDIndex));
 
 
-				List<String> usernames = this.getApplication().getDatabaseController().retriveUsernames();
+				List<String> usernames = this.getApplication().getDatabaseController().retrieveUsernames();
 
 				for(int i = 0; i < allALL.size(); i++){
 					Appointment localMeeting = allALL.get(i);				//Cast til meeting fra appointment
@@ -507,10 +505,14 @@ public class CommandExecuter extends ApplicationComponent {
 	public void notification(String[] array){
 		if(isLoggedIn()){
 			List<String> input = Arrays.asList(array);
-
-			notificationList = this.getApplication().getDatabaseController().retrieveNotifications(this.getApplication().getCurrentlyLoggedInUser());
-
-			this.getApplication().getConsoleView().showNotifications(notificationList);
+			List<Notification> notificationList;
+			if(input.size()==1){
+				notificationList = this.getApplication().getDatabaseController().retrieveNotifications(this.getApplication().getCurrentlyLoggedInUser());
+				this.getApplication().getConsoleView().showNotifications(notificationList);				
+			} else if (input.contains("replies")){
+				notificationList = this.getApplication().getDatabaseController().retrieveReplys();
+				this.getApplication().getConsoleView().showNotificationsReplies(notificationList);
+			}			
 		}
 	}
 
@@ -521,7 +523,7 @@ public class CommandExecuter extends ApplicationComponent {
 
 			List<Notification> notifications = this.getApplication().getDatabaseController().retrieveNotifications(this.getApplication().getCurrentlyLoggedInUser());
 
-			String answer;
+			String answer = "";
 
 			if(input.contains("reply")){
 				if(input.size() < 3){
@@ -531,10 +533,11 @@ public class CommandExecuter extends ApplicationComponent {
 				int idIndex = input.indexOf("-id");
 				int ID = Integer.parseInt(getProperty(array, idIndex + 1));
 				int reasonIndex = input.indexOf("-reason");
-				if(getProperty(array, reasonIndex +1) != null)
-					answer = getProperty(array, reasonIndex +1);
-				else
-					answer = null;
+				for (int i = reasonIndex+1; i < input.size(); i++){
+					if(getProperty(array, i) != null){
+						answer += " "+getProperty(array, i);					
+					}
+				}
 
 				for (int i = 0; i < notifications.size(); i++) {
 					if(ID == notifications.get(i).getSender().getID()){
@@ -598,7 +601,7 @@ public class CommandExecuter extends ApplicationComponent {
 			int ID = Integer.parseInt(getProperty(array, IDIndex));
 			
 			
-			List<String> usernames = this.getApplication().getDatabaseController().retriveUsernames();
+			List<String> usernames = this.getApplication().getDatabaseController().retrieveUsernames();
 			
 			for(int i = 0; i < allMeetings.size(); i++){
 				Meeting localMeeting = (Meeting)allMeetings.get(i);				//Cast til meeting fra appointment
@@ -625,7 +628,7 @@ public class CommandExecuter extends ApplicationComponent {
 						slettet++;
 					}
 					if(slettet > 0){
-						int medlemmer = this.getApplication().getDatabaseController().retriveNumOfParticipants(localMeeting.getID());
+						int medlemmer = this.getApplication().getDatabaseController().retrieveNumOfParticipants(localMeeting.getID());
 						if(medlemmer == 0){
 							this.getApplication().getDatabaseController().editAppointment(localMeeting.getID(), "TYPE", "Avtale");
 							this.getApplication().getConsoleView().showAppointmentChangeToApp();
@@ -651,13 +654,6 @@ public class CommandExecuter extends ApplicationComponent {
 		
 	}
 	
-
-	public static void main(String args[]) throws ParseException{
-		String[] s = {"2012-03-23"};
-		CommandExecuter.stringToDate(s, 0);
-	}
-
-
 	private boolean isLoggedIn(){
 		if(this.getApplication().getLoggedIn())
 			return true;
