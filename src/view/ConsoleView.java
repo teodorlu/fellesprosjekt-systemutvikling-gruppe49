@@ -168,7 +168,8 @@ public class ConsoleView extends ApplicationComponent{
 	}
 
 	public void showApplicationDoesNotExistError() {
-		output.println("This is not a valid appointment ID");
+		outString = "This is not a valid appointment ID";
+		output.println(outString);
 		output.println("Valid appontments: ");
 		List<Appointment> appointments = getApplication().getDatabaseController().retrieveMeetingsAndAppointments(this.getApplication().getCurrentlyLoggedInUser());
 		for(int i = 0; i < appointments.size();i++){
@@ -187,14 +188,18 @@ public class ConsoleView extends ApplicationComponent{
 	}
 
 	public void showAllUsers() {
+		outString = "Users: ";
+		output.println(outString);
 		List<String> usernames = getApplication().getDatabaseController().retriveUsernames();
 		for(int i = 0; i < usernames.size(); i++){
-			String name = usernames.get(i);
-			output.println(name);
+			String outString = usernames.get(i);
+			output.println(outString);
 		}
 	}
 
 	public void showAppointments(List<Appointment> appointments) {
+		outString = "Appointments: ";
+		output.println(outString);
 		for(int i = 0; i < appointments.size(); i++){
 			Appointment a = appointments.get(i);
 			output.println("ID: "+a.getID()+" Tittel: "+a.getTitle());   
@@ -318,6 +323,11 @@ public class ConsoleView extends ApplicationComponent{
 
 	public void showRegSuccess() {
 		outString = "Brukeren er blitt lagt til.";
+		output.println(outString);
+	}
+	
+	public void showSummonHelp() {
+		outString = "summon <id> <username1> [ <username2> <username3> ... ]";
 		output.println(outString);
 	}
 	
