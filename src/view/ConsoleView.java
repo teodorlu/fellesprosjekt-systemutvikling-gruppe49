@@ -28,8 +28,8 @@ public class ConsoleView extends ApplicationComponent{
 	}
 	
 	public void welcome(){
-		output.println("  Calendar Console, version 0.1");
-		output.println("---------------------------------");
+		output.println("  Calendar Console, alpha 1");
+		output.println("-----------------------------");
 	}
 
 //	public void showCommands(Iterable<String> commands) {
