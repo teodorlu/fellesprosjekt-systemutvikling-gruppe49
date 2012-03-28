@@ -77,11 +77,9 @@ public class CommandExecuter extends ApplicationComponent {
 						if(input.contains("-email")){
 							int emailIndex = input.indexOf("-email");
 							_email = getProperty(array, emailIndex +1);
-							Person u = new Person(username, password, firstName, lastName, _email);
-
-							System.out.println(_email);
-
+							Person u = new Person(username, password, firstName, lastName, _email);						
 							this.getApplication().getDatabaseController().Save(u);
+							this.getApplication().getConsoleView()
 						}
 						else this.getApplication().getConsoleView().showRegError("mail");
 
