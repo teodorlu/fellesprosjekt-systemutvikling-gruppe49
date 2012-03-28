@@ -41,7 +41,7 @@ public class ConsoleView extends ApplicationComponent{
 	}
 	
 	public void welcome(){
-		output.println("  Calendar Console, alpha 1");
+		output.println("  Calendar Console, alpha 1.3.49");
 		output.println("-----------------------------");
 	}
 
