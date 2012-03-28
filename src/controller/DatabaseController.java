@@ -218,8 +218,27 @@ public class DatabaseController extends ApplicationComponent {
 		disconnect();
 		return false;
 	}
+	
+	public List<String> getOnlineUsersNames() {
+		String sql = "SELECT BrukerNavn FROM ANSATT WHERE IsLoggedOn=1";
+		List<String> onlineUsers =  new ArrayList<String>();
+		try {
+			connect();
+			Statement st = con.createStatement();
+			ResultSet rs = st.executeQuery(sql);
+			while (rs.next()) {
+				onlineUsers.add(rs.getString(1));
+			}
 
-	public Person retriveUser(String username) {
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		disconnect();
+		return onlineUsers;
+	}
+
+	public Person retrieveUser(String username) {
 		// TODO write
 		String sql = "SELECT * FROM ANSATT WHERE BrukerNavn='" + username + "'";
 		connect();
@@ -620,7 +639,7 @@ public class DatabaseController extends ApplicationComponent {
 				while(rs2.next()){
 					Notification n = new Notification(rs2.getString(3),
 							string2enum.get(rs2.getString(5)), int2enum.get(rs2.getInt(4)),
-							a, retriveUser(rs2.getString(1)));
+							a, retrieveUser(rs2.getString(1)));
 					notifications.add(n);
 				}
 			}
@@ -668,6 +687,7 @@ public class DatabaseController extends ApplicationComponent {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		disconnect();
 		return output;
 	}
 	

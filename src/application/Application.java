@@ -81,7 +81,7 @@ public class Application {
 		boolean isValid = getDatabaseController().authenticated(user);
 
 		if (isValid) {
-			Person currentlyLoggedInPerson = getDatabaseController().retriveUser(user.getUsername());    //Dzenan enda denne, se på denne om alt går mongoklikk!!!
+			Person currentlyLoggedInPerson = getDatabaseController().retrieveUser(user.getUsername());    //Dzenan enda denne, se på denne om alt går mongoklikk!!!
 			this.setCurrentUser(currentlyLoggedInPerson);
 			getDatabaseController().updateLoginStatus(currentlyLoggedInUser, true);
 			loggedIn = true;

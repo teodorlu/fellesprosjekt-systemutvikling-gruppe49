@@ -125,6 +125,7 @@ public class CommandExecuter extends ApplicationComponent {
 			.updateLoginStatus(user, false);
 			this.getApplication().setCurrentUser(null);
 			this.getApplication().logout();
+			this.getApplication().getConsoleView().showCompletedLogout();
 		}
 	}
 
@@ -243,13 +244,17 @@ public class CommandExecuter extends ApplicationComponent {
 			List<String> usernames;
 			String username;
 			int uIndex;
+			
+			if(input.contains("online")){
+				this.getApplication().getConsoleView().showOnlineUsers();
+			}
 
-			if(input.contains("user") && input.size() == 2){
+			else if(input.contains("user") && input.size() == 2){
 
 				uIndex = input.indexOf("user");
 				username = getProperty(array ,uIndex+1);
 				this.getApplication().getConsoleView().showUser(username);
-			}
+			} 
 
 			else{
 				this.getApplication().getConsoleView().showAllUsers();
