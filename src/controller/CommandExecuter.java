@@ -4,6 +4,7 @@ import java.security.acl.NotOwnerException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
@@ -643,6 +644,68 @@ public class CommandExecuter extends ApplicationComponent {
 		}
 		}
 	}
+	public void reserve(String[] array){
+		if(isLoggedIn()==true){
+			List<String> input = Arrays.asList(array);
+			int appIDIndex = input.indexOf("-a") + 1;
+			String appID = input.get(appIDIndex);
+			int applicationID = -1;
+			String RoomID = "-1";
+			String needCapacity = "-1";
+			int capacity = -1;
+			if(input.contains("-r")){
+				int RoomIDIndex = input.indexOf("-r") + 1;
+				RoomID = input.get(RoomIDIndex);
+			}else if(input.contains("-c")){
+				int capacityIndex = input.indexOf("-c")+1;
+				needCapacity = input.get(capacityIndex);
+				try{
+					capacity = Integer.parseInt(needCapacity);
+				}catch(NumberFormatException e){
+					e.printStackTrace();
+				}
+				
+				
+				
+				return;
+				
+				
+				
+			}else{
+				System.out.println(doc.get("reserve"));
+				return;
+			}
+			try{
+				applicationID = Integer.parseInt(appID);
+			}catch(NumberFormatException e){
+				e.printStackTrace();
+			}
+			List<Room> allRooms = this.getApplication().getDatabaseController().retrieveAllRooms();
+			List<String> allRoomIDs = new ArrayList<String>();
+			for(int i=0; i < allRooms.size();i++){
+				allRoomIDs.add(allRooms.get(i).getRoomId());
+			}
+			if(allRoomIDs.contains(RoomID)){
+				Appointment thisApp = this.getApplication().getDatabaseController().retrieveAnAppointment(applicationID);
+				java.sql.Date a = new java.sql.Date(thisApp.getDate().getTime());
+				a.setMonth(a.getMonth()+1);
+				a.setYear(a.getYear()+1900);
+				if(this.getApplication().getDatabaseController().isRoomAvailable(RoomID, 
+						a ,
+						thisApp.getStartTime(), 
+						thisApp.getAppLength()  )){
+					this.getApplication().getDatabaseController().reserveRoomWithID(applicationID, RoomID);
+					this.getApplication().getConsoleView().showAppointmentRoomReserved(RoomID);
+				}else{
+					this.getApplication().getConsoleView().showAppointmentRoomAlreadyReserved(RoomID);
+				}
+			}else{
+				this.getApplication().getConsoleView().showAppointmentRoomDoesNotExist(RoomID);
+			}
+			
+		}
+	}
+
 	
 	public void calendar(String[] array){
 		List<String> input = Arrays.asList(array);

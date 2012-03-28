@@ -86,6 +86,11 @@ public class ConsoleController extends ApplicationComponent {
 				executer.summon(arguments);
 			}
 		});
+		commands.put("reserve", new Command() {
+			void execute(String[] arguments) {
+				executer.reserve(arguments);
+			}
+		});
 		
 		commands.put("users", new Command() {
 			void execute(String[] arguments){
