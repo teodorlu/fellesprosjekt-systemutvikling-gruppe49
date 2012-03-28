@@ -714,15 +714,31 @@ public class DatabaseController extends ApplicationComponent {
 			e.printStackTrace();
 		}
 	}
-	public Appointment retrieveAnAppointment(int avtaleID){
+	public Appointment retrieveAnAppointment(int avtaleID, String brukernavn){
 		Appointment output = null;
-		String sql = "SELECT * FROM AVTALE WHERE AvtaleID = '"+avtaleID+"'";
+		String sql = "SELECT * FROM AVTALE WHERE AvtaleID = '"+avtaleID+"' AND AvtaleEier = '"+brukernavn+"' AND ErAktiv = 1";
 		try {
 			connect();
 			Statement st = con.createStatement();
 			ResultSet rs = st.executeQuery(sql);
 			while (rs.next()) {
 				output = new Appointment(avtaleID, rs.getDate(3), rs.getTime(8), rs.getTime(9), rs.getString(2), rs.getString(10), rs.getString(7));
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return output;
+	}
+	public List<Room> retrieveRoomsWCapacity(int cap){
+		List<Room> output = new ArrayList<Room>();
+		String sqlR = "SELECT * FROM ROM WHERE Kapasitet >= '"+cap+"'";
+		try {
+			connect();
+			Statement st = con.createStatement();
+			ResultSet rs = st.executeQuery(sqlR);
+			while (rs.next()) {
+				output.add(new Room(rs.getString(1), rs.getInt(3), rs.getString(2)));
 			}
 
 		} catch (SQLException e) {

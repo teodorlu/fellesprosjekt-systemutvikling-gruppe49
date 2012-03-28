@@ -374,6 +374,17 @@ public class ConsoleView extends ApplicationComponent {
 		outString = RoomID + " er allerede reservert for dette tidspunktet.";
 		output.println(outString);
 	}
-	
+	public void showAppointmentNoRoomsWCapAvail() {
+		outString = "Ingen rom med nok kapasitet er ledige";
+		output.println(outString);
+	}
+	public void showAppointmentNoRoomsWCap() {
+		outString = "Ingen rom har nok kapasitet";
+		output.println(outString);		
+	}
+	public void showAppointmentNoSuchApp() {
+		outString = "Du har ikke en slik avtale/møte";
+		output.println(outString);
+	}
 
 }
