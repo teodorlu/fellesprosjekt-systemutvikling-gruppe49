@@ -123,7 +123,6 @@ public class CommandExecuter extends ApplicationComponent {
 			.updateLoginStatus(user, false);
 			this.getApplication().setCurrentUser(null);
 			this.getApplication().logout();
-			this.getApplication().getConsoleView().showCompletedLogout();
 		}
 	}
 
@@ -348,24 +347,31 @@ public class CommandExecuter extends ApplicationComponent {
 
 			List<String> input = Arrays.asList(array);
 
-			List<Appointment> allMeetings = this.getApplication().getDatabaseController().retrieveMeetingsAndAppointments(this.getApplication().getCurrentlyLoggedInUser());  //Laster inn en liste med meetings
 
-			List<Appointment> allAppointments = this.getApplication().getDatabaseController().retrieveAppointments(this.getApplication().getCurrentlyLoggedInUser()); //Laster en liste med appointments
-
-
+			List<Appointment> allALL = this.getApplication().getDatabaseController().retrieveAppointments(this.getApplication().getCurrentlyLoggedInUser());
+			allALL.addAll(this.getApplication().getDatabaseController().retrieveMeetings(this.getApplication().getCurrentlyLoggedInUser()));
 
 
-			if(input.size()==1) System.out.println(doc.get("summon"));
 
-			if(allMeetings.size() < 1) this.getApplication().getConsoleView().showNoMeetings();
+			if(input.size()==1){
+				System.out.println(doc.get("summon"));
+				return;
+			}
+
+			if(allALL.size() < 1) this.getApplication().getConsoleView().showNoMeetings();
 
 			if(input.size() == 2){
 				int IDIndex = input.indexOf("summon") + 1;
 				int ID = Integer.parseInt(getProperty(array,IDIndex));
 
-				for(int k = 0; k < allMeetings.size(); k++){
-					Meeting localMeeting = (Meeting)allMeetings.get(k);
-					if(localMeeting.getID()==ID)System.out.println(localMeeting.getParticipants());  //Printer ut participants
+				for(int k = 0; k < allALL.size(); k++){
+					Appointment localMeeting = allALL.get(k);
+					
+					if(localMeeting.getID()==ID){
+						if(localMeeting instanceof Meeting)System.out.println(((Meeting) localMeeting).getParticipants());
+						else System.out.println("Dette er ikke et møte");
+					}
+					
 				}
 			}
 
@@ -376,18 +382,22 @@ public class CommandExecuter extends ApplicationComponent {
 
 				List<String> usernames = this.getApplication().getDatabaseController().retriveUsernames();
 
-				for(int i = 0; i < allMeetings.size(); i++){
-					Meeting localMeeting = (Meeting)allMeetings.get(i);				//Cast til meeting fra appointment
+				for(int i = 0; i < allALL.size(); i++){
+					Appointment localMeeting = allALL.get(i);				//Cast til meeting fra appointment
 					if(localMeeting.getID()==ID){										//Funnet riktig Møte
 						for(int j = IDIndex+1; j < input.size(); j++){					//Går gjennom alle navna du skrev inn
-
+							
+							if(localMeeting instanceof Meeting){
+								Meeting localMe = (Meeting)localMeeting;
+								
 							if(!usernames.contains(getProperty(array,j))) this.getApplication().getConsoleView().showUserDoesNotExist(getProperty(array, j));
+							
 
-							if (localMeeting.getParticipants().contains(getProperty(array, j))){
+							if (localMe.getParticipants().contains(getProperty(array, j))){
 								this.getApplication().getConsoleView().showAppointmentAlreadyContains(getProperty(array,j));
 								continue;
 							}
-
+							}
 
 							if(!usernames.contains(getProperty(array,j)))			//Sjekker om brukeren finnes i lista over brukere
 								continue;
@@ -409,6 +419,21 @@ public class CommandExecuter extends ApplicationComponent {
 			}
 		}
 	}
+	
+	/*public List<Meeting> getListOfMeetingsFromAppointments(List<Appointment> list){
+		List<Meeting> returnList = new List<Meeting>();
+		
+		for (int i = 0; i < list.size(); i++) {
+			Appointment localVar = list.get(i);
+			
+			if(localVar instanceof Meeting){
+				Meeting localMe = (Meeting)localVar;
+				returnList.add(localMe);
+			}
+		}
+		
+		return returnList;
+	}*/
 
 	/*public void summon(String[] array){
 		List<String> input = Arrays.asList(array);
