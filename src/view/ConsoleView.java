@@ -391,4 +391,9 @@ public class ConsoleView extends ApplicationComponent {
 //		Date start = appointments.get(0).
 	}
 
+	public void showError(String string) {
+		outString = string;
+		output.println(outString);
+	}
+
 }

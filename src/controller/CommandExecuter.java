@@ -141,6 +141,13 @@ public class CommandExecuter extends ApplicationComponent {
 			Time startTime = new Time(0,0);
 			Time appLength = new Time(0,0);
 			int titleIndex, dateIndex, startIndex, endIndex, descIndex, placeIndex, colonIndex, length;
+			
+			if(input.size()== 2)
+				try {
+					int i = Integer.parseInt(getProperty(array, 1));
+				} catch (NumberFormatException e) {
+					this.getApplication().getConsoleView().showError("Skriv en gyldig ID.");
+				}
 
 			if(input.contains("-title") && input.contains("-date") && input.contains("-s")
 					&& input.contains("-d")){
@@ -766,7 +773,7 @@ public class CommandExecuter extends ApplicationComponent {
 
 	public void exit(String[] arguments) {
 		if (this.getApplication().getLoggedIn()) {
-			this.getApplication().logout();
+			logout("logout".split(" "));
 		}
 		System.exit(0);
 	}
