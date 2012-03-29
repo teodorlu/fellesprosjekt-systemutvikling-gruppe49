@@ -1,6 +1,5 @@
 package controller;
 
-import java.security.acl.NotOwnerException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -140,7 +139,7 @@ public class CommandExecuter extends ApplicationComponent {
 			Date date;
 			Time startTime = new Time(0,0);
 			Time appLength = new Time(0,0);
-			int titleIndex, dateIndex, startIndex, endIndex, descIndex, placeIndex, colonIndex, length;
+			int titleIndex, dateIndex, startIndex, endIndex, descIndex, placeIndex;
 			
 			if(input.size()== 2){
 				try {
@@ -271,7 +270,6 @@ public class CommandExecuter extends ApplicationComponent {
 	public void user(String[] array){
 		if(isLoggedIn()){
 			List<String> input = Arrays.asList(array);
-			List<String> usernames;
 			String username;
 			int uIndex;
 			
