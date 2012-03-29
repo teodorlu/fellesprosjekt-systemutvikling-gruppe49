@@ -1,6 +1,5 @@
 package controller;
 
-import java.security.acl.NotOwnerException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -140,9 +139,19 @@ public class CommandExecuter extends ApplicationComponent {
 			Date date;
 			Time startTime = new Time(0,0);
 			Time appLength = new Time(0,0);
-			int titleIndex, dateIndex, startIndex, endIndex, descIndex, placeIndex, colonIndex, length;
-
-			if(input.contains("-title") && input.contains("-date") && input.contains("-s")
+			int titleIndex, dateIndex, startIndex, endIndex, descIndex, placeIndex;
+			
+			if(input.size()== 2){
+				try {
+					int i = Integer.parseInt(getProperty(array, 1));
+					String brukernavn = this.getApplication().getCurrentlyLoggedInUser().getUsername();
+					Appointment a = this.getApplication().getDatabaseController().retrieveAnAppointment(i, brukernavn);
+					this.getApplication().getConsoleView().showAppointment(a);
+				} catch (NumberFormatException e) {
+					this.getApplication().getConsoleView().showError("Skriv en gyldig ID.");
+				}
+			}
+			else if(input.contains("-title") && input.contains("-date") && input.contains("-s")
 					&& input.contains("-d")){
 
 				titleIndex = input.indexOf("-title");
@@ -261,7 +270,6 @@ public class CommandExecuter extends ApplicationComponent {
 	public void user(String[] array){
 		if(isLoggedIn()){
 			List<String> input = Arrays.asList(array);
-			List<String> usernames;
 			String username;
 			int uIndex;
 			
@@ -766,7 +774,7 @@ public class CommandExecuter extends ApplicationComponent {
 
 	public void exit(String[] arguments) {
 		if (this.getApplication().getLoggedIn()) {
-			this.getApplication().logout();
+			logout("logout".split(" "));
 		}
 		System.exit(0);
 	}
