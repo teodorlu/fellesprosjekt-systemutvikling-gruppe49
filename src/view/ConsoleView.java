@@ -396,4 +396,14 @@ public class ConsoleView extends ApplicationComponent {
 		output.println(outString);
 	}
 
+	public void showAppointment(Appointment a) {
+		outString = "Avtaletittel: " + a.getTitle() + " \nBeskrivelse: "
+				+ a.getDescription() + " \nSted: " + a.getPlace() + "\nDato: "
+				+ a.getDate() + " Starttidspunkt: " + a.getStartTime()
+				+ " Varighet: " + a.getDuration().returnHours() + " timer, "
+				+ a.getDuration().returnMinutes() + " minutter.";
+		output.println(outString);
+
+	}
+
 }

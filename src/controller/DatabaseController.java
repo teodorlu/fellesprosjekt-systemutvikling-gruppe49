@@ -519,6 +519,12 @@ public class DatabaseController extends ApplicationComponent {
 	public List<Appointment> retrieveMeetingsAndAppointments(User user) {
 
 		String username = user.getUsername();
+		return retrieveMeetingsAndAppointments(username);
+	
+	}
+	
+	public List<Appointment> retrieveMeetingsAndAppointments(String username){
+		
 		List<Appointment> listOfMeetingsAndAppointments = new ArrayList<Appointment>();
 		String sql = "SELECT * FROM AVTALE WHERE AvtaleEier='"+username+"' " +
 				"AND ErAktiv=1";
@@ -568,8 +574,7 @@ public class DatabaseController extends ApplicationComponent {
 
 			}
 			String sql4 = "SELECT AvtaleID FROM PAMINNELSE WHERE SendtTil='"+
-				this.getApplication().getCurrentlyLoggedInUser().getUsername()+
-				"' AND SkalDelta=1";
+					username+"' AND SkalDelta=1";
 			Statement st4 = con.createStatement();
 			ResultSet rs4 = st4.executeQuery(sql4);
 			while(rs4.next()){
@@ -590,6 +595,8 @@ public class DatabaseController extends ApplicationComponent {
 		disconnect();
 		return listOfMeetingsAndAppointments;
 	}
+	
+	
 	public boolean unsummonToMeeting(String username, int appointmentID){
 		String sql = "DELETE FROM PAMINNELSE WHERE AvtaleID='"+appointmentID+"' AND SendtTil='"+username+"'";
 		int rowsAffected = -1;
