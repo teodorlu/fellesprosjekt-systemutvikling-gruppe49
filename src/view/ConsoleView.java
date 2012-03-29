@@ -387,4 +387,9 @@ public class ConsoleView extends ApplicationComponent {
 		output.println(outString);
 	}
 
+	public void showError(String string) {
+		outString = string;
+		output.println(outString);
+	}
+
 }

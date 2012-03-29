@@ -713,7 +713,9 @@ public class DatabaseController extends ApplicationComponent {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		disconnect();
 	}
+	
 	public Appointment retrieveAnAppointment(int avtaleID, String brukernavn){
 		Appointment output = null;
 		String sql = "SELECT * FROM AVTALE WHERE AvtaleID = '"+avtaleID+"' AND AvtaleEier = '"+brukernavn+"' AND ErAktiv = 1";
@@ -728,8 +730,10 @@ public class DatabaseController extends ApplicationComponent {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		disconnect();
 		return output;
 	}
+	
 	public List<Room> retrieveRoomsWCapacity(int cap){
 		List<Room> output = new ArrayList<Room>();
 		String sqlR = "SELECT * FROM ROM WHERE Kapasitet >= '"+cap+"'";
@@ -744,6 +748,7 @@ public class DatabaseController extends ApplicationComponent {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		disconnect();
 		return output;
 	}
 
