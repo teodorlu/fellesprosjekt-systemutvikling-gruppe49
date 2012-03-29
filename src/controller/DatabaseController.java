@@ -110,7 +110,7 @@ public class DatabaseController extends ApplicationComponent {
 		Time startTime = appointment.getStartTime();
 		java.sql.Time sqlStartTime = new java.sql.Time(startTime.returnHours(),
 				startTime.returnMinutes(), 00);
-		Time duration = appointment.getAppLength();
+		Time duration = appointment.getDuration();
 		java.sql.Time sqlDuration = new java.sql.Time(duration.returnHours(),
 				duration.returnMinutes(), 00);
 		String desc = incapsulate(appointment.getDescription());

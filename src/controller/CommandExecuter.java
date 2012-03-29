@@ -329,7 +329,7 @@ public class CommandExecuter extends ApplicationComponent {
 
 								if(input.contains("-d")){
 									int durationIndex = input.indexOf("-d");
-									localAppointment.setAppLength(getTimeProperty(input.get(durationIndex+1)));
+									localAppointment.setDuration(getTimeProperty(input.get(durationIndex+1)));
 									if(this.getApplication().getDatabaseController().editAppointment(ID, "Varighet", getProperty(array, durationIndex+1)))
 										this.getApplication().getConsoleView().showAppointmentLengthChange(getTimeProperty(input.get(durationIndex+1)));
 								}
@@ -679,7 +679,7 @@ public class CommandExecuter extends ApplicationComponent {
 					if(this.getApplication().getDatabaseController().isRoomAvailable(RoomID, 
 							a ,
 							thisApp.getStartTime(), 
-							thisApp.getAppLength()  )){
+							thisApp.getDuration()  )){
 						this.getApplication().getDatabaseController().reserveRoomWithID(applicationID, RoomID);
 						this.getApplication().getConsoleView().showAppointmentRoomReserved(RoomID);
 					}else{
@@ -713,7 +713,7 @@ public class CommandExecuter extends ApplicationComponent {
 					if(!this.getApplication().getDatabaseController().isRoomAvailable(capRooms.get(i).getRoomId(),
 							a, 
 							thisApp.getStartTime(), 
-							thisApp.getAppLength()	)){
+							thisApp.getDuration()	)){
 						capRooms.remove(i);
 					}
 				}

@@ -351,12 +351,12 @@ public class ConsoleView extends ApplicationComponent {
 				Meeting m = (Meeting) a;
 				output.println("ID:" + m.getID() + ", Tittel: " + m.getTitle()
 						+ ", Dato: " + m.getDate() + ", Start: " + m.getStartTime()
-						+ ", Varighet: " + m.getAppLength() + ", Sted: "
+						+ ", Varighet: " + m.getDuration() + ", Sted: "
 						+ m.getPlace() + ", Beskrivelse: " + m.getDescription()+", Type: "+type+", Deltakere: "+m.getParticipants()+", Rom: "+m.getRoom());
 			} else {
 				output.println("ID:" + a.getID() + ", Tittel: " + a.getTitle()
 						+ ", Dato: " + a.getDate() + ", Start: " + a.getStartTime()
-						+ ", Varighet: " + a.getAppLength() + ", Sted: "
+						+ ", Varighet: " + a.getDuration() + ", Sted: "
 						+ a.getPlace() + ", Beskrivelse: " + a.getDescription()+", Type: "+type);
 				
 			}
@@ -385,6 +385,10 @@ public class ConsoleView extends ApplicationComponent {
 	public void showAppointmentNoSuchApp() {
 		outString = "Du har ikke en slik avtale/møte";
 		output.println(outString);
+	}
+	
+	public void showCalendar(List<Appointment> appointments) {
+//		Date start = appointments.get(0).
 	}
 
 }

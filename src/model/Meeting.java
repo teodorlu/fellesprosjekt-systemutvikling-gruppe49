@@ -78,7 +78,7 @@ public class Meeting extends Appointment {
 		return this.date;
 	}
 	
-	public Time getAppLength(){
+	public Time getDuration(){
 		return this.appLength;
 	}
 	
