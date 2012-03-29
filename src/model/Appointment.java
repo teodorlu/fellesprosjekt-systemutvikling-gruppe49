@@ -23,7 +23,6 @@ public class Appointment implements Comparable<Appointment> {
 		this.title = title;
 	}
 	
-	
 	@SuppressWarnings("deprecation")
 	public Appointment(int ID, Date sqldate, java.sql.Time sqlStartTime,
 			java.sql.Time duration, String title, String description, String place) {
@@ -102,6 +101,4 @@ public class Appointment implements Comparable<Appointment> {
 	public int getID() {
 		return ID;
 	}
-	
-
 }

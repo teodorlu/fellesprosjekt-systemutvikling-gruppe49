@@ -43,7 +43,7 @@ public class ConsoleView extends ApplicationComponent {
 	}
 
 	public void welcome() {
-		output.println("  Calendar Console, alpha 1.3.49");
+		output.println("  Calendar Console, alpha 2");
 		output.println("-----------------------------");
 	}
 
@@ -388,7 +388,13 @@ public class ConsoleView extends ApplicationComponent {
 	}
 	
 	public void showCalendar(List<Appointment> appointments) {
-//		Date start = appointments.get(0).
+		if (appointments.isEmpty())
+			throw new IllegalArgumentException();
+		
+		Date start = appointments.get(0).getDate();
+		Date end   = appointments.get(appointments.size() - 1).getDate();
+		
+		
 	}
 
 }
