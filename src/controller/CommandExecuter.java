@@ -142,14 +142,17 @@ public class CommandExecuter extends ApplicationComponent {
 			Time appLength = new Time(0,0);
 			int titleIndex, dateIndex, startIndex, endIndex, descIndex, placeIndex, colonIndex, length;
 			
-			if(input.size()== 2)
+			if(input.size()== 2){
 				try {
 					int i = Integer.parseInt(getProperty(array, 1));
+					String brukernavn = this.getApplication().getCurrentlyLoggedInUser().getUsername();
+					Appointment a = this.getApplication().getDatabaseController().retrieveAnAppointment(i, brukernavn);
+					this.getApplication().getConsoleView().showAppointment(a);
 				} catch (NumberFormatException e) {
 					this.getApplication().getConsoleView().showError("Skriv en gyldig ID.");
 				}
-
-			if(input.contains("-title") && input.contains("-date") && input.contains("-s")
+			}
+			else if(input.contains("-title") && input.contains("-date") && input.contains("-s")
 					&& input.contains("-d")){
 
 				titleIndex = input.indexOf("-title");
