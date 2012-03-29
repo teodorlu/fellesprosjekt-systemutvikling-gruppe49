@@ -1,6 +1,7 @@
 package view;
 
 import java.io.PrintStream;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -391,10 +392,28 @@ public class ConsoleView extends ApplicationComponent {
 		if (appointments.isEmpty())
 			throw new IllegalArgumentException();
 		
+		int nextAppintmentIndex = 0;
+		
 		Date start = appointments.get(0).getDate();
 		Date end   = appointments.get(appointments.size() - 1).getDate();
 		
+		Calendar currentDate = Calendar.getInstance();
+		currentDate.setTime(start);
+		Calendar endBefore = Calendar.getInstance();
+		endBefore.setTime(end);
+		endBefore.add(Calendar.DATE, 1);
 		
+		StringBuilder sb = new StringBuilder();
+		
+		while (currentDate.before(endBefore)) {
+			Appointment a = appointments.get(nextAppintmentIndex);
+			
+			// TODO
+			
+			currentDate.add(Calendar.DATE, 1);
+		}
+		
+		output.println(sb.toString());
 	}
 
 }
